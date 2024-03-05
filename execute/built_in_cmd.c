@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:11:23 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/04 22:20:58 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/05 22:33:03 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,25 +87,74 @@ void	ft_cd(t_cmd *cmd)
 	}
 }
 //function of pwd command
-void    ft_pwd()
+void    ft_pwd(t_cmd *cmd)
 {
 	char    cwd[1024];
-	if (!getcwd(cwd, sizeof(cwd)))
-		exit(1);
-	printf("%s\n", cwd);
-	exit(0);
+	int     i;
+	int 	fd;
+
+	i = 0;
+	if (cmd->redir[0] != NULL)
+	{
+		while (cmd->redir[i])
+		{
+			if (ft_strncmp(cmd->redir[i], ">>", 2) == 0)
+				fd = open(cmd->file[i], O_CREAT | O_RDWR | O_APPEND, 0644);
+			else if (ft_strncmp(cmd->redir[i], ">", 1) == 0)
+				fd = open(cmd->file[i], O_CREAT | O_RDWR | O_TRUNC, 0644);
+			else if (ft_strncmp(cmd->redir[i], "<", 1) == 0)
+				fd = 1;
+			if (!getcwd(cwd, sizeof(cwd)))
+				exit(1);
+			if (cmd->redir[i + 1] == NULL)
+			{
+				ft_putstr_fd(cwd, fd);
+				ft_putstr_fd("\n", fd);
+			}
+			close(fd);
+			i++;
+		}
+	}
+	else
+	{
+		if (!getcwd(cwd, sizeof(cwd)))
+			exit(1);
+		printf("%s\n", cwd);
+		exit(0);
+	}
 }
 
-void	ft_env(t_table *table)
+void	ft_env(t_table *table, t_cmd *cmd)
 {
 	int i;
-	
+	int	fd;
+
 	i = 0;
-	while (table->env[i])
+	if (cmd->redir[0] != NULL)
 	{
-		ft_putstr_fd(table->env[i], 1);
-		ft_putstr_fd("\n", 1);
-		i++;
+		while (cmd->redir[i])
+		{
+			if (ft_strncmp(cmd->redir[i], ">>", 2) == 0)
+				fd = open(cmd->file[i], O_CREAT | O_RDWR | O_APPEND, 0644);
+			else if (ft_strncmp(cmd->redir[i], ">", 1) == 0)
+				fd = open(cmd->file[i], O_CREAT | O_RDWR | O_TRUNC, 0644);
+			else if (ft_strncmp(cmd->redir[i], "<", 1) == 0)
+				fd = 1;
+			ft_putstr2d_fd(table->env, fd);
+			ft_putstr_fd("\n", fd);
+			close(fd);
+			i++;
+		}
+	}
+	else
+	{
+		while (table->env[i])
+		{
+			ft_putstr_fd(table->env[i], 1);
+			ft_putstr_fd("\n", 1);
+			i++;
+		}
+	
 	}
 }
 

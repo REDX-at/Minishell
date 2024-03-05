@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:25:10 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/05 19:19:14 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/05 22:12:18 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,17 +126,17 @@ void	ft_putstr2d_fd(char **str, int fd);
 
 // function built-in
 void    ft_cd(t_cmd *cmd);
-void    ft_pwd();
-void	ft_env(t_table *table);
+void    ft_pwd(t_cmd *cmd);
+void	ft_env(t_table *table, t_cmd *cmd);
 void	ft_echo(t_cmd *cmd);
 void	ft_exit(char *line);
 void	ft_export(t_cmd *cmd, t_table *table);
 void	ft_unset(t_cmd *cmd, t_table *table);
 
 //function redir
-void	redir_out_append(t_cmd *cmd);
-void	redir_out(t_cmd *cmd);
-void	redir_in(t_cmd *cmd);
+void	redir_out_append(t_cmd *cmd, int i);
+void	redir_out(t_cmd *cmd, int i);
+void	redir_in(t_cmd *cmd, int i);
 
 // Utils Function
 char    **ft_split(char const *s, char c);
