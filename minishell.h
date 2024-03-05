@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:25:10 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/04 21:39:00 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/05 19:19:14 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ void	execute_for_cmd(t_cmd *cmd, t_table *table);
 void	execute_built_in(t_cmd *cmd, int fd[][2], t_table *tale, int k);
 int		check_access(char *command, t_cmd *cmd);
 void    into_parrent(t_cmd *cmd, int pid[], int k, t_table *table, char buf[]);
+void	ft_putstr2d_fd(char **str, int fd);
 
 // function built-in
 void    ft_cd(t_cmd *cmd);
@@ -131,6 +132,11 @@ void	ft_echo(t_cmd *cmd);
 void	ft_exit(char *line);
 void	ft_export(t_cmd *cmd, t_table *table);
 void	ft_unset(t_cmd *cmd, t_table *table);
+
+//function redir
+void	redir_out_append(t_cmd *cmd);
+void	redir_out(t_cmd *cmd);
+void	redir_in(t_cmd *cmd);
 
 // Utils Function
 char    **ft_split(char const *s, char c);
