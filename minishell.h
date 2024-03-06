@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:25:10 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/05 22:12:18 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/06 01:09:42 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ typedef struct s_table
 	char			*name;
 	char			*value;
 	int				signe;
+	char			*alpha;
 } t_table;
 
 //askari header
@@ -125,7 +126,7 @@ void    into_parrent(t_cmd *cmd, int pid[], int k, t_table *table, char buf[]);
 void	ft_putstr2d_fd(char **str, int fd);
 
 // function built-in
-void    ft_cd(t_cmd *cmd);
+void    ft_cd(t_cmd *cmd, t_table *table);
 void    ft_pwd(t_cmd *cmd);
 void	ft_env(t_table *table, t_cmd *cmd);
 void	ft_echo(t_cmd *cmd);

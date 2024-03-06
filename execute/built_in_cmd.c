@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:11:23 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/05 22:33:03 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/06 01:20:32 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,13 @@ void	ft_echo(t_cmd *cmd)
 }
 
 // fucntion cd with opendir and readdir
-void	ft_cd(t_cmd *cmd)
+void	ft_cd(t_cmd *cmd, t_table *table)
 {
 	char	*path;
 	int		fd_cd;
 
-	fd_cd = open("cd", O_CREAT | O_RDWR | O_TRUNC, 0644);
-	if (cmd->argv[1] == NULL)
+	fd_cd = open(ft_strjoin(table->alpha, "/cd"), O_CREAT | O_RDWR | O_TRUNC, 0644);
+	if (cmd->argv[1] == NULL || ft_strcmp(cmd->argv[1], "~") == 1)
 		path = getenv("HOME");
 	else
 		path = cmd->argv[1];
@@ -70,7 +70,7 @@ void	ft_cd(t_cmd *cmd)
 	else
 		write(fd_cd, path, ft_strlen(path));
 	close(fd_cd);
-	if (access(path, F_OK) == -1)
+	if (ft_strncmp(cmd->path, "~", 1) && access(path, F_OK) == -1)
 	{
 		ft_putstr_fd("cd: no such file or directory: ", 2);
 		ft_putstr_fd(path, 2);
@@ -78,6 +78,7 @@ void	ft_cd(t_cmd *cmd)
 	}
 	else
 	{
+		printf("cmd path : %s\n", cmd->path);
 		if (chdir(path) == -1)
 		{
 			ft_putstr_fd("cd: permission denied: ", 2);
@@ -265,7 +266,7 @@ void	ft_export(t_cmd *cmd, t_table *table)
 	
 	while (cmd->argv[i])
 	{
-		fd_ex = open("export.txt", O_CREAT | O_RDWR | O_APPEND | O_TRUNC, 0644);
+		fd_ex = open(ft_strjoin(table->alpha, "/export.txt"), O_CREAT | O_RDWR | O_APPEND | O_TRUNC, 0644);
 		if (cmd->argv[i][0] == '=' || !ft_isalpha(cmd->argv[i][0]))
 		{
 			ft_putstr_fd("export : not a valid identifier\n", 2);
@@ -336,7 +337,7 @@ void ft_unset(t_cmd *cmd, t_table *table)
 	int d= 1;
 	while(cmd->argv[d])
 	{
-		fd_out = open("unset.txt", O_CREAT | O_RDWR | O_APPEND | O_TRUNC, 0644);
+		fd_out = open(ft_strjoin(table->alpha, "/unset.txt"), O_CREAT | O_RDWR | O_APPEND | O_TRUNC, 0644);
 		i = 0;
 		j = 0;
     	while (table->env[i])
@@ -376,7 +377,7 @@ void ft_exit(char *line)
 		dup2(fd_out, 1);
 		write(fd_out, "1", 1);
 		free(line);
-		// unlink("exit");
+		unlink("exit");
 		exit(0);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:24:57 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/05 18:58:29 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/06 01:09:09 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ t_table	*ft_init_table(char **envp)
 		i++;
 	}
 	table->env[i] = NULL;
+	table->alpha = getcwd(NULL, 0);
 	return (table);
 }
 
@@ -58,7 +59,8 @@ void ft_cmd_free(t_cmd **cmd)
 	while ((*cmd))
 	{
 		// free((*cmd)->cmd);
-		ft_free((*cmd)->argv);
+		if ((*cmd)->cmd)
+			ft_free((*cmd)->argv);
 		//free((*cmd)->file);
 		(*cmd) = (*cmd)->next;
 	}
