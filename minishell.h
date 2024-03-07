@@ -6,14 +6,14 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:25:10 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/07 22:03:52 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/03/07 22:05:54 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-
+// lferda
 // hello again
 # include "libft/libft.h"
 # include <termcap.h>
@@ -32,7 +32,7 @@
 # include <dirent.h>
 # include <termios.h>
 # include <stdbool.h>
-
+// bablil zaml
 # define RED "\033[0;31m"
 # define GREEN "\033[0;32m"
 # define YELLOW "\033[0;33m"
