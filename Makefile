@@ -36,4 +36,8 @@ push:
 	git commit -m "$$commit_message"; \
 	git push;
 
+pull:
+	@git stash
+	@git pull
+	@git stash pop
 .PHONY: clean fclean re all push
