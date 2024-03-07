@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:44:32 by mkibous           #+#    #+#             */
-/*   Updated: 2024/03/04 22:28:28 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/06 22:02:57 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -378,7 +378,6 @@ void ft_cmd(t_cmd **cmd, t_elem *elem, char **env)
 	ft_join(elem, env);
 	while (elem)
 	{
-		redirs = 0;
 		if (!n && echo == 1 && !strncmp(elem->content, "-n",3) && ((elem->state == IN_DQUOTE && elem->prev->type == DOUBLE_QUOTE && elem->next->type == DOUBLE_QUOTE)
 				||(elem->state == IN_QUOTE && elem->prev->type == QOUTE && elem->next->type == QOUTE) || elem->state == GENERAL))
 		{
@@ -422,7 +421,7 @@ void ft_cmd(t_cmd **cmd, t_elem *elem, char **env)
 		}
 		else if(elem->type >= REDIR_IN && elem->type <= DREDIR_OUT)
 		{
-			if(boolien == 0 && redir == 0)
+			if(boolien == 0 && redir == 0 && redirs == 0)
 			{
 				size = ft_count_argv(elem, &redirs);
 				ft_lstadd_back_cmd(cmd ,ft_lstnew_cmd(NULL));
@@ -435,6 +434,7 @@ void ft_cmd(t_cmd **cmd, t_elem *elem, char **env)
 			last->redir[i] =  elem->content;
 			redir = 1;
 			n = 1;
+			redirs--;
 		}
 		else if (spaces == 0 && redir == 0 && echo == 1 && elem->type != PIPE_LINE && elem->prev && elem->type != WHITE_SPACE && elem->prev->type == WHITE_SPACE && elem->prev->state == GENERAL)
 		{

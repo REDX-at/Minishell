@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:25:10 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/06 01:09:42 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/07 01:54:46 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ typedef struct s_table
 	char			*value;
 	int				signe;
 	char			*alpha;
+	char			**declare_x;
+	char			**trash;
 } t_table;
 
 //askari header
@@ -130,7 +132,7 @@ void    ft_cd(t_cmd *cmd, t_table *table);
 void    ft_pwd(t_cmd *cmd);
 void	ft_env(t_table *table, t_cmd *cmd);
 void	ft_echo(t_cmd *cmd);
-void	ft_exit(char *line);
+void	ft_exit();
 void	ft_export(t_cmd *cmd, t_table *table);
 void	ft_unset(t_cmd *cmd, t_table *table);
 
@@ -146,6 +148,8 @@ size_t	ft_strlen(const char *s);
 char	*ft_strdup(const char *s1);
 char	*ft_strjoin(char const *s1, char const *s2);
 int		ft_strcmp(char *str, char *str2);
+void	ft_putstr2d_fd(char **str, int fd);
+int		ft_strlen_2d(char **str);
 
 // askari functions
 void sig_handler(int signum);
