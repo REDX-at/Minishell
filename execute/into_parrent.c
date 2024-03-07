@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:09:10 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/07 02:14:26 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/07 20:57:47 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,26 @@ int	max_env(char **env)
 
 char	**join_2d(char **join, char **to_join)
 {
-	printf("2d join");
-	return (join);
+	int i;
+	int j;
+	char **tmp;
+
+	i = 0;
+	j = 0;
+	tmp = (char **)malloc(sizeof(char *) * (ft_strlen_2d(join) + ft_strlen_2d(to_join) + 1));
+	while (join[i])
+	{
+		tmp[i] = join[i];
+		i++;
+	}
+	while (to_join[j])
+	{
+		tmp[i] = to_join[j];
+		i++;
+		j++;
+	}
+	tmp[i] = NULL;
+	return (tmp);
 }
 void    into_parrent(t_cmd *cmd, int pid[], int k, t_table *table, char buf[])
 {
@@ -116,8 +134,6 @@ void    into_parrent(t_cmd *cmd, int pid[], int k, t_table *table, char buf[])
 				}
 				declare_x[i] = NULL;
 				table->declare_x = declare_x;
-				if (table->trash)
-					table->declare_x = join_2d(table->declare_x, table->trash);
 			}
 			if (cmd->argv[1])
 			{
@@ -142,6 +158,7 @@ void    into_parrent(t_cmd *cmd, int pid[], int k, t_table *table, char buf[])
 					table->trash = tmp;
 				else
 					table->trash = join_2d(table->trash, tmp);
+				table->declare_x = join_2d(table->declare_x, table->trash);
 			}
 			if (cmd->argv[1] == NULL)
 			{
