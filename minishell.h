@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:25:10 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/07 21:43:41 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/07 21:59:38 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # include <termios.h>
 # include <stdbool.h>
 
+// hello red
 # define RED "\033[0;31m"
 # define GREEN "\033[0;32m"
 # define YELLOW "\033[0;33m"
