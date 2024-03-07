@@ -31,8 +31,9 @@ fclean: clean
 re: fclean all
 
 push:
-	@git add .
-	@git commit -m "Automatic commit via make push"
-	@git push
+	@read -p "Enter commit message: " commit_message; \
+	git add .; \
+	git commit -m "$$commit_message"; \
+	git push;
 
 .PHONY: clean fclean re all push
