@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:24:57 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/07 01:54:57 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/07 21:44:59 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ void	ft_built_in(t_cmd **cmd, t_table *table)
 		tmp = tmp->next;
 	} 
 }
+
 char **the_twode(char **twode)
 {
 	int index = 0;
@@ -99,6 +100,18 @@ char **the_twode(char **twode)
 	return (twode);
 }
 
+pid_t ft_get_pid()
+{
+	pid_t pid;
+
+	pid = 0;
+	pid = fork();
+	if (pid < 1)
+		exit(0);
+	pid--;
+	return(pid); 
+}
+
 int main(int argc, char **argv, char **envp)
 {
 	char	*line;
@@ -106,10 +119,12 @@ int main(int argc, char **argv, char **envp)
 	t_table	*table;
 	int		rr;
 	char **allocation;
+	pid_t pid;
 
 	(void)argc;
 	(void)argv;
 	cmd = NULL;
+	pid =  ft_get_pid();
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, sig_handler);
 	allocation = the_twode(envp);
@@ -126,7 +141,7 @@ int main(int argc, char **argv, char **envp)
 		{
 			add_history(line);
 			if (line[0] != '\0')
-				ft_tokenizing(line, &cmd, table->env);
+				ft_tokenizing(line, &cmd, table->env, pid);
 			ft_built_in(&cmd, table);
 			if (cmd)
 				execute_for_cmd(cmd, table);

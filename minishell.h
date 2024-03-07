@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:25:10 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/07 01:54:46 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/07 21:43:41 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ typedef struct s_elem
 	int				len;
 	t_token			type;
 	t_state			state;
+	pid_t			pid;
 	struct s_elem   *next;
 	struct s_elem   *prev;
 }	t_elem;
@@ -152,9 +153,9 @@ void	ft_putstr2d_fd(char **str, int fd);
 int		ft_strlen_2d(char **str);
 
 // askari functions
-void sig_handler(int signum);
+void 	sig_handler(int signum);
 void	ft_free(char **str);
-void ft_tokenizing(char *line, t_cmd **cmd, char **envp);
+void 	ft_tokenizing(char *line, t_cmd **cmd, char **envp, pid_t pid);
 t_elem	*ft_lstnew(char *content);
 void	ft_lstadd_back(t_elem **lst, t_elem *new);
 void	ft_lstadd_front(t_elem **lst, t_elem *new);
