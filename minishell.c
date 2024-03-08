@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:24:57 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/07 21:44:59 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/08 16:38:48 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,14 @@ void ft_cmd_free(t_cmd **cmd)
 {
 	while ((*cmd))
 	{
-		// free((*cmd)->cmd);
-		if ((*cmd)->cmd)
-			ft_free((*cmd)->argv);
-		//free((*cmd)->file);
+		// if((*cmd)->cmd)
+		// 	free((*cmd)->cmd);
+		// if ((*cmd)->argv)
+		// 	ft_free((*cmd)->argv);
+		if((*cmd)->file)
+			ft_free((*cmd)->file);
+		if((*cmd)->redir)
+			ft_free((*cmd)->redir);
 		(*cmd) = (*cmd)->next;
 	}
 	free(*cmd);
