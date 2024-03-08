@@ -6,13 +6,15 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:25:10 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/08 16:50:17 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/03/08 16:52:36 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+
+// hello askri
 # include "libft/libft.h"
 # include <termcap.h>
 # include <stdio.h>
