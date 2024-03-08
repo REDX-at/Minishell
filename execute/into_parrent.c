@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:09:10 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/07 20:57:47 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/08 02:31:49 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,24 @@ char	**join_2d(char **join, char **to_join)
 	tmp[i] = NULL;
 	return (tmp);
 }
+
+int	check_if_in_the_declare_x(char *str, char **declare_x)
+{
+	int i;
+
+	i = 0;
+	str = ft_strjoin("declare -x ", str);
+	if (declare_x == NULL)
+		return (0);
+	while (declare_x[i])
+	{
+		if (ft_strncmp(str, declare_x[i], ft_strlen(str)) == 0)
+			return (i);
+		i++;
+	}
+	return (0);
+}
+
 void    into_parrent(t_cmd *cmd, int pid[], int k, t_table *table, char buf[])
 {
 	int bytes;
@@ -142,13 +160,19 @@ void    into_parrent(t_cmd *cmd, int pid[], int k, t_table *table, char buf[])
 				char	**tmp;
 				int j = 1;
 				int i = 0;
+				char	**new_declare_x;
 
 				tmp = (char **)malloc(sizeof(char *) * ft_strlen_2d(table->env) + i);
+				new_declare_x = (char **)malloc(sizeof(char *) * ft_strlen_2d(table->env) + i);
+				new_declare_x = table->declare_x;
 				while (cmd->argv[j])
 				{
 					if (ft_strchr(cmd->argv[j], '=') == 0)
 					{
-						tmp[i] = ft_strjoin(to_join, cmd->argv[j]);
+						if (table->trash)
+							new_declare_x = join_2d(table->declare_x, table->trash);
+						if (check_if_in_the_declare_x(cmd->argv[j], new_declare_x) == 0)
+							tmp[i] = ft_strjoin(to_join, cmd->argv[j]);
 						i++;
 					}
 					j++;
