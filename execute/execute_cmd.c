@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 21:51:03 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/07 21:39:02 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/09 03:30:36 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void    execute_cmd(t_cmd *cmd, int fd[][2], char **argv, int k)
 	{
 		if (check_access(cmd->cmd, cmd) == 0)
 		{
-			if (cmd->redir[0] != NULL)
+			if (cmd->redir && cmd->redir[0] != NULL)
 			{
 				int fd;
 				int	i;
@@ -70,6 +70,11 @@ void    execute_cmd(t_cmd *cmd, int fd[][2], char **argv, int k)
 						perror("execve");
 				}
 				i++;
+			}
+			if(!cmd->redir)
+			{
+				if(execve(cmd->path, argv, NULL) == -1)
+					perror("execve");
 			}
 			exit(EXIT_FAILURE);
 		}

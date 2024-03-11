@@ -6,7 +6,7 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:44:32 by mkibous           #+#    #+#             */
-/*   Updated: 2024/03/08 16:48:39 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/03/10 00:05:08 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,9 @@ int len(char *str)
 {
 	int i = 0;
 	int env = 0;
-	if (str[i] && (str[i] == ' ' || str[i] == '\'' || str[i] == '"' || str[i] == '|' || (str[i] == '>' && str[i + 1] != '>') || (str[i] == '<' && str[i + 1] != '<'))) // handle < or > and << >>
+	if(str[i] == '\\' && str[i + 1] && str[i + 1] == '\'')
+		return(1);
+	if (str[i] && ((str[i] == ' ' || str[i] == '\t') || str[i] == '\'' || str[i] == '"' || str[i] == '|' || (str[i] == '>' && str[i + 1] != '>') || (str[i] == '<' && str[i + 1] != '<'))) // handle < or > and << >>
 		i++;
 	else if (str[i] && str[i + 1] && (str[i] == '\\' || (str[i] == '>' && str[i + 1] == '>') || (str[i] == '<' && str[i + 1] == '<')))
 		i = 2;
@@ -125,7 +127,7 @@ int len(char *str)
 				i++;
 				break;
 			}
-			if (str[i] == ' ' || str[i] == '\'' || str[i] == '"' || (str[i] == '\\' && str[i + 1]) || str[i] == '|' || str[i] == '>' || str[i] == '<' || (env == 1 && !ft_isalnum(str[i])) || str[i] == '$')
+			if ((str[i] == ' ' || str[i] == '\t') || str[i] == '\'' || str[i] == '"' || (str[i] == '\\' && str[i + 1]) || str[i] == '|' || str[i] == '>' || str[i] == '<' || (env == 1 && !ft_isalnum(str[i])) || str[i] == '$')
 				break;
 			i++;
 		}
@@ -152,7 +154,7 @@ int ft_listing(char *str, t_elem **elem)
 }
 int ft_chek_if_escape(char c)
 {
-	if (c == 't' || c == 'b' || c == 'r' || c == '\\' || c == '\"' || c == '\'')
+	if (c == 't' || c == 'b' || c == 'r' || c == '\\' || c == '\"' || c == '\'' || c == '$')
 		return (1);
 	return (0);
 }
@@ -160,15 +162,15 @@ void ft_token(t_elem *elem)
 {
 	while (elem)
 	{
-		if (elem->content[0] == ' ' && elem->state == GENERAL)
+		if ((elem->content[0] == ' ' || elem->content[0] == '\t') && elem->state == GENERAL)
 			elem->type = WHITE_SPACE;
 		else if (elem->state != GENERAL && elem->content[0] == '\\' && elem->content[1] == 'n')
 			elem->type = NEW_LINE;
-		else if (elem->content[0] == '\'' && elem->state == GENERAL)
+		else if (elem->content[0] == '\'' && elem->state == GENERAL && (!elem->prev || (elem->prev && ft_strncmp(elem->prev->content, "\\", 2) != 0) || (elem->prev && elem->prev->state  != GENERAL && ft_strncmp(elem->prev->content, "\\", 2) == 0)))
 			elem->type = QOUTE;
 		else if (elem->content[0] == '"' && elem->state == GENERAL)
 			elem->type = DOUBLE_QUOTE;
-		else if (elem->state != GENERAL && elem->content[0] == '\\' && ft_chek_if_escape(elem->content[1]))
+		else if (elem->state == IN_DQUOTE && elem->content[0] == '\\' && ft_chek_if_escape(elem->content[1]))
 			elem->type = ESCAPE;
 		else if (elem->content[0] == '$' && (ft_strlen(elem->content) > 1 || (elem->state == GENERAL && elem->next && (elem->next->content[0] == '\'' || elem->next->content[0] == '\"'))) && elem->state != IN_QUOTE)
 			elem->type = ENV;
@@ -221,6 +223,8 @@ int ft_chek(t_elem *elem)
 		}
 		if ((elem->type == WORD || elem->state != GENERAL || elem->type == ENV) && (b == 1 || b == 2))
 			b = 0;
+		if (elem->content[0] == '\\' && elem->type == WORD && elem->state == GENERAL && !elem->content[1] && (!elem->next || elem->next->content[0] != '\''))
+			return(1);
 		// if wrod b = 0 if rdir and b = 1 eroor
 		elem = elem->next;
 	}
@@ -289,8 +293,8 @@ int ft_count_argv(t_elem *elem, int *redirs)
 		elem = elem->next;
 	}
 	return (size);
-}
-char *ft_get_escape(char c)
+}	
+char *ft_get_escape(char c, t_state state)
 {
 	if (c == 't')
 		return (ft_strdup("\\t"));
@@ -298,10 +302,16 @@ char *ft_get_escape(char c)
 		return (ft_strdup("\\b"));
 	else if (c == 'r')
 		return (ft_strdup("\\r"));
-	else if (c == '\"')
+	else if (c == '\"' && state != IN_QUOTE)
+		return (ft_strdup("\""));
+	else if(c == '\"' && state == IN_QUOTE)
 		return (ft_strdup("\""));
 	else if (c == '\'')
 		return (ft_strdup("\'"));
+	else if (c == '$' && state == IN_QUOTE)
+		return (ft_strdup("\\$"));
+	else if (c == '$' && state != IN_QUOTE)
+		return (ft_strdup("$"));
 	else
 		return (ft_strdup("\\"));
 	// if(c == 't' || c == 'b' || c == 'r' || c == '\''|| c == '\"'|| c == '\\')
@@ -347,13 +357,12 @@ void ft_envr(t_elem *elem, char **env)
 	}
 	if (elem->content[0] == '\\' && elem->type == WORD && elem->state == GENERAL)
 	{
-		elem->type = WORD;
 		elem->content = ft_strdup(&elem->content[1]);
 	}
 	else if (elem->type == ESCAPE)
 	{
 		elem->type = WORD;
-		elem->content = ft_get_escape(elem->content[1]);
+		elem->content = ft_get_escape(elem->content[1], elem->state);
 	}
 }
 void ft_join(t_elem *elem, char **env)
@@ -427,14 +436,17 @@ void ft_cmd(t_cmd **cmd, t_elem *elem, char **env)
 			{
 				ft_lstadd_back_cmd(cmd, ft_lstnew_cmd(elem->content));
 				last = ft_lstlast_cmd(*cmd);
-				last->redir = (char **)malloc(sizeof(char *) * (redirs + 1));
-				if (last->redir == NULL)
-					exit(1);
-				last->file = (char **)malloc(sizeof(char *) * (redirs + 1));
-				if (last->file == NULL)
-					exit(1);
-				last->redir[redirs] = NULL;
-				last->file[redirs] = NULL;
+				if(redirs > 0)
+				{
+					last->redir = (char **)malloc(sizeof(char *) * (redirs + 1));
+					if (last->redir == NULL)
+						exit(1);
+					last->file = (char **)malloc(sizeof(char *) * (redirs + 1));
+					if (last->file == NULL)
+						exit(1);
+					last->redir[redirs] = NULL;
+					last->file[redirs] = NULL;
+				}
 			}
 			else
 				last->cmd = elem->content;
@@ -615,12 +627,13 @@ void ft_tokenizing(char *line, t_cmd **cmd, char **envp, pid_t pid)
 		i++;
 	}
 	ft_token(elem);
+	// ft_printlist(elem, *cmd);
 	if (ft_chek(elem))
 	{
 		printf("syntax error\n");
 		return;
 	}
-	// ft_printlist(elem, *cmd);
 	ft_cmd(cmd, elem, env);
-	ft_printlist(elem, *cmd);
+	// printf("''%p''\n", (*cmd)->redir);
+	// ft_printlist(elem, *cmd);
 }

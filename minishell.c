@@ -6,7 +6,7 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:24:57 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/08 16:38:48 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/03/10 00:23:52 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,12 @@ t_table	*ft_init_table(char **envp)
 void sig_handler(int signum)
 {
 	if (signum == SIGINT)
-		ft_putstr_fd(GREEN"\n➜  "RED""BOLD"minishell "RESET, 1);
+	{
+		printf("\n");
+        rl_on_new_line();
+        rl_replace_line("", 1);
+        rl_redisplay();
+	}
 }
 
 // For free
@@ -62,8 +67,8 @@ void ft_cmd_free(t_cmd **cmd)
 	{
 		// if((*cmd)->cmd)
 		// 	free((*cmd)->cmd);
-		// if ((*cmd)->argv)
-		// 	ft_free((*cmd)->argv);
+		if ((*cmd)->argv)
+			ft_free((*cmd)->argv);
 		if((*cmd)->file)
 			ft_free((*cmd)->file);
 		if((*cmd)->redir)
@@ -131,6 +136,7 @@ int main(int argc, char **argv, char **envp)
 	pid =  ft_get_pid();
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, sig_handler);
+	rl_catch_signals = 0;
 	allocation = the_twode(envp);
 	table = ft_init_table(allocation);
 	table->var = "➜  minishell ";
@@ -153,7 +159,7 @@ int main(int argc, char **argv, char **envp)
 		}
 		if (!line)
 		{
-			free(line);
+			ft_putstr_fd("exit", 1);	
 			exit(0);
 		}
 		free(line);

@@ -7,15 +7,17 @@ SRC = minishell.c ./execute/built_in_cmd.c  ./execute/Exe_file.c ./execute/execu
 CFLAGS = -Wall -Wextra -g
 LIBFT = libft/libft.a
 OBJ = $(SRC:.c=.o)
+READLINE_LIB = $(shell brew --prefix readline)/lib
+READLINE_INCLUDES = $(shell brew --prefix readline)/include
 
-all: $(NAME) clean
+all: $(NAME)
 
 $(NAME): $(OBJ) $(LIBFT)
 	@echo "\033[92m√\033[0m \033[97m" $<
-	@$(CC) -lreadline $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFT)
+	@$(CC) -lreadline $(CFLAGS) -L $(READLINE_LIB) -o $(NAME) $(OBJ) $(LIBFT)
 
 %.o : %.c
-	@$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -I $(READLINE_INCLUDES) -c $< -o $@
 $(LIBFT): 
 	@cd libft && make
 

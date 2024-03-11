@@ -6,7 +6,7 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:11:23 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/08 01:22:41 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/03/11 17:06:43 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void    ft_pwd(t_cmd *cmd)
 	int 	fd;
 
 	i = 0;
-	if (cmd->redir[0] != NULL)
+	if (cmd->redir)
 	{
 		while (cmd->redir[i])
 		{
@@ -131,7 +131,7 @@ void	ft_env(t_table *table, t_cmd *cmd)
 	int	fd;
 
 	i = 0;
-	if (cmd->redir[0] != NULL)
+	if (cmd->redir)
 	{
 		while (cmd->redir[i])
 		{
@@ -155,7 +155,6 @@ void	ft_env(t_table *table, t_cmd *cmd)
 			ft_putstr_fd("\n", 1);
 			i++;
 		}
-	
 	}
 }
 
