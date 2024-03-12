@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in_cmd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:11:23 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/11 17:06:43 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/03/12 02:40:43 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,22 +55,15 @@ void	ft_echo(t_cmd *cmd)
 }
 
 // fucntion cd with opendir and readdir
-void	ft_cd(t_cmd *cmd, t_table *table)
+void	ft_cd(t_cmd *cmd)
 {
 	char	*path;
-	int		fd_cd;
 
-	fd_cd = open(ft_strjoin(table->alpha, "/cd"), O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (cmd->argv[1] == NULL || ft_strcmp(cmd->argv[1], "~") == 1)
 		path = getenv("HOME");
 	else
 		path = cmd->argv[1];
-	if(cmd->argv[1])
-		write(fd_cd, path, ft_strlen(path));
-	else
-		write(fd_cd, path, ft_strlen(path));
-	close(fd_cd);
-	if (ft_strncmp(cmd->path, "~", 1) && access(path, F_OK) == -1)
+	if (ft_strncmp(path, "~", 1) && access(path, F_OK) == -1)
 	{
 		ft_putstr_fd("cd: no such file or directory: ", 2);
 		ft_putstr_fd(path, 2);
@@ -78,7 +71,6 @@ void	ft_cd(t_cmd *cmd, t_table *table)
 	}
 	else
 	{
-		printf("cmd path : %s\n", cmd->path);
 		if (chdir(path) == -1)
 		{
 			ft_putstr_fd("cd: permission denied: ", 2);
@@ -121,7 +113,6 @@ void    ft_pwd(t_cmd *cmd)
 		if (!getcwd(cwd, sizeof(cwd)))
 			exit(1);
 		printf("%s\n", cwd);
-		exit(0);
 	}
 }
 
@@ -222,7 +213,7 @@ void ft_unset(t_cmd *cmd, t_table *table)
     int  j;
     int  len;
     char **new_env;
-	int	fd_out;
+
     i = 0;
     j = 0;
     len = ft_strlen_2d(table->env) + 1;
@@ -235,7 +226,6 @@ void ft_unset(t_cmd *cmd, t_table *table)
 	int d= 1;
 	while(cmd->argv[d])
 	{
-		fd_out = open(ft_strjoin(table->alpha, "/unset.txt"), O_CREAT | O_RDWR | O_APPEND | O_TRUNC, 0644);
 		i = 0;
 		j = 0;
     	while (table->env[i])
@@ -243,11 +233,6 @@ void ft_unset(t_cmd *cmd, t_table *table)
     	    if (ft_strncmp(table->env[i], cmd->argv[d], ft_strlen(cmd->argv[d])) != 0)
     	    {
     	        new_env[j] = ft_strdup(table->env[i]);
-				if (cmd->argv[d + 1] == NULL)
-				{
-					ft_putstr_fd(new_env[j], fd_out);
-					ft_putstr_fd("\n", fd_out);
-				}
 				j++;
     	    }
     	    i++;

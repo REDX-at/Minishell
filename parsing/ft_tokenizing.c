@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_tokenizing.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:44:32 by mkibous           #+#    #+#             */
-/*   Updated: 2024/03/10 00:05:08 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/03/11 18:16:01 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -458,6 +458,8 @@ void ft_cmd(t_cmd **cmd, t_elem *elem, char **env)
 				exit(1);
 			last->argv[size] = NULL;
 			last->argv[j] = elem->content;
+			if (last->prev && last->prev->pipe == 1)
+				last->pipe = 1;
 			j++;
 			boolien = 1;
 			prev_is_redir = 0;

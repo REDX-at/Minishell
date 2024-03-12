@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:24:57 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/10 00:23:52 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/03/12 02:46:38 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,28 @@ pid_t ft_get_pid()
 	return(pid); 
 }
 
+// alloc with protection
+char **alloc_env(char **env)
+{
+	int i;
+	char **new_env;
+
+	i = 0;
+	while (env[i])
+		i++;
+	new_env = (char **)malloc(sizeof(char *) * (i + 1));
+	if (!new_env)
+		return (NULL);
+	i = 0;
+	while (env[i])
+	{
+		new_env[i] = ft_strdup(env[i]);
+		i++;
+	}
+	new_env[i] = NULL;
+	return (new_env);
+}
+
 int main(int argc, char **argv, char **envp)
 {
 	char	*line;
@@ -140,6 +162,7 @@ int main(int argc, char **argv, char **envp)
 	allocation = the_twode(envp);
 	table = ft_init_table(allocation);
 	table->var = "➜  minishell ";
+	table->declare_x = alloc_env(table->env);
 	while (1)
 	{
 		rr = rand() % 2;
@@ -159,7 +182,8 @@ int main(int argc, char **argv, char **envp)
 		}
 		if (!line)
 		{
-			ft_putstr_fd("exit", 1);	
+			ft_putstr_fd("exit", 1);
+			ft_putstr_fd("\n", 1);
 			exit(0);
 		}
 		free(line);

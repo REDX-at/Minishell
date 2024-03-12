@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 21:51:03 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/09 03:30:36 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/03/11 19:54:36 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,6 @@ void    execute_cmd(t_cmd *cmd, int fd[][2], char **argv, int k)
 				if (cmd->redir[i + 1] == NULL)
 				{
 					ft_putstr_fd(cmd->line, fd);
-					// ft_putstr_fd("\n", fd);
 				}
 				close(fd);
 				i++;

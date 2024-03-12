@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   into_parrent.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:09:10 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/08 21:35:58 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/03/12 02:29:31 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,15 @@ int	check_if_in_the_declare_x(char *str, char **declare_x)
 	str = ft_strjoin("declare -x ", str);
 	if (declare_x == NULL)
 		return (0);
+	// while (declare_x[i])
+	// {
+	// 	if (ft_strncmp(str, declare_x[i], ft_strlen(str)) == 0)
+	// 		return (i);
+	// 	i++;
+	// }
 	while (declare_x[i])
 	{
-		if (ft_strncmp(str, declare_x[i], ft_strlen(str)) == 0)
+		if (ft_strncmp(str, declare_x[i], ft_strlen_until_equal(str)) == 0)
 			return (i);
 		i++;
 	}
@@ -97,98 +103,6 @@ void    into_parrent(t_cmd *cmd, int pid[], int k, t_table *table, char buf[])
 			}
 			unlink(ft_strjoin(table->alpha, "/cd"));
 			chdir(join);
-		}
-		if (ft_strncmp(cmd->cmd, "export", 6) == 0)
-		{
-			waitpid(pid[k], NULL, 0);
-			if (cmd->argv[1])
-			{
-				int fd_in;
-				char    *buffer;
-				char 	*join;
-
-				fd_in = open(ft_strjoin(table->alpha, "/export.txt"), O_RDONLY);
-				bytes = 1;
-				buffer = (char *)malloc(1000);
-				join = ft_strdup("");
-				while(bytes)
-				{
-					bytes = read(fd_in, buffer, sizeof(buffer) - 1);
-					buffer[bytes] = '\0';
-					if (bytes)
-						join = ft_strjoin(join, buffer);
-				}
-				table->env = ft_split(join, '\n');
-				unlink(ft_strjoin(table->alpha, "/export.txt"));
-				// parte for the declare x
-				char	*to_join;
-				to_join = ft_strdup("declare -x ");
-				int i = 0;
-				while (cmd->argv[i])
-					i++;
-				char	**declare_x = (char **)malloc(sizeof(char *) * ft_strlen_2d(table->env) + i);
-				i = 0;
-				while (table->env[i])
-				{
-					declare_x[i] = ft_strjoin(to_join, table->env[i]);
-					i++;
-				}
-				declare_x[i] = NULL;
-				table->declare_x = declare_x;
-			}
-			if (!table->declare_x)
-			{
-				char	*to_join;
-				to_join = ft_strdup("declare -x ");
-				int i = 0;
-				while (cmd->argv[i])
-					i++;
-				char	**declare_x = (char **)malloc(sizeof(char *) * ft_strlen_2d(table->env) + i);
-				i = 0;
-				while (table->env[i])
-				{
-					declare_x[i] = ft_strjoin(to_join, table->env[i]);
-					i++;
-				}
-				declare_x[i] = NULL;
-				table->declare_x = declare_x;
-			}
-			if (cmd->argv[1])
-			{
-				char	*to_join;
-				to_join = ft_strdup("declare -x ");
-				char	**tmp;
-				int j = 1;
-				int i = 0;
-				char	**new_declare_x;
-
-				tmp = (char **)malloc(sizeof(char *) * ft_strlen_2d(table->env) + i);
-				new_declare_x = (char **)malloc(sizeof(char *) * ft_strlen_2d(table->env) + i);
-				new_declare_x = table->declare_x;
-				while (cmd->argv[j])
-				{
-					if (ft_strchr(cmd->argv[j], '=') == 0)
-					{
-						if (table->trash)
-							new_declare_x = join_2d(table->declare_x, table->trash);
-						if (check_if_in_the_declare_x(cmd->argv[j], new_declare_x) == 0)
-							tmp[i] = ft_strjoin(to_join, cmd->argv[j]);
-						i++;
-					}
-					j++;
-				}
-				tmp[i] = NULL;
-				if (!table->trash)
-					table->trash = tmp;
-				else
-					table->trash = join_2d(table->trash, tmp);
-				table->declare_x = join_2d(table->declare_x, table->trash);
-			}
-			if (cmd->argv[1] == NULL)
-			{
-				ft_putstr2d_fd(table->declare_x, 1);
-				ft_putstr_fd("\n", 1);
-			}
 		}
 		if (ft_strncmp(cmd->cmd, "unset", 6) == 0)
 		{

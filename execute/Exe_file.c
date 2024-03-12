@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 14:42:02 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/06 21:27:02 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/12 02:40:48 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void execute_built_in(t_cmd *cmd, int fd[][2], t_table *table, int k)
 	if (cmd->next)
 		close(fd[k][1]);
 	if (ft_strcmp(cmd->cmd, "cd"))
-		ft_cd(cmd, table);
+		ft_cd(cmd);
 	else if (ft_strcmp(cmd->cmd, "pwd"))
 		ft_pwd(cmd);
 	else if (ft_strcmp(cmd->cmd, "echo"))
@@ -87,23 +87,30 @@ void	execute_for_cmd(t_cmd *cmd, t_table *table)
 	int	k;
 	int	fd[table->count_cmd][2];
 	pid_t	pid[table->count_cmd];
-	char buf[1];
 
 	k = 0;
 	creat_pipe(table, fd, k);
 	while (cmd)
 	{
-		pid[k] = fork();
-		if (pid[k] == -1)
+		if (cmd->pipe || !cmd->is_builtin)
 		{
-			perror("fork");
-			exit(EXIT_FAILURE);
+			pid[k] = fork();
+			if (pid[k] == -1)
+			{
+				perror("fork");
+				exit(EXIT_FAILURE);
+			}
+			if (pid[k] == 0)
+				into_child(cmd, fd, table, k);
 		}
-		if (pid[k] == 0)
-			into_child(cmd, fd, table, k);
-		else if (pid[k]> 0 )
+		else
 		{
-			into_parrent(cmd, pid, k, table, buf);
+			if (cmd->is_builtin)
+				execute_built_in(cmd, fd, table, k);
+			else if (ft_strcmp(cmd->cmd, "clear"))
+				ft_putstr_fd(CLEAR, 1);
+			else
+				execute_cmd(cmd, fd, cmd->argv, k);
 		}
 		k++;
 		cmd = cmd->next;
