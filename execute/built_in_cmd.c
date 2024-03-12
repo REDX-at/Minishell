@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:11:23 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/12 03:23:01 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/12 18:35:12 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,6 +253,23 @@ void ft_unset(t_cmd *cmd, t_table *table)
 		return ;
 	}
 	int d= 1;
+	char	*the_last;
+	char	*err_join;
+	the_last = NULL;
+	err_join = ft_strdup("unset: `");
+	while (cmd->argv[d])
+	{
+		if (ft_strchr(cmd->argv[d], '=') != NULL)
+			the_last = ft_strdup(cmd->argv[d]);
+		d++;
+	}
+	if (the_last)
+	{
+		ft_putstr_fd(err_join, 2);
+		ft_putstr_fd(the_last, 2);
+		ft_putstr_fd("': not a valid identifier\n", 2);
+	}
+	d = 1;
 	while(cmd->argv[d])
 	{
 		i = 0;
@@ -266,6 +283,23 @@ void ft_unset(t_cmd *cmd, t_table *table)
     	    }
     	    i++;
     	}
+		new_env[j] = NULL;
+		j = 0;
+		i = 0;
+		char **test = (char **)malloc(sizeof(char *) * 1000);
+		while (table->env[i])
+		{
+			if (ft_strncmp(table->env[i], the_last, ft_strlen(the_last)) == 0)
+			{
+				test[j] = ft_strdup(table->env[i]);
+				j++;
+			}
+			i++;
+		}
+		test[j] = NULL;
+		// the last modif here to get the none unsetable
+		ft_putstr2d_fd(test, 2);
+		exit(1);
 		table->env = copy_the_env(new_env);
 		d++;
 	}

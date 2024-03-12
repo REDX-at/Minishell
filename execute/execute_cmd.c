@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 21:51:03 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/11 19:54:36 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/12 17:39:26 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,17 +89,12 @@ void    execute_cmd(t_cmd *cmd, int fd[][2], char **argv, int k)
 			i = 0;
 			while (cmd->redir[i])
 			{
-				printf("redir : %s\n", cmd->redir[i]);
 				if (ft_strncmp(cmd->redir[i], ">>", 2) == 0)
 					fd = open(cmd->file[i], O_CREAT | O_RDWR | O_APPEND, 0644);
 				else if (ft_strncmp(cmd->redir[i], ">", 1) == 0)
 					fd = open(cmd->file[i], O_CREAT | O_RDWR | O_TRUNC, 0644);
 				else if (ft_strncmp(cmd->redir[i], "<", 1) == 0)
 					fd = 1;
-				if (cmd->redir[i + 1] == NULL)
-				{
-					ft_putstr_fd(cmd->line, fd);
-				}
 				close(fd);
 				i++;
 			}

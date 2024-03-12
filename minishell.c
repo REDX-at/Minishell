@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:24:57 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/12 03:10:55 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/12 18:10:09 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ char **alloc_env(char **env)
 {
 	int i;
 	char **new_env;
-
+	char	*tmp;
 	i = 0;
 	while (env[i])
 		i++;
@@ -137,7 +137,13 @@ char **alloc_env(char **env)
 	i = 0;
 	while (env[i])
 	{
-		new_env[i] = ft_strdup(env[i]);
+		tmp = ft_strdup(env[i]);
+		if (!tmp)
+			return (NULL);
+		tmp = ft_strjoin("declare -x ", tmp);
+		if (!tmp)
+			return (NULL);
+		new_env[i] = tmp;
 		i++;
 	}
 	new_env[i] = NULL;
