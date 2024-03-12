@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:25:10 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/12 02:40:56 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/12 03:13:24 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ typedef struct s_table
 	char			*alpha;
 	char			**declare_x;
 	char			**trash;
+	char			*pwd_env;
 } t_table;
 
 //askari header
@@ -133,7 +134,7 @@ int		check_if_in_the_declare_x(char *str, char **declare_x);
 int		ft_strlen_until_equal(char *str);
 
 // function built-in
-void    ft_cd(t_cmd *cmd);
+void	ft_cd(t_cmd *cmd, t_table *table);
 void    ft_pwd(t_cmd *cmd);
 void	ft_env(t_table *table, t_cmd *cmd);
 void	ft_echo(t_cmd *cmd);

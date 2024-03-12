@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:11:23 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/12 02:40:43 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/12 03:23:01 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,36 @@ void	ft_echo(t_cmd *cmd)
 	}
 }
 
+// change pwd with protection
+void	change_pwd(t_table *table)
+{
+	int		i;
+	char	*tmp;
+	char	*tmp2;
+	
+	i = 0;
+	while (table->env[i])
+	{
+		if (ft_strncmp(table->env[i], "PWD=", 4) == 0)
+		{
+			tmp = ft_strdup(table->env[i]);
+			free(table->env[i]);
+			tmp2 = getcwd(NULL, 0);
+			table->env[i] = ft_strjoin("PWD=", tmp2);
+			free(tmp2);
+			free(tmp);
+		}
+		if (ft_strncmp(table->env[i], "OLDPWD=", 7) == 0)
+		{
+			char *oldpwd = table->pwd_env;
+			table->env[i] = ft_strjoin("OLDPWD=", oldpwd);
+		}
+		i++;
+	}
+	table->pwd_env = getcwd(NULL, 0);
+}
 // fucntion cd with opendir and readdir
-void	ft_cd(t_cmd *cmd)
+void	ft_cd(t_cmd *cmd, t_table *table)
 {
 	char	*path;
 
@@ -78,6 +106,7 @@ void	ft_cd(t_cmd *cmd)
 			ft_putstr_fd("\n", 2);
 		}
 	}
+	change_pwd(table);
 }
 //function of pwd command
 void    ft_pwd(t_cmd *cmd)

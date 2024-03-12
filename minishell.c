@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:24:57 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/12 02:46:38 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/12 03:10:55 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ t_table	*ft_init_table(char **envp)
 	table->alpha = getcwd(NULL, 0);
 	table->declare_x = NULL;
 	table->trash = NULL;
+	table->pwd_env = NULL;
 	return (table);
 }
 
@@ -163,10 +164,11 @@ int main(int argc, char **argv, char **envp)
 	table = ft_init_table(allocation);
 	table->var = "➜  minishell ";
 	table->declare_x = alloc_env(table->env);
+	table->pwd_env = getcwd(NULL, 0);
 	while (1)
 	{
 		rr = rand() % 2;
-		if (rr)		
+		if (rr)	
 			line = readline(GREEN"➜  "RED""BOLD"minishell "RESET);
 		else
 			line = readline(RED"➜  "RED""BOLD"minishell "RESET);
