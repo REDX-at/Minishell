@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:44:32 by mkibous           #+#    #+#             */
-/*   Updated: 2024/03/13 01:40:49 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/13 15:57:43 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -324,6 +324,8 @@ char *put_env(char *str, char **env, pid_t pid)
 	int len = 0;
 	if (!ft_strncmp(str, "$$", 3))
 		return(strdup(ft_itoa((int)pid)));
+	if (!ft_strncmp(str, "$?", 3))
+		return(strdup("?"));
 	while (env[i])
 	{
 		if (ft_strlen(env[i]) > ft_strlen(str))
@@ -629,7 +631,7 @@ void ft_tokenizing(char *line, t_cmd **cmd, char **envp, pid_t pid)
 		i++;
 	}
 	ft_token(elem);
-	// ft_printlist(elem, *cmd);
+	ft_printlist(elem, *cmd);
 	if (ft_chek(elem))
 	{
 		printf("syntax error\n");
@@ -637,5 +639,5 @@ void ft_tokenizing(char *line, t_cmd **cmd, char **envp, pid_t pid)
 	}
 	ft_cmd(cmd, elem, env);
 	// printf("''%p''\n", (*cmd)->redir);
-	// ft_printlist(elem, *cmd);
+	ft_printlist(elem, *cmd);
 }

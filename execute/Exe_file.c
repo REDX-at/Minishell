@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 14:42:02 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/13 02:01:37 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/13 15:38:44 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	creat_pipe(t_table *table, int fd[][2], int k)
 
 void	into_child(t_cmd *cmd, int fd[][2], t_table *table, int k)
 {
+	printf("child\n");
 	if (k > 0)
 		dup2(fd[k][0], 0);
 	if (cmd->next)
