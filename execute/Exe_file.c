@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 14:42:02 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/12 03:13:31 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/13 02:01:37 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ void execute_built_in(t_cmd *cmd, int fd[][2], t_table *table, int k)
 	if (ft_strcmp(cmd->cmd, "cd"))
 		ft_cd(cmd, table);
 	else if (ft_strcmp(cmd->cmd, "pwd"))
-		ft_pwd(cmd);
+		ft_pwd(cmd, table);
 	else if (ft_strcmp(cmd->cmd, "echo"))
-		ft_echo(cmd);
+		ft_echo(cmd, table);
 	else if (ft_strcmp(cmd->cmd, "env"))
 		ft_env(table, cmd);
 	else if (ft_strcmp(cmd->cmd, "export"))
@@ -29,7 +29,7 @@ void execute_built_in(t_cmd *cmd, int fd[][2], t_table *table, int k)
 	else if (ft_strcmp(cmd->cmd, "unset"))
 		ft_unset(cmd, table);
 	else if (ft_strcmp(cmd->cmd, "exit"))
-		ft_exit();
+		ft_exit(cmd, table);
 }
 
 void close_file_descriptor(int fd[][2], int k)
@@ -70,17 +70,21 @@ void	into_child(t_cmd *cmd, int fd[][2], t_table *table, int k)
 	else if (ft_strcmp(cmd->cmd, "clear"))
 		ft_putstr_fd(CLEAR, 1);
 	else
-		execute_cmd(cmd, fd, cmd->argv, k);
+		execute_cmd(cmd, fd, cmd->argv, k, table);
 	exit(EXIT_SUCCESS);
 }
 
 void	wait_all_pid(t_table *table, pid_t pid[], int k)
 {
+	int	status;
+
+	status = 0;
 	while (k < table->count_cmd)
 	{
-		waitpid(pid[k], NULL, 0);
+		waitpid(pid[k], &status, 0);
 		k++;
 	}
+	table->exit_status = (WEXITSTATUS(status));
 }
 void	execute_for_cmd(t_cmd *cmd, t_table *table)
 {
@@ -110,7 +114,7 @@ void	execute_for_cmd(t_cmd *cmd, t_table *table)
 			else if (ft_strcmp(cmd->cmd, "clear"))
 				ft_putstr_fd(CLEAR, 1);
 			else
-				execute_cmd(cmd, fd, cmd->argv, k);
+				execute_cmd(cmd, fd, cmd->argv, k, table);
 		}
 		k++;
 		cmd = cmd->next;

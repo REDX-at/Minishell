@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 22:42:02 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/12 02:29:42 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/13 01:50:08 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,10 +229,8 @@ void	ft_export(t_cmd *cmd, t_table *table)
 			return ;
 		}
 		split = ft_split(cmd->argv[i], '=');
-		printf("split[0] = %s\n", split[0]);
 		split[0] = ft_strjoin("declare -x ", split[0]);
 		check = check_if_exist_2(split[0], table->declare_x);
-		printf("check = %d\n", check);
 		if (check != -1)
 		{
 			if (ft_strchr(cmd->argv[i], '=') != 0)

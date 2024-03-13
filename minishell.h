@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:25:10 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/12 03:13:24 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/13 02:01:51 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ typedef struct s_table
 	char			**declare_x;
 	char			**trash;
 	char			*pwd_env;
+	int				exit_status;
 } t_table;
 
 //askari header
@@ -124,7 +125,7 @@ typedef struct s_elem
 }	t_elem;
 
 // Function For Execute
-void    execute_cmd(t_cmd *cmd, int fd[][2], char **argv, int k);
+void    execute_cmd(t_cmd *cmd, int fd[][2], char **argv, int k, t_table *table);
 void	execute_for_cmd(t_cmd *cmd, t_table *table);
 void	execute_built_in(t_cmd *cmd, int fd[][2], t_table *tale, int k);
 int		check_access(char *command, t_cmd *cmd);
@@ -135,10 +136,10 @@ int		ft_strlen_until_equal(char *str);
 
 // function built-in
 void	ft_cd(t_cmd *cmd, t_table *table);
-void    ft_pwd(t_cmd *cmd);
+void    ft_pwd(t_cmd *cmd, t_table *table);
 void	ft_env(t_table *table, t_cmd *cmd);
-void	ft_echo(t_cmd *cmd);
-void	ft_exit();
+void	ft_echo(t_cmd *cmd, t_table *table);
+void	ft_exit(t_cmd *cmd, t_table *table);
 void	ft_export(t_cmd *cmd, t_table *table);
 void	ft_unset(t_cmd *cmd, t_table *table);
 

@@ -6,14 +6,14 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 21:51:03 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/12 17:39:26 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/13 01:52:12 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 // creat shild with pipe and use execve
-void    execute_cmd(t_cmd *cmd, int fd[][2], char **argv, int k)
+void    execute_cmd(t_cmd *cmd, int fd[][2], char **argv, int k, t_table *table)
 {
 	execve(cmd->cmd, argv, NULL);
 	if (cmd->cmd)
@@ -44,6 +44,7 @@ void    execute_cmd(t_cmd *cmd, int fd[][2], char **argv, int k)
 			ft_putstr_fd(cmd->cmd, 2);
 			ft_putstr_fd(": command not found\n", 2);
 			exit(127);
+			table->exit_status = 127;
 		}
 		else
 		{

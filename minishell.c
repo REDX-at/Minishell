@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:24:57 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/12 18:10:09 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/13 01:53:01 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ t_table	*ft_init_table(char **envp)
 	table->declare_x = NULL;
 	table->trash = NULL;
 	table->pwd_env = NULL;
+	table->exit_status = 0;
 	return (table);
 }
 
