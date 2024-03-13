@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:11:23 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/13 02:24:24 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/13 02:44:26 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ void	ft_echo(t_cmd *cmd, t_table *table)
 			ft_putstr_fd(cmd->argv[i], 1);
 			i++;
 		}
-		ft_putstr_fd("\n", 1);
+		if (cmd->echo_new_line == 0)
+			ft_putstr_fd("\n", 1);
 	}
 }
 
@@ -261,11 +262,6 @@ void ft_unset(t_cmd *cmd, t_table *table)
     j = 0;
     len = ft_strlen_2d(table->env) + 1;
     new_env = (char **)malloc(sizeof(char *) * len);
-	if (cmd->argv[1] == NULL)
-	{
-		ft_putstr_fd("unset: not enough arguments\n", 2);
-		return ;
-	}
 	int d= 1;
 	char	**the_last;
 	char	*err_join;
@@ -361,6 +357,12 @@ int	ft_is_integer(char *str)
 // function exit with all the protection
 void	ft_exit(t_cmd *cmd, t_table *table)
 {
+	if (cmd->argv[1] == NULL)
+	{
+		ft_putstr_fd("exit\n", 2);
+		exit(table->exit_status);
+	}
+	else
 	if (!ft_is_integer(cmd->argv[1]))
 	{
 		ft_putstr_fd("exit\nmsh: exit: ", 2);

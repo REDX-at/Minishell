@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 22:42:02 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/13 01:50:08 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/13 02:34:57 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,6 +195,7 @@ void	ft_export(t_cmd *cmd, t_table *table)
 		if (cmd->argv[i][0] == '=' || !ft_isalpha(cmd->argv[i][0]))
 		{
 			ft_putstr_fd("export : not a valid identifier\n", 2);
+			table->exit_status = 1;
 			return ;
 		}
 		if (ft_strchr(cmd->argv[i], '='))
@@ -226,6 +227,7 @@ void	ft_export(t_cmd *cmd, t_table *table)
 		if (cmd->argv[i][0] == '=' || !ft_isalpha(cmd->argv[i][0]))
 		{
 			ft_putstr_fd("export : not a valid identifier\n", 2);
+			table->exit_status = 1;
 			return ;
 		}
 		split = ft_split(cmd->argv[i], '=');
