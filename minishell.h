@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:25:10 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/13 02:01:51 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/13 21:41:06 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,7 @@ char	*ft_strjoin(char const *s1, char const *s2);
 int		ft_strcmp(char *str, char *str2);
 void	ft_putstr2d_fd(char **str, int fd);
 int		ft_strlen_2d(char **str);
+int		ft_strlen_until_equal(char *str);
 
 // askari functions
 void 	sig_handler(int signum);

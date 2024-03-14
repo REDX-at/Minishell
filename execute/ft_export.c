@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 22:42:02 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/13 02:34:57 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/13 21:41:43 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	ft_add_env(char **env, char *str, int *fd)
 {
-	int		i;
-	
+	int	i;
+
 	i = 0;
 	while (env[i])
 	{
@@ -31,7 +31,7 @@ char	**ft_add_env2(char **env, char *str)
 {
 	int		i;
 	char	**new_env;
-	
+
 	i = 0;
 	while (env[i])
 		i++;
@@ -47,25 +47,13 @@ char	**ft_add_env2(char **env, char *str)
 	return (new_env);
 }
 
-static int	ft_strlen_until_equals(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] && str[i] != '=')
-	{
-		i++;
-	}
-	return (i);
-}
-
 int	check_if_exist(char *str, char **env)
 {
 	int	i;
 	int	len;
 
 	i = 0;
-	len = ft_strlen_until_equals(str);
+	len = ft_strlen_until_equal(str);
 	len++;
 	while (env[i])
 	{
@@ -80,13 +68,13 @@ int	check_if_exist(char *str, char **env)
 
 int	check_if_exist_2(char *str, char **env)
 {
-	int	i;
-	int	len;
+	int		i;
+	int		len;
+	char	**split;
 
 	i = 0;
-	len = ft_strlen_until_equals(str);
+	len = ft_strlen_until_equal(str);
 	len++;
-	char **split;
 	while (env[i])
 	{
 		split = ft_split(env[i], '=');
@@ -98,7 +86,8 @@ int	check_if_exist_2(char *str, char **env)
 	}
 	return (-1);
 }
-static void ft_putstr_2d_fd(char **str, int fd)
+
+static void	ft_putstr_2d_fd(char **str, int fd)
 {
 	int i;
 

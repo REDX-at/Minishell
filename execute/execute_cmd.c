@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 21:51:03 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/13 15:38:54 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/14 02:23:16 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,19 @@ void    execute_cmd(t_cmd *cmd, int fd[][2], char **argv, int k, t_table *table)
 				i = 0;
 				while (cmd->redir[i])
 				{
-					fd = open(cmd->file[i], O_CREAT | O_WRONLY | O_TRUNC, 0644);
-					if (fd < 0)
+					if ((ft_strncmp(cmd->redir[i], ">>", 2) == 0) || (ft_strncmp(cmd->redir[i], ">", 1) == 0))
 					{
-						ft_putstr_fd("msh: ", 2);
-						ft_putstr_fd(cmd->file[i], 2);
-						ft_putstr_fd(": No such file or directory\n", 2);
-						exit(1);
+						if (ft_strncmp(cmd->redir[i], ">>", 2) == 0)
+							fd = open(cmd->file[i], O_CREAT | O_WRONLY | O_APPEND, 0644);
+						else if (ft_strncmp(cmd->redir[i], ">", 1) == 0)
+							fd = open(cmd->file[i], O_CREAT | O_WRONLY | O_TRUNC, 0644);
+						if (fd < 0)
+						{
+							ft_putstr_fd("msh: ", 2);
+							ft_putstr_fd(cmd->file[i], 2);
+							ft_putstr_fd(": No such file or directory\n", 2);
+							exit(1);
+						}
 					}
 					close(fd);
 					i++;
@@ -58,12 +64,15 @@ void    execute_cmd(t_cmd *cmd, int fd[][2], char **argv, int k, t_table *table)
 			{
 				if (cmd->redir[i] != NULL)
 				{
-					if (ft_strncmp(cmd->redir[i], ">>", 2) == 0)
-						redir_out_append(cmd, i);
-					else if (ft_strncmp(cmd->redir[i], ">", 1) == 0)
-						redir_out(cmd, i);
-					else if (ft_strncmp(cmd->redir[i], "<", 1) == 0)
-						redir_in(cmd, i);
+					if (ft_strncmp(cmd->redir[i], "<<", 2) != 0)
+					{
+						if (ft_strncmp(cmd->redir[i], ">>", 2) == 0)
+							redir_out_append(cmd, i);
+						else if (ft_strncmp(cmd->redir[i], ">", 1) == 0)
+							redir_out(cmd, i);
+						else if (ft_strncmp(cmd->redir[i], "<", 1) == 0)
+							redir_in(cmd, i);
+					}
 				}
 				if (cmd->redir[i + 1] == NULL)
 				{

@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:44:32 by mkibous           #+#    #+#             */
-/*   Updated: 2024/03/13 15:57:43 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/13 18:26:12 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,7 +241,7 @@ int ft_comp_n(char *str)
 		while (str[i] == 'n')
 			i++;
 	}
-	if (str[i] == '\0')
+	if (str[i] == '\0' && i > 1)
 		return (0);
 	return (1);
 }
@@ -411,6 +411,7 @@ void ft_cmd(t_cmd **cmd, t_elem *elem, char **env)
 	last = NULL;
 	ft_envr(elem, env);
 	ft_join(elem, env);
+	
 	while (elem)
 	{
 		if(elem->content[0] == '\0' && elem->next)
@@ -464,6 +465,7 @@ void ft_cmd(t_cmd **cmd, t_elem *elem, char **env)
 				last->pipe = 1;
 			j++;
 			boolien = 1;
+			last->echo_new_line = 0;
 			prev_is_redir = 0;
 		}
 		else if (elem->type >= REDIR_IN && elem->type <= DREDIR_OUT)
@@ -631,7 +633,7 @@ void ft_tokenizing(char *line, t_cmd **cmd, char **envp, pid_t pid)
 		i++;
 	}
 	ft_token(elem);
-	ft_printlist(elem, *cmd);
+	// ft_printlist(elem, *cmd);
 	if (ft_chek(elem))
 	{
 		printf("syntax error\n");
@@ -639,5 +641,5 @@ void ft_tokenizing(char *line, t_cmd **cmd, char **envp, pid_t pid)
 	}
 	ft_cmd(cmd, elem, env);
 	// printf("''%p''\n", (*cmd)->redir);
-	ft_printlist(elem, *cmd);
+	// ft_printlist(elem, *cmd);
 }

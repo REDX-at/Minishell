@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 19:18:43 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/05 21:48:09 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/14 00:48:32 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	redir_in(t_cmd *cmd, int i)
 	{
 		ft_putstr_fd("msh: ", 2);
 		ft_putstr_fd(cmd->file[i], 2);
-		ft_putstr_fd(": No such file or directory\n", 2);
+		ft_putstr_fd(": No ssuch file or directory\n", 2);
 		exit(1);
 	}
 	dup2(fd, 0);

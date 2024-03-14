@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:11:23 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/13 15:45:21 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/13 18:19:51 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	ft_echo(t_cmd *cmd, t_table *table)
 	}
 	else
 	{
+		printf("echo_new_line = %d\n", cmd->echo_new_line);
 		while (cmd->argv[i])
 		{
 			ft_putstr_fd(cmd->argv[i], 1);
