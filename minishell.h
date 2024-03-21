@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:25:10 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/13 21:41:06 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/20 01:43:47 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,10 @@ typedef struct s_table
 	char			**trash;
 	char			*pwd_env;
 	int				exit_status;
+	int				fd_hredoc;
+	int				tmp_in;
+	int				tmp_out;
+	int				red;
 } t_table;
 
 //askari header
@@ -108,6 +112,8 @@ typedef struct s_cmd
 	bool			echo_new_line;
 	char			**argv;
 	char			**file;
+	int 			in;
+	int 			out;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
 } t_cmd;
@@ -125,28 +131,39 @@ typedef struct s_elem
 }	t_elem;
 
 // Function For Execute
-void    execute_cmd(t_cmd *cmd, int fd[][2], char **argv, int k, t_table *table);
+void    execute_cmd(t_cmd *cmd, int **fd_s, int k, t_table *table);
 void	execute_for_cmd(t_cmd *cmd, t_table *table);
-void	execute_built_in(t_cmd *cmd, int fd[][2], t_table *tale, int k);
-int		check_access(char *command, t_cmd *cmd);
-void    into_parrent(t_cmd *cmd, int pid[], int k, t_table *table, char buf[]);
+void	execute_built_in(t_cmd *cmd, int **fd, t_table *tale, int k);
+int		check_access(char *command, t_cmd *cmd, t_table *table);
 void	ft_putstr2d_fd(char **str, int fd);
-int		check_if_in_the_declare_x(char *str, char **declare_x);
 int		ft_strlen_until_equal(char *str);
+int		heredoc(t_cmd *cmd, int red);
+
+// functions utils export
+void	ft_add_env(char **env, char *str, int *fd);
+char	**ft_add_env2(char **env, char *str);
+int		check_if_exist(char *str, char **env, int flag);
+char	**join_2ds(char **join, char **to_join);
+
+// heredoc
+int		heredoc(t_cmd *cmd, int red);
 
 // function built-in
 void	ft_cd(t_cmd *cmd, t_table *table);
-void    ft_pwd(t_cmd *cmd, t_table *table);
-void	ft_env(t_table *table, t_cmd *cmd);
+void    ft_pwd(t_table *table);
+void	ft_env(t_table *table);
 void	ft_echo(t_cmd *cmd, t_table *table);
 void	ft_exit(t_cmd *cmd, t_table *table);
 void	ft_export(t_cmd *cmd, t_table *table);
 void	ft_unset(t_cmd *cmd, t_table *table);
 
+// functions child
+void	loop_child(t_cmd *cmd, int **fd, t_table *table, pid_t pid[]);
+void	close_file_descriptor(int **fd, int k);
+void	wait_all_pid(t_table *table, pid_t pid[], int k);
+
 //function redir
-void	redir_out_append(t_cmd *cmd, int i);
-void	redir_out(t_cmd *cmd, int i);
-void	redir_in(t_cmd *cmd, int i);
+void	handle_redir(t_cmd *cmd, t_table *table, int k, int **fd);
 
 // Utils Function
 char    **ft_split(char const *s, char c);
@@ -158,6 +175,10 @@ int		ft_strcmp(char *str, char *str2);
 void	ft_putstr2d_fd(char **str, int fd);
 int		ft_strlen_2d(char **str);
 int		ft_strlen_until_equal(char *str);
+void	ft_putstr2d_fd(char **str, int fd);
+int		ft_strlen_2d(char **str);
+int		search_for_path(t_table *table);
+char	**copy_the_env(char **env);
 
 // askari functions
 void 	sig_handler(int signum);

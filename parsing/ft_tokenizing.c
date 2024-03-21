@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:44:32 by mkibous           #+#    #+#             */
-/*   Updated: 2024/03/13 18:26:12 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/15 17:33:29 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -414,8 +414,6 @@ void ft_cmd(t_cmd **cmd, t_elem *elem, char **env)
 	
 	while (elem)
 	{
-		if(elem->content[0] == '\0' && elem->next)
-			elem = elem->next;
 		if (!n && echo == 1 && !ft_comp_n(elem->content) && ((elem->state == IN_DQUOTE && elem->prev->type == DOUBLE_QUOTE && elem->next->type == DOUBLE_QUOTE) || (elem->state == IN_QUOTE && elem->prev->type == QOUTE && elem->next->type == QOUTE) || elem->state == GENERAL))
 		{
 			last->echo_new_line = 1;
