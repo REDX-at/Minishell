@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:24:57 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/13 01:53:01 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/20 18:17:26 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,7 @@ int main(int argc, char **argv, char **envp)
 		{
 			add_history(line);
 			if (line[0] != '\0')
-				ft_tokenizing(line, &cmd, table->env, pid);
+				ft_parsing(line, &cmd, table, pid);
 			ft_built_in(&cmd, table);
 			if (cmd)
 				execute_for_cmd(cmd, table);

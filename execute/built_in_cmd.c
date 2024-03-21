@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in_cmd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:11:23 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/13 15:45:21 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/13 18:32:49 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,6 @@ void	ft_echo(t_cmd *cmd, t_table *table)
 	fd = 1;
 	i = 1;
 	int j = 0;
-	if (cmd->argv[i] != NULL)
-	{
-		if (ft_strncmp(cmd->argv[i], "?", 2) == 0)
-		{
-			printf("%d\n", table->exit_status);
-			return ;
-		}
-	}
 	if (cmd->redir)
 	{
 		while(cmd->redir[j])
