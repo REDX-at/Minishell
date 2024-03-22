@@ -6,7 +6,7 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:44:32 by mkibous           #+#    #+#             */
-/*   Updated: 2024/03/18 22:44:30 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/03/21 23:15:25 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,7 @@ void	ft_count_echo_spaces(t_vars *vars, t_elem *elem)
 	else if (elem->type != DOUBLE_QUOTE && elem->type != QOUTE
 		&& elem->type != WHITE_SPACE)
 	{
-		if (elem->type == WORD && elem->content[0] == '\0')
-			;
-		else if (vars->redir == 1)
+		if (vars->redir == 1)
 			vars->redir = 0;
 		else
 			vars->size++;
@@ -59,10 +57,10 @@ void	ft_count_echo_spaces(t_vars *vars, t_elem *elem)
 void	echo_spaces(t_vars *vars, t_elem *elem)
 {
 	if (vars->spaces == 0 && vars->redir == 0 && vars->echo == 1
-		&& elem->type != PIPE_LINE && elem->prev
-		&& elem->type != WHITE_SPACE && elem->prev->type == WHITE_SPACE)
+		&& elem->type == WORD)
 	{
-		vars->l_cmd->argv[vars->j] = elem->prev->content;
+		printf("elem->content: %s\n", elem->content);
+		vars->l_cmd->argv[vars->j] = strdup(" ");
 		(1) && (vars->j++, vars->spaces = 0);
 	}
 }
@@ -84,13 +82,12 @@ void	fill_redir_file(t_elem *elem, t_vars *vars, t_cmd **cmd)
 	else if (vars->redir == 1 && elem->type == WORD)
 	{
 		vars->l_cmd->file[vars->i] = elem->content;
-		(1) && (vars->redir = 0, vars->i++, vars->spaces = 0);
+		(1) && (vars->redir = 0, vars->i++);
 		(1) && (vars->prev_is_redir = 1);
 	}
 	else if (vars->boolien == 1 && elem->type == WORD)
 		(1) && (vars->l_cmd->argv[vars->j] = elem->content, vars->j++);
-	if (elem->type == DOUBLE_QUOTE || elem->type == QOUTE
-		|| (elem->type == WORD && vars->j != 1))
+	if ((elem->type == WORD && vars->j != 1))
 		vars->spaces = 0;
 }
 

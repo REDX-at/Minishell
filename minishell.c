@@ -6,7 +6,7 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:24:57 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/20 18:17:26 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/03/21 01:33:30 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ t_table	*ft_init_table(char **envp)
 	while (envp[i])
 	{
 		table->env[i] = ft_strdup(envp[i]);
+		free(envp[i]);
 		i++;
 	}
 	table->env[i] = NULL;
@@ -47,6 +48,10 @@ t_table	*ft_init_table(char **envp)
 	table->trash = NULL;
 	table->pwd_env = NULL;
 	table->exit_status = 0;
+	table->fd_hredoc = 0;
+	table->tmp_in = 0;
+	table->tmp_out = 0;
+	table->red = -1;
 	return (table);
 }
 
@@ -151,6 +156,11 @@ char **alloc_env(char **env)
 	return (new_env);
 }
 
+void	f()
+{
+	// check leaks
+	system("leaks minishell");
+}
 int main(int argc, char **argv, char **envp)
 {
 	char	*line;

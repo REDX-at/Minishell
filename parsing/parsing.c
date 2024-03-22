@@ -6,7 +6,7 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:44:32 by mkibous           #+#    #+#             */
-/*   Updated: 2024/03/21 01:27:17 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/03/22 01:23:16 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,8 @@ int	ft_count_argv(t_elem *elem, int *redirs)
 	ft_memset(&vars, 0, sizeof(vars));
 	while (elem && elem->type != PIPE_LINE)
 	{
-		if (elem->content[0] == '\0' && elem->next)
-			elem = elem->next;
 		if (vars.n == 0 && vars.echo == 1 && !ft_comp_n(elem->content, elem))
-			;
+			vars.spaces = 1;
 		else if (ft_strncmp(elem->content, "echo", 5) == 0)
 			(1) && (vars.spaces = 1, vars.size++, vars.echo = 1);
 		else if (elem->type == REDIR_IN || elem->type == REDIR_OUT
@@ -103,11 +101,12 @@ void	ft_cmd(t_cmd **cmd, t_elem *elem, char **env, int last_exit)
 	ft_join(elem);
 	while (elem)
 	{
-		if (elem->content[0] == '\0' && elem->next)
+		if(elem->content[0] == '\0' && elem->len != 0)
 			elem = elem->next;
-		else if (vars.n == 0 && vars.echo == 1
-			&& ft_comp_n(elem->content, elem) == 0)
-			vars.l_cmd->echo_new_line = 1;
+		if(!elem)
+			break;
+		if (vars.n == 0 && vars.echo == 1 && !ft_comp_n(elem->content, elem))
+			(1) && (vars.l_cmd->echo_new_line = 1, vars.spaces = 1);
 		else
 		{
 			get_cmd(elem, &vars, cmd);
@@ -115,7 +114,7 @@ void	ft_cmd(t_cmd **cmd, t_elem *elem, char **env, int last_exit)
 			fill_redir_file(elem, &vars, cmd);
 		}
 		if (elem->type == PIPE_LINE)
-			ft_memset(&vars, 0, (sizeof(vars)));
+			(1) && (vars.l_cmd->pipe = 1, ft_memset(&vars, 0, (sizeof(vars))));
 		elem = elem->next;
 	}
 }
