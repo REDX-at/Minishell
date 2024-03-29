@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child_functions.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 23:59:17 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/21 01:25:13 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/28 22:32:37 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,13 @@ void	loop_child(t_cmd *cmd, int **fd, t_table *table, pid_t pid[])
 	k = 0;
 	while (cmd)
 	{
+		extern int g_status;
 		if (cmd->pipe || !cmd->is_builtin)
 		{
+			if(g_status == 1)
+				return ;
+			else
+				g_status = 2;
 			pid[k] = fork();
 			if (pid[k] == -1)
 			{

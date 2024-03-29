@@ -6,7 +6,7 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:44:32 by mkibous           #+#    #+#             */
-/*   Updated: 2024/03/18 22:37:47 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/03/23 00:30:15 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,10 @@ void	ft_join(t_elem *elem)
 			if (elem->type == WORD)
 			{
 				tmp->content = ft_strjoin(tmp->content, elem->content);
+				if(elem->state == IN_QUOTE || tmp->state == IN_QUOTE)
+					tmp->state = IN_QUOTE;
+				if (elem->state == IN_DQUOTE || tmp->state == IN_DQUOTE)
+					tmp->state = IN_DQUOTE;
 				if (elem->next)
 					elem->next->prev = elem->prev;
 				elem->prev->next = elem->next;

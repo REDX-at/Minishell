@@ -6,50 +6,55 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:44:32 by mkibous           #+#    #+#             */
-/*   Updated: 2024/03/21 23:36:55 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/03/28 03:53:05 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*put_env(char *str, char **env, pid_t pid, int last_exit)
+char	*put_env(t_elem *elem, char **env, int last_exit)
 {
 	int	i;
 	int	len;
 
 	i = 0;
 	len = 0;
-	if (!ft_strncmp(str, "$$", 3))
-		return (ft_itoa((int)pid));
-	if (!ft_strncmp(str, "$?", 3))
+	if (!ft_strncmp(elem->content, "$$", 3))
+		return (ft_itoa((int)elem->pid));
+	if (!ft_strncmp(elem->content, "$?", 3))
 		return (ft_itoa(last_exit));
 	while (env[i])
 	{
-		if (ft_strlen(env[i]) > ft_strlen(str))
+		if (ft_strlen(env[i]) > ft_strlen(elem->content))
 			len = ft_strlen(env[i]);
 		else
-			len = ft_strlen(str);
-		if (i % 2 == 0 && i != 1 && strncmp(str + 1, env[i], len) == 0)
+			len = ft_strlen(elem->content);
+		if (i % 2 == 0 && i != 1 && strncmp(elem->content + 1, env[i], len) == 0)
 		{
 			i++;
-			return (env[i]);
+			return (strdup(env[i]));
 		}
 		i++;
 	}
-	return (strdup(""));
+		return (strdup(""));
 }
 
 void	ft_envr(t_elem *elem, char **env, int last_exit)
 {
 	int	i;
+	int redir;
 
 	i = 0;
+	redir = 0;
 	while (elem)
 	{
+		if (elem->type == REDIR_IN || elem->type == REDIR_OUT
+			|| elem->type == HERE_DOC || elem->type == DREDIR_OUT)
+			redir = 1;
 		if (elem->type == ENV)
 		{
 			elem->type = WORD;
-			elem->content = put_env(elem->content, env, elem->pid, last_exit);
+			elem->content = put_env(elem, env, last_exit);
 		}
 		if (elem->type == NEW_LINE)
 		{
@@ -64,6 +69,8 @@ void	ft_envr(t_elem *elem, char **env, int last_exit)
 			elem->type = WORD;
 			elem->content = ft_get_escape(elem->content[1], elem->state);
 		}
+		if (elem->type == WORD && redir == 1)
+			redir = 0;
 		elem = elem->next;
 	}
 }

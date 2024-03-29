@@ -6,12 +6,11 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:44:32 by mkibous           #+#    #+#             */
-/*   Updated: 2024/03/22 01:23:16 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/03/29 13:50:26 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
 int	len(char *str)
 {
 	int	i;
@@ -49,7 +48,7 @@ int	ft_count_argv(t_elem *elem, int *redirs)
 	while (elem && elem->type != PIPE_LINE)
 	{
 		if (vars.n == 0 && vars.echo == 1 && !ft_comp_n(elem->content, elem))
-			vars.spaces = 1;
+			(1) && (vars.spaces = 1, vars.n = 1);
 		else if (ft_strncmp(elem->content, "echo", 5) == 0)
 			(1) && (vars.spaces = 1, vars.size++, vars.echo = 1);
 		else if (elem->type == REDIR_IN || elem->type == REDIR_OUT
@@ -75,7 +74,7 @@ void	get_cmd(t_elem *elem, t_vars *vars, t_cmd **cmd)
 		vars->size = ft_count_argv(elem, &vars->rdrs);
 		if (vars->prev_is_redir == 0)
 		{
-			ft_lstadd_back_cmd(cmd, ft_lstnew_cmd(elem->content));
+			ft_lstadd_back_cmd(cmd, ft_lstnew_cmd(ft_strdup(elem->content)));
 			vars->l_cmd = ft_lstlast_cmd(*cmd);
 		}
 		else
@@ -101,12 +100,14 @@ void	ft_cmd(t_cmd **cmd, t_elem *elem, char **env, int last_exit)
 	ft_join(elem);
 	while (elem)
 	{
-		if(elem->content[0] == '\0' && elem->len != 0)
+		if(elem->content[0] == '\0' && elem->state == GENERAL && !vars.redir)
+		{
 			elem = elem->next;
+		}
 		if(!elem)
 			break;
 		if (vars.n == 0 && vars.echo == 1 && !ft_comp_n(elem->content, elem))
-			(1) && (vars.l_cmd->echo_new_line = 1, vars.spaces = 1);
+			(1) && (vars.l_cmd->echo_new_line = 1, vars.spaces = 1, vars.n = 1);
 		else
 		{
 			get_cmd(elem, &vars, cmd);
@@ -173,7 +174,7 @@ void ft_printlist(t_elem *elem, t_cmd *cmd)
     }
     while (cmd)
     {
-        printf("%s| p%d e%d \n", cmd->cmd, cmd->pipe, cmd->env);
+        printf("%s| p%d e-n%d \n", cmd->cmd, cmd->pipe, cmd->echo_new_line);
         int j = 0;
         if (cmd->argv)
         {
@@ -202,6 +203,7 @@ void	ft_parsing(char *line, t_cmd **cmd, t_table *table, pid_t pid)
 	t_elem	*elem;
 	char	**env;
 	t_vars	vars;
+	t_cmd	*tmp;
 
 	ft_memset(&vars, 0, sizeof(vars));
 	ft_memset(&elem, 0, sizeof(elem));
@@ -214,14 +216,19 @@ void	ft_parsing(char *line, t_cmd **cmd, t_table *table, pid_t pid)
 	ft_token(elem);
 	if (ft_chek(elem))
 	{
-		free(elem);
 		ft_free(env);
+		table->exit_status = 258;
 		printf("syntax error\n");
 		return ;
 	}
-	// ft_printlist(elem, *cmd);
 	ft_cmd(cmd, elem, env, table->exit_status);
 	// ft_printlist(elem, *cmd);
+	tmp = *cmd;
+	while(tmp)
+	{
+		tmp->table = table;
+		tmp->elem = elem;
+		tmp = tmp->next;
+	}
 	ft_free(env);
-	free(elem);
 }

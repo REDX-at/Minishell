@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in_2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 22:27:59 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/20 01:45:03 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/29 13:54:45 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,6 @@ void	ft_echo(t_cmd *cmd, t_table *table)
 	int	i;
 
 	i = 1;
-	if (cmd->argv[i] != NULL)
-	{
-		if (ft_strncmp(cmd->argv[i], "?", 2) == 0)
-		{
-			printf("%d\n", table->exit_status);
-			return ;
-		}
-	}
 	while (cmd->argv[i])
 	{
 		ft_putstr_fd(cmd->argv[i], 1);

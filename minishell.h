@@ -6,7 +6,7 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:25:10 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/21 01:33:52 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/03/28 03:36:48 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,27 +98,6 @@ typedef struct s_table
 	int				red;
 } t_table;
 
-//mkibous header
-typedef struct s_cmd
-{
-	char			*line;
-	char			*path;
-	int				count_cmd;
-	bool			pipe;
-	bool			is_builtin;
-	char			**redir;
-	char			*diretcory;
-	bool			env;
-	char			*cmd;
-	bool			echo_new_line;
-	char			**argv;
-	char			**file;
-	int 			in;
-	int 			out;
-	struct s_cmd	*next;
-	struct s_cmd	*prev;
-} t_cmd;
-
 // Linked list for the token
 typedef struct s_elem
 {
@@ -130,6 +109,30 @@ typedef struct s_elem
 	struct s_elem   *next;
 	struct s_elem   *prev;
 }	t_elem;
+
+//mkibous header
+typedef struct s_cmd
+{
+	char			*line;
+	char			*path;
+	int				count_cmd;
+	int				pipe;
+	int				is_builtin;
+	char			**redir;
+	char			*diretcory;
+	char			*cmd;
+	int				echo_new_line;
+	char			**argv;
+	char			**file;
+	int 			in;
+	int 			out;
+	t_table			*table;
+	t_state			state;
+	t_elem			*elem;
+	struct s_cmd	*next;
+	struct s_cmd	*prev;
+} t_cmd;
+
 //mkibous variables
 typedef struct s_vars
 {
@@ -217,7 +220,7 @@ void	ft_token(t_elem *elem);
 int	ft_else_token(t_elem *elem);
 int	ft_chek_if_escape(char c);
 int	ft_listing(char *str, t_elem **elem);
-char	*put_env(char *str, char **env, pid_t pid, int last_exit);
+char	*put_env(t_elem *elem, char **env, int last_exit);
 void	ft_envr(t_elem *elem, char **env, int last_exit);
 int	ft_count_env(char **env);
 int	env_len(char *str);

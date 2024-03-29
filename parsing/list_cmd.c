@@ -6,7 +6,7 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 22:39:19 by mkibous           #+#    #+#             */
-/*   Updated: 2024/03/18 22:45:53 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/03/23 00:25:06 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,9 @@ t_cmd	*ft_lstnew_cmd(char *content)
 	lst = (t_cmd *)malloc(sizeof(t_cmd));
 	if (lst == NULL)
 		return (NULL);
+	ft_memset(lst, 0, sizeof(t_cmd));
 	lst->cmd = content;
-	lst->prev = NULL;
-	lst->next = NULL;
-	lst->argv = NULL;
-	lst->file = NULL;
-	lst->redir = NULL;
-	lst->count_cmd = 0;
+	
 	return (lst);
 }
 

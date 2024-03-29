@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 21:51:03 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/21 00:31:20 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/27 15:57:27 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,14 @@ void	for_execute(t_cmd *cmd, t_table *table, int **fd_s, int k)
 			close(fd_s[k][0]);
 		close(fd_s[k][1]);
 		table->exit_status = 0;
-		if (execve(cmd->path, cmd->argv, NULL) == -1)
-			perror("execve");
+		if (execve(cmd->path, cmd->argv, table->env) == -1)
+		{
+			ft_putstr_fd("msh: ", 2);
+			ft_putstr_fd(cmd->cmd, 2);
+			ft_putstr_fd(": command not found\n", 2);
+			table->exit_status = 127;
+			exit(127);
+		}
 		table->exit_status = 1;
 		exit(EXIT_FAILURE);
 	}
@@ -54,7 +60,7 @@ void	execute_cmd(t_cmd *cmd, int **fd_s, int k, t_table *table)
 {
 	int	i;
 
-	execve(cmd->cmd, cmd->argv, NULL);
+	execve(cmd->cmd, cmd->argv, table->env);
 	i = 0;
 	if (cmd->cmd)
 		for_execute(cmd, table, fd_s, k);

@@ -6,13 +6,13 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:24:57 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/21 01:33:30 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/03/28 22:55:37 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 // table len
+int g_status = 0;
 int	ft_tablen(char **tab)
 {
 	int	i;
@@ -60,6 +60,12 @@ void sig_handler(int signum)
 {
 	if (signum == SIGINT)
 	{
+		if (g_status == 2)
+		{
+			g_status = 1;
+			printf("\n");
+			return;
+		}
 		printf("\n");
         rl_on_new_line();
         rl_replace_line("", 1);
@@ -70,10 +76,22 @@ void sig_handler(int signum)
 // For free
 void ft_cmd_free(t_cmd **cmd)
 {
+	t_elem	*tmp;
+
+	tmp = NULL;
+	if((*cmd))
+		tmp = (*cmd)->elem;
+	while (tmp)
+	{
+		if (tmp->content)
+			free(tmp->content);
+		tmp = tmp->next;
+	}
+		free((*cmd)->elem);
 	while ((*cmd))
 	{
-		// if((*cmd)->cmd)
-		// 	free((*cmd)->cmd);
+		if((*cmd)->cmd)
+			free((*cmd)->cmd);
 		if ((*cmd)->argv)
 			ft_free((*cmd)->argv);
 		if((*cmd)->file)
@@ -134,6 +152,7 @@ char **alloc_env(char **env)
 	int i;
 	char **new_env;
 	char	*tmp;
+	char	*tmp2;
 	i = 0;
 	while (env[i])
 		i++;
@@ -143,13 +162,15 @@ char **alloc_env(char **env)
 	i = 0;
 	while (env[i])
 	{
-		tmp = ft_strdup(env[i]);
+		tmp2 = ft_strdup(env[i]);
 		if (!tmp)
 			return (NULL);
-		tmp = ft_strjoin("declare -x ", tmp);
+		tmp = ft_strjoin("declare -x ", tmp2);
 		if (!tmp)
-			return (NULL);
+			return (free(tmp2), NULL);
+		free(tmp2);
 		new_env[i] = tmp;
+		free(tmp);
 		i++;
 	}
 	new_env[i] = NULL;
@@ -184,6 +205,7 @@ int main(int argc, char **argv, char **envp)
 	table->pwd_env = getcwd(NULL, 0);
 	while (1)
 	{
+		g_status = 0;
 		rr = rand() % 2;
 		if (rr)	
 			line = readline(GREEN"➜  "RED""BOLD"minishell "RESET);

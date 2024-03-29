@@ -6,7 +6,7 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:44:32 by mkibous           #+#    #+#             */
-/*   Updated: 2024/03/21 23:15:25 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/03/28 22:27:05 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ void	echo_spaces(t_vars *vars, t_elem *elem)
 	if (vars->spaces == 0 && vars->redir == 0 && vars->echo == 1
 		&& elem->type == WORD)
 	{
-		printf("elem->content: %s\n", elem->content);
 		vars->l_cmd->argv[vars->j] = strdup(" ");
 		(1) && (vars->j++, vars->spaces = 0);
 	}
@@ -69,24 +68,25 @@ void	fill_redir_file(t_elem *elem, t_vars *vars, t_cmd **cmd)
 {
 	if (elem->type >= REDIR_IN && elem->type <= DREDIR_OUT)
 	{
-		if (vars->boolien == 0)
+		if (vars->boolien == 0 && vars->redir == 0 && vars->rdrs == 0)
 		{
 			ft_lstadd_back_cmd(cmd, ft_lstnew_cmd(NULL));
 			vars->l_cmd = ft_lstlast_cmd(*cmd);
 		}
 		if (vars->redir == 0 && vars->rdrs == 0)
 			ft_allocate_redir(elem, vars);
-		vars->l_cmd->redir[vars->i] = elem->content;
+		vars->l_cmd->redir[vars->i] = ft_strdup(elem->content);
 		(1) && (vars->redir = 1, vars->rdrs--);
 	}
 	else if (vars->redir == 1 && elem->type == WORD)
 	{
-		vars->l_cmd->file[vars->i] = elem->content;
+		vars->l_cmd->file[vars->i] = ft_strdup(elem->content);
+		vars->l_cmd->state = elem->state;
 		(1) && (vars->redir = 0, vars->i++);
 		(1) && (vars->prev_is_redir = 1);
 	}
 	else if (vars->boolien == 1 && elem->type == WORD)
-		(1) && (vars->l_cmd->argv[vars->j] = elem->content, vars->j++);
+		(1) && (vars->l_cmd->argv[vars->j] =  ft_strdup(elem->content), vars->j++);
 	if ((elem->type == WORD && vars->j != 1))
 		vars->spaces = 0;
 }
