@@ -6,120 +6,11 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:44:32 by mkibous           #+#    #+#             */
-/*   Updated: 2024/03/29 13:50:26 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/03/31 02:22:44 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-int	len(char *str)
-{
-	int	i;
-	int	env;
-
-	(1) && (i = 0, env = 0);
-	if (str[i] == '\\' && str[i + 1] && str[i + 1] == '\'')
-		return (1);
-	else if (str[i] && str[i + 1] && (str[i] == '\\' || (str[i] == '>'
-				&& str[i + 1] == '>') || (str[i] == '<' && str[i + 1] == '<')))
-		i = 2;
-	else
-	{
-		(str[i] == '$') && (env = 1, i++);
-		while (str[i])
-		{
-			if (env && str[i - 1] == '$' && (str[i] == '$' || str[i] == '?'
-				|| ft_isdigit(str[i])))
-				return (2);
-			if (!ft_isalnum(str[i]) && i == 0)
-				return (1);
-			else if (!ft_isalnum(str[i]) && (!env || (env && str[i] != '_')))
-				break ;
-			i++;
-		}
-	}
-	return (i);
-}
-
-int	ft_count_argv(t_elem *elem, int *redirs)
-{
-	t_vars	vars;
-
-	ft_memset(&vars, 0, sizeof(vars));
-	while (elem && elem->type != PIPE_LINE)
-	{
-		if (vars.n == 0 && vars.echo == 1 && !ft_comp_n(elem->content, elem))
-			(1) && (vars.spaces = 1, vars.n = 1);
-		else if (ft_strncmp(elem->content, "echo", 5) == 0)
-			(1) && (vars.spaces = 1, vars.size++, vars.echo = 1);
-		else if (elem->type == REDIR_IN || elem->type == REDIR_OUT
-			|| elem->type == HERE_DOC || elem->type == DREDIR_OUT)
-			(1) && ((*redirs)++, vars.redir = 1, vars.n = 1);
-		else
-			ft_count_echo_spaces(&vars, elem);
-		if (elem->type == DOUBLE_QUOTE || elem->type == QOUTE)
-			vars.spaces = 0;
-		elem = elem->next;
-	}
-	return (vars.size);
-}
-
-void	get_cmd(t_elem *elem, t_vars *vars, t_cmd **cmd)
-{
-	if ((elem->type == WORD) && vars->boolien == 0 && vars->redir == 0)
-	{
-		if (ft_strncmp(elem->content, "echo", 5) == 0)
-			(1) && (vars->spaces = 1, vars->echo = 1);
-		else
-			(1) && (vars->echo = 0, vars->spaces = 0);
-		vars->size = ft_count_argv(elem, &vars->rdrs);
-		if (vars->prev_is_redir == 0)
-		{
-			ft_lstadd_back_cmd(cmd, ft_lstnew_cmd(ft_strdup(elem->content)));
-			vars->l_cmd = ft_lstlast_cmd(*cmd);
-		}
-		else
-			vars->l_cmd->cmd = elem->content;
-		vars->l_cmd = ft_lstlast_cmd(*cmd);
-		(*cmd)->count_cmd++;
-		vars->l_cmd->argv = (char **)malloc(sizeof(char *) * (vars->size + 1));
-		if (vars->l_cmd->argv == NULL)
-			exit(1);
-		vars->l_cmd->argv[vars->size] = NULL;
-		if (vars->l_cmd->prev && vars->l_cmd->prev->pipe == 1)
-			vars->l_cmd->pipe = 1;
-		(1) && (vars->boolien = 1, vars->prev_is_redir = 0, vars->rdrs = 0);
-	}
-}
-
-void	ft_cmd(t_cmd **cmd, t_elem *elem, char **env, int last_exit)
-{
-	t_vars	vars;
-
-	ft_memset(&vars, 0, (sizeof(vars)));
-	ft_envr(elem, env, last_exit);
-	ft_join(elem);
-	while (elem)
-	{
-		if(elem->content[0] == '\0' && elem->state == GENERAL && !vars.redir)
-		{
-			elem = elem->next;
-		}
-		if(!elem)
-			break;
-		if (vars.n == 0 && vars.echo == 1 && !ft_comp_n(elem->content, elem))
-			(1) && (vars.l_cmd->echo_new_line = 1, vars.spaces = 1, vars.n = 1);
-		else
-		{
-			get_cmd(elem, &vars, cmd);
-			echo_spaces(&vars, elem);
-			fill_redir_file(elem, &vars, cmd);
-		}
-		if (elem->type == PIPE_LINE)
-			(1) && (vars.l_cmd->pipe = 1, ft_memset(&vars, 0, (sizeof(vars))));
-		elem = elem->next;
-	}
-}
-
 void ft_printlist(t_elem *elem, t_cmd *cmd)
 {
     char *str;
@@ -197,6 +88,130 @@ void ft_printlist(t_elem *elem, t_cmd *cmd)
         cmd = cmd->next;
     }
 }
+int	len(char *str)
+{
+	int	i;
+	int	env;
+
+	(1) && (i = 0, env = 0);
+	if (str[i] == '\\' && str[i + 1] && str[i + 1] == '\'')
+		return (1);
+	else if (str[i] && str[i + 1] && (str[i] == '\\' || (str[i] == '>'
+				&& str[i + 1] == '>') || (str[i] == '<' && str[i + 1] == '<')))
+		i = 2;
+	else
+	{
+		(str[i] == '$') && (env = 1, i++);
+		while (str[i])
+		{
+			if (env && str[i - 1] == '$' && !ft_isalpha(str[i]) && str[i] != '_'
+			&& str[i] != '\'' && str[i] != '\"' && str[i] != '_' && str[i] != ' ')
+				return (2);
+			if (!ft_isalnum(str[i]) && i == 0)
+				return (1);
+			else if (!ft_isalnum(str[i]) && (!env || (env && str[i] != '_')))
+				break ;
+			i++;
+		}
+	}
+	return (i);
+}
+
+int	ft_count_argv(t_elem *elem, int *redirs)
+{
+	t_vars	vars;
+
+	ft_memset(&vars, 0, sizeof(vars));
+	while (elem && elem->type != PIPE_LINE)
+	{
+		if (vars.n == 0 && vars.echo == 1 && !ft_comp_n(elem->content, elem))
+			(1) && (vars.spaces = 1, vars.n = 1);
+		else if (vars.echo == 0 && ft_strncmp(elem->content, "echo", 5) == 0)
+			(1) && (vars.spaces = 1, vars.size++, vars.echo = 1);
+		else if (elem->type == REDIR_IN || elem->type == REDIR_OUT
+			|| elem->type == HERE_DOC || elem->type == DREDIR_OUT)
+			(1) && ((*redirs)++, vars.redir = 1, vars.n = 1);
+		else
+			ft_count_echo_spaces(&vars, elem);
+		if (elem->type == DOUBLE_QUOTE || elem->type == QOUTE)
+			vars.spaces = 0;
+		elem = elem->next;
+	}
+	return (vars.size);
+}
+
+void	get_cmd(t_elem *elem, t_vars *vars, t_cmd **cmd)
+{
+	if ((elem->type == WORD) && vars->boolien == 0 && vars->redir == 0)
+	{
+		if (ft_strncmp(elem->content, "echo", 5) == 0)
+			(1) && (vars->spaces = 1, vars->echo = 1);
+		else
+			(1) && (vars->echo = 0, vars->spaces = 0);
+		vars->size = ft_count_argv(elem, &vars->rdrs);
+		if (vars->prev_is_redir == 0)
+		{
+			ft_lstadd_back_cmd(cmd, ft_lstnew_cmd(ft_strdup(elem->content)));
+			vars->l_cmd = ft_lstlast_cmd(*cmd);
+		}
+		else
+			vars->l_cmd->cmd = elem->content;
+		vars->l_cmd = ft_lstlast_cmd(*cmd);
+		(*cmd)->count_cmd++;
+		vars->l_cmd->argv = (char **)malloc(sizeof(char *) * (vars->size + 1));
+		if (vars->l_cmd->argv == NULL)
+			exit(1);
+		vars->l_cmd->argv[vars->size] = NULL;
+		if (vars->l_cmd->prev && vars->l_cmd->prev->pipe == 1)
+			vars->l_cmd->pipe = 1;
+		(1) && (vars->boolien = 1, vars->prev_is_redir = 0, vars->rdrs = 0);
+	}
+}
+
+void	ft_cmd(t_cmd **cmd, t_elem *elem, char **env, t_table *table)
+{
+	t_vars	vars;
+
+	ft_memset(&vars, 0, (sizeof(vars)));
+	ft_envr(elem, env, table);
+	ft_join(elem);
+	while (elem)
+	{
+		if(elem->content[0] == '\0' && elem->state == GENERAL && !vars.redir)
+		{
+			elem = elem->next;
+		}
+		if(!elem)
+			break;
+		if (vars.n == 0 && vars.echo == 1 && !ft_comp_n(elem->content, elem))
+			(1) && (vars.l_cmd->echo_new_line = 1, vars.spaces = 1, vars.n = 1);
+		else
+		{
+			get_cmd(elem, &vars, cmd);
+			echo_spaces(&vars, elem);
+			fill_redir_file(elem, &vars, cmd);
+		}
+		if (elem->type == PIPE_LINE)
+			(1) && (vars.l_cmd->pipe = 1, ft_memset(&vars, 0, (sizeof(vars))));
+		elem = elem->next;
+	}
+}
+
+void	last_arg(t_cmd *cmd, t_table *table)
+{
+	int	i;
+	char	**str;
+
+	i = 0;
+	str = cmd->argv;
+	while (str[i])
+		i++;
+	if(cmd && !cmd->next)
+	{
+		free(table->last_arg);
+		table->last_arg = ft_strdup(cmd->argv[i - 1]);
+	}
+}
 
 void	ft_parsing(char *line, t_cmd **cmd, t_table *table, pid_t pid)
 {
@@ -209,26 +224,20 @@ void	ft_parsing(char *line, t_cmd **cmd, t_table *table, pid_t pid)
 	ft_memset(&elem, 0, sizeof(elem));
 	env = env_copy(table->env);
 	while (line[vars.i])
-	{
-		ft_state(line, &vars, &elem, pid);
-		vars.i++;
-	}
+		(1) && (ft_state(line, &vars, &elem, pid), vars.i++);
 	ft_token(elem);
 	if (ft_chek(elem))
 	{
-		ft_free(env);
-		table->exit_status = 258;
+		(1) && (ft_free(env), table->exit_status = 258);
+		ft_free_elem(&elem);
 		printf("syntax error\n");
 		return ;
 	}
-	ft_cmd(cmd, elem, env, table->exit_status);
-	// ft_printlist(elem, *cmd);
+	ft_printlist(elem, *cmd);
+	ft_cmd(cmd, elem, env, table);
 	tmp = *cmd;
 	while(tmp)
-	{
-		tmp->table = table;
-		tmp->elem = elem;
-		tmp = tmp->next;
-	}
+		(1) && (tmp->table = table, tmp->elem = elem, tmp = tmp->next);
+	last_arg(*cmd, table);
 	ft_free(env);
 }

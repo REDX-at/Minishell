@@ -6,7 +6,7 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:44:32 by mkibous           #+#    #+#             */
-/*   Updated: 2024/03/23 00:30:15 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/03/31 00:32:49 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,28 @@ char	*ft_get_escape(char c, t_state state)
 	else
 		return (ft_strdup("\\"));
 }
-
+void ft_newstate(t_elem **elem, t_elem **tmp)
+{
+	char *str;
+		
+	if ((*elem)->type == WORD)
+	{
+		str = ft_strjoin((*tmp)->content, (*elem)->content);
+		free((*tmp)->content);
+		(*tmp)->content = ft_strdup(str);
+		free(str);
+		if((*elem)->state == IN_QUOTE || (*tmp)->state == IN_QUOTE)
+			(*tmp)->state = IN_QUOTE;
+		if ((*elem)->state == IN_DQUOTE || (*tmp)->state == IN_DQUOTE)
+			(*tmp)->state = IN_DQUOTE;
+		if ((*elem)->next)
+			(*elem)->next->prev = (*elem)->prev;
+		(*elem)->prev->next = (*elem)->next;
+		(1) && (free((*elem)->content), free((*elem)), (*elem) = (*tmp));
+	}
+	else
+		(*elem) = (*tmp)->next;
+}
 void	ft_join(t_elem *elem)
 {
 	t_elem	*tmp;
@@ -116,20 +137,7 @@ void	ft_join(t_elem *elem)
 			while (elem->next && (elem->type == DOUBLE_QUOTE
 					|| elem->type == QOUTE))
 				elem = elem->next;
-			if (elem->type == WORD)
-			{
-				tmp->content = ft_strjoin(tmp->content, elem->content);
-				if(elem->state == IN_QUOTE || tmp->state == IN_QUOTE)
-					tmp->state = IN_QUOTE;
-				if (elem->state == IN_DQUOTE || tmp->state == IN_DQUOTE)
-					tmp->state = IN_DQUOTE;
-				if (elem->next)
-					elem->next->prev = elem->prev;
-				elem->prev->next = elem->next;
-				(1) && (free(elem), elem = tmp);
-			}
-			else
-				elem = tmp->next;
+			ft_newstate(&elem, &tmp);
 		}
 		else
 			elem = elem->next;

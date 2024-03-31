@@ -6,7 +6,7 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:44:32 by mkibous           #+#    #+#             */
-/*   Updated: 2024/03/28 22:27:05 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/03/31 01:59:17 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ void	echo_spaces(t_vars *vars, t_elem *elem)
 	{
 		vars->l_cmd->argv[vars->j] = strdup(" ");
 		(1) && (vars->j++, vars->spaces = 0);
+		
+		vars->l_cmd->argv[vars->j] = NULL;
 	}
 }
 
@@ -81,12 +83,17 @@ void	fill_redir_file(t_elem *elem, t_vars *vars, t_cmd **cmd)
 	else if (vars->redir == 1 && elem->type == WORD)
 	{
 		vars->l_cmd->file[vars->i] = ft_strdup(elem->content);
-		vars->l_cmd->state = elem->state;
-		(1) && (vars->redir = 0, vars->i++);
-		(1) && (vars->prev_is_redir = 1);
+		(1) && (vars->l_cmd->state = elem->state, vars->redir = 0, vars->i++);
+		vars->prev_is_redir = 1;
+		vars->l_cmd->file[vars->i] = NULL;
+		vars->l_cmd->redir[vars->i] = NULL;
 	}
 	else if (vars->boolien == 1 && elem->type == WORD)
-		(1) && (vars->l_cmd->argv[vars->j] =  ft_strdup(elem->content), vars->j++);
+	{
+		vars->l_cmd->argv[vars->j] =  ft_strdup(elem->content);
+		vars->j++;
+		vars->l_cmd->argv[vars->j] = NULL;
+	}
 	if ((elem->type == WORD && vars->j != 1))
 		vars->spaces = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:24:57 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/28 22:55:37 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/03/31 02:08:54 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,17 @@ t_table	*ft_init_table(char **envp)
 		return (NULL);
 	while (envp[i])
 	{
-		table->env[i] = ft_strdup(envp[i]);
+		if(ft_strncmp(envp[i], "_=", 2) == 0)
+			table->env[i] = ft_strdup("_=/usr/bin/env");
+		else
+			table->env[i] = ft_strdup(envp[i]);
 		free(envp[i]);
 		i++;
 	}
 	table->env[i] = NULL;
 	table->alpha = getcwd(NULL, 0);
 	table->declare_x = NULL;
+	table->last_arg = ft_strdup("");
 	table->trash = NULL;
 	table->pwd_env = NULL;
 	table->exit_status = 0;
@@ -74,20 +78,30 @@ void sig_handler(int signum)
 }
 
 // For free
-void ft_cmd_free(t_cmd **cmd)
+void ft_free_elem(t_elem **elem)
 {
 	t_elem	*tmp;
+	t_elem	*tmp2;
 
-	tmp = NULL;
-	if((*cmd))
-		tmp = (*cmd)->elem;
+	tmp = *elem;
 	while (tmp)
 	{
 		if (tmp->content)
 			free(tmp->content);
-		tmp = tmp->next;
+		tmp2 = tmp->next;
+		free(tmp);
+		tmp = tmp2;
 	}
-		free((*cmd)->elem);
+	*elem = NULL;
+}
+void ft_cmd_free(t_cmd **cmd)
+{
+	t_elem	*tmp;
+	t_cmd	*tmp_cmd;
+
+	tmp = NULL;
+	if((*cmd))
+		ft_free_elem(&(*cmd)->elem);
 	while ((*cmd))
 	{
 		if((*cmd)->cmd)
@@ -98,9 +112,10 @@ void ft_cmd_free(t_cmd **cmd)
 			ft_free((*cmd)->file);
 		if((*cmd)->redir)
 			ft_free((*cmd)->redir);
-		(*cmd) = (*cmd)->next;
+		tmp_cmd = (*cmd)->next;
+		free(*cmd);
+		(*cmd) = tmp_cmd;
 	}
-	free(*cmd);
 	(*cmd) = NULL;
 }
 
@@ -153,7 +168,10 @@ char **alloc_env(char **env)
 	char **new_env;
 	char	*tmp;
 	char	*tmp2;
+	int j;
+
 	i = 0;
+	j = 0;
 	while (env[i])
 		i++;
 	new_env = (char **)malloc(sizeof(char *) * (i + 1));
@@ -162,18 +180,22 @@ char **alloc_env(char **env)
 	i = 0;
 	while (env[i])
 	{
-		tmp2 = ft_strdup(env[i]);
-		if (!tmp)
-			return (NULL);
-		tmp = ft_strjoin("declare -x ", tmp2);
-		if (!tmp)
-			return (free(tmp2), NULL);
-		free(tmp2);
-		new_env[i] = tmp;
-		free(tmp);
+		if(ft_strncmp(env[i], "_=", 2) != 0)
+		{
+			tmp2 = ft_strdup(env[i]);
+			if (!tmp)
+				return (NULL);
+			tmp = ft_strjoin("declare -x ", tmp2);
+			if (!tmp)
+				return (free(tmp2), NULL);
+			free(tmp2);
+			new_env[j] = ft_strdup(tmp);
+			free(tmp);
+			j++;
+		}
 		i++;
 	}
-	new_env[i] = NULL;
+	new_env[j] = NULL;
 	return (new_env);
 }
 

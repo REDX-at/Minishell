@@ -6,7 +6,7 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:25:10 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/28 03:36:48 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/03/31 00:54:03 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ typedef struct s_table
 	int				tmp_in;
 	int				tmp_out;
 	int				red;
+	char 			*last_arg;
 } t_table;
 
 // Linked list for the token
@@ -220,8 +221,8 @@ void	ft_token(t_elem *elem);
 int	ft_else_token(t_elem *elem);
 int	ft_chek_if_escape(char c);
 int	ft_listing(char *str, t_elem **elem);
-char	*put_env(t_elem *elem, char **env, int last_exit);
-void	ft_envr(t_elem *elem, char **env, int last_exit);
+char	*put_env(t_elem *elem, char **env, t_table *table);
+void	ft_envr(t_elem *elem, char **env, t_table *table);
 int	ft_count_env(char **env);
 int	env_len(char *str);
 char	**env_copy(char **envp);
@@ -238,7 +239,9 @@ void	ft_join(t_elem *elem);
 int	len(char *str);
 int	ft_count_argv(t_elem *elem, int *redirs);
 void	get_cmd(t_elem *elem, t_vars *vars, t_cmd **cmd);
-void	ft_cmd(t_cmd **cmd, t_elem *elem, char **env, int last_exit);
+void	ft_cmd(t_cmd **cmd, t_elem *elem, char **env, t_table *table);
 void elem_free(t_elem *elem);
+void ft_cmd_free(t_cmd **cmd);
+void ft_free_elem(t_elem **elem);
 //push
 #endif
