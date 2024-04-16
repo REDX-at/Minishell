@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:25:10 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/04/16 23:00:39 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/04/16 23:11:51 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 
 #ifndef MINISHELL_H
@@ -70,6 +71,15 @@ typedef enum e_token
 	DREDIR_OUT,
 } t_token;
 
+// def table
+typedef struct s_table t_table;
+
+// def elem
+typedef struct s_elem t_elem;
+
+// def cmd
+typedef struct s_cmd t_cmd;
+
 // State
 typedef enum e_state
 {
@@ -78,41 +88,6 @@ typedef enum e_state
 	GENERAL,
 } t_state;
 
-// table
-typedef struct s_table
-{
-	char			*var;
-	char			**env;
-	int				count_cmd;
-	char			*name;
-	char			*value;
-	int				signe;
-	char			*alpha;
-	char			**declare_x;
-	char			**trash;
-	char			*pwd_env;
-	int				exit_status;
-	int				fd_hredoc;
-	int				tmp_in;
-	int				tmp_out;
-	int				red;
-	char 			*last_arg;
-	pid_t			pid;
-} t_table;
-
-// Linked list for the token
-typedef struct s_elem
-{
-	char			*content;
-	int				len;
-	t_token			type;
-	t_state			state;
-	pid_t			pid;
-	struct s_elem   *next;
-	struct s_elem   *prev;
-}	t_elem;
-
-//mkibous header
 typedef struct s_cmd
 {
 	char			*line;
@@ -134,6 +109,59 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
 } t_cmd;
+
+// table
+typedef struct s_table
+{
+	char			*var;
+	char			**env;
+	int				count_cmd;
+	char			*name;
+	char			*value;
+	int				signe;
+	char			*alpha;
+	char			**declare_x;
+	char			*pwd_env;
+	int				exit_status;
+	int				tmp_in;
+	int				tmp_out;
+	int				red;
+	char 			*last_arg;
+	pid_t			pid;
+	int				flag;
+	int				flag_old;
+	char			**tmp_env;
+	int 			s;
+	int				l;
+	int				j;
+	int				i;
+	int				check;
+	t_cmd			*cmd;
+} t_table;
+
+// strcut bonus
+typedef struct s_utils
+{
+	int				i;
+	int				j;
+	int				k;
+	int				s;
+	int				check;
+} t_utils;
+
+typedef struct s_elem
+{
+    char            *content;
+    int                len;
+    t_token            type;
+    t_state            state;
+    pid_t            pid;
+    struct s_elem   *next;
+    struct s_elem   *prev;
+}    t_elem;
+
+//mkibous header
+
 
 //mkibous variables
 typedef struct s_vars
@@ -165,6 +193,9 @@ int		check_access(char *command, t_cmd *cmd, t_table *table);
 void	ft_putstr2d_fd(char **str, int fd);
 int		ft_strlen_until_equal(char *str);
 int		heredoc(t_cmd *cmd, int red);
+char	*add_quotes_to_string(char *str);
+void	the_plus(t_cmd *cmd, int i, t_table *table);
+void	the_plus_for_declare_x(t_cmd *cmd, int i, t_table *table);
 
 // functions utils export
 void	ft_add_env(char **env, char *str, int *fd);
@@ -174,18 +205,20 @@ char	**join_2ds(char **join, char **to_join);
 
 // heredoc
 int		heredoc(t_cmd *cmd, int red);
+void	ft_put_env(char **line, t_cmd *cmd);
+void	for_put_env(char **line, t_cmd *cmd, char **env, int i);
 
 // function built-in
 void	ft_cd(t_cmd *cmd, t_table *table);
 void    ft_pwd(t_table *table);
 void	ft_env(t_table *table);
-void	ft_echo(t_cmd *cmd, t_table *table);
+void	ft_echo(t_cmd *cmd);
 void	ft_exit(t_cmd *cmd, t_table *table);
 void	ft_export(t_cmd *cmd, t_table *table);
 void	ft_unset(t_cmd *cmd, t_table *table);
 
 // functions child
-void	loop_child(t_cmd *cmd, int **fd, t_table *table, pid_t pid[]);
+void	loop_child(t_cmd *cmd, int **fd, pid_t pid[]);
 void	close_file_descriptor(int **fd, int k);
 void	wait_all_pid(t_table *table, pid_t pid[], int k);
 
@@ -206,7 +239,27 @@ void	ft_putstr2d_fd(char **str, int fd);
 int		ft_strlen_2d(char **str);
 int		search_for_path(t_table *table);
 char	**copy_the_env(char **env);
+void	*freee(char **string, int index);
+int		check_if_there_is_space(char *str);
+char	*copy_the_str(char *str, int *s, int flag);
+void	malloc_pro(char **str, char **str2, char **str3, char *argv);
+void	utils_plus(t_cmd *cmd, char *tmp, char *tmp_2, char *tmp_3);
+char	*get_the_argv_before_equal(char *str);
+void	utils_plus_declare_x(t_cmd *cmd, char *tmp, char *tmp_2, char *tmp_3);
+char	*copy_the_str_without_plus(char *str);
+void	help_function(t_cmd *cmd, t_table *table, int i, int check);
+void	export_declare_x(t_table *table, t_cmd *cmd);
+int		ft_strlen_2d(char **str);
+void	search_for_herdoc(t_cmd *cmd, int *flag, t_table *table);
+void	check_if_redir_in(t_cmd *cmd, int *fd_in, t_table *table, int i);
+int		is_alpha_num(char *str);
+char	*get_env_pro(char *str, t_table *table);
+int		search_for_home(t_table *table);
+void	change_pwd(t_table *table);
+int		check_if_correct(char *str);
 
+// sort
+void	sort_double_pointer_2(char **array, int size);
 // askari functions
 void 	sig_handler(int signum);
 void	ft_free(char **str);

@@ -6,7 +6,9 @@ SRC = minishell.c ./execute/built_in_cmd.c  ./execute/Exe_file.c ./execute/execu
 	./parsing/parsing_utils.c\
 	./execute/redir_functions.c ./execute/ft_export.c \
 	./execute/utils_export.c ./execute/built_in_2.c ./execute/ft_unset.c \
-	./execute/child_functions.c ./execute/function_herdoc.c
+	./execute/child_functions.c ./execute/function_herdoc.c utils_2.c \
+	utils_3.c utils_4.c ./execute/utils_export_2.c ./execute/utils_export_3.c\
+	./execute/utils_herdoc.c ./execute/built_in_3.c
 
 CFLAGS = -Wall -Wextra -g 
 LIBFT = libft/libft.a

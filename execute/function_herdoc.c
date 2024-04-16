@@ -3,55 +3,63 @@
 /*                                                        :::      ::::::::   */
 /*   function_herdoc.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 01:14:53 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/04/16 10:47:04 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/04/16 23:16:05 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-void sig_hand(int signum)
-{
-	if (signum == SIGINT)
-	{
-		exit(1);
-	}
-}
-void ft_put_env(char **line, t_cmd *cmd)
+
+void	search_for_herdoc(t_cmd *cmd, int *flag, t_table *table)
 {
 	int	i;
-	char	**env;
-	int l;
-	char *tmp;
-	char *tmp2;
-	char *value;
 
 	i = 0;
-	l = 0;
-	if(cmd->state == IN_QUOTE || ft_strchr(*line, '$') == NULL)
-		return ;
-	env = env_copy(cmd->table->env);
-	printf("line = '%s'\n", *line);
+	while (cmd->redir[i])
+	{
+		if (ft_strncmp(cmd->redir[i], "<<", 2) == 0)
+		{
+			check_if_redir_in(cmd, &cmd->in, table, i);
+			*flag = 1;
+		}
+		i++;
+	}
+}
+
+void	sig_hand(int signum)
+{
+	if (signum == SIGINT)
+		exit(1);
+}
+
+void	for_put_env(char **line, t_cmd *cmd, char **env, int i)
+{
+	char	*tmp;
+	char	*tmp2;
+	char	*value;
+
 	while ((*line)[i])
 	{
-		if((*line)[i] == '$')
+		if ((*line)[i] == '$')
 		{
 			free(cmd->elem->content);
 			tmp = ft_substr((*line), 0, i);
-			l = len((*line) + i);
-			cmd->elem->content = ft_substr((*line), i, l);
-			tmp2 = ft_substr((*line), i + l, ft_strlen((*line) + i + l));
+			cmd->table->l = len((*line) + i);
+			cmd->elem->content = ft_substr((*line), i, cmd->table->l);
+			tmp2 = ft_substr((*line), i + cmd->table->l,
+					ft_strlen((*line) + i + cmd->table->l));
 			value = put_env(cmd->elem->content, env, cmd->table);
 			(*line) = ft_strjoin(tmp, value);
 			i = ft_strlen(*line);
 			(*line) = ft_strjoin((*line), tmp2);
 		}
-		else if((*line)[i])
+		else if ((*line)[i])
 			i++;
-		printf("i = %d\n", i);
 	}
 }
+
 void	for_herdoc(t_cmd *cmd, int *fd, char *line, int red)
 {
 	signal(SIGINT, sig_hand);

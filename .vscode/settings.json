@@ -7,6 +7,10 @@
         "chrono": "c",
         "cwchar": "c",
         "string_view": "c",
-        "utility": "c"
+        "utility": "c",
+        "__tuple": "c",
+        "array": "c",
+        "termcap.h": "c",
+        "__locale": "c"
     }
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:44:32 by mkibous           #+#    #+#             */
-/*   Updated: 2024/04/16 23:01:35 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/04/16 23:16:52 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,7 @@ void	ft_cmd(t_cmd **cmd, t_elem *elem)
 			echo_spaces(&vars, elem);
 			fill_redir_file(elem, &vars, cmd);
 		}
-		if (elem->type == PIPE_LINE && vars.l_cmd)
+		if (elem->type == PIPE_LINE)
 			(1) && (vars.l_cmd->pipe = 1, ft_memset(&vars, 0, (sizeof(vars))));
 		elem = elem->next;
 	}
@@ -209,26 +209,13 @@ void	last_arg(t_cmd *cmd, t_table *table)
 	char	**str;
 
 	i = 0;
-	if(cmd && cmd->argv)
-	{
-		str = cmd->argv;
-		while (str[i])
-			i++;
-		if(cmd && !cmd->next)
-		{
-			free(table->last_arg);
-			table->last_arg = ft_strdup(cmd->argv[i - 1]);
-		}
-		else if (cmd && cmd->next)
-		{
-			free(table->last_arg);
-			table->last_arg = ft_strdup("");
-		}
-	}
-	else
+	str = cmd->argv;
+	while (str[i])
+		i++;
+	if(cmd && !cmd->next)
 	{
 		free(table->last_arg);
-		table->last_arg = ft_strdup("");
+		table->last_arg = ft_strdup(cmd->argv[i - 1]);
 	}
 }
 
@@ -250,8 +237,8 @@ void	ft_parsing(char *line, t_cmd **cmd, t_table *table)
 		printf("syntax error\n");
 		return ;
 	}
-	ft_cmd(cmd, elem);
 	// ft_printlist(elem, *cmd);
+	ft_cmd(cmd, elem);
 	tmp = *cmd;
 	while(tmp)
 		(1) && (tmp->table = table, tmp->elem = elem, tmp = tmp->next);

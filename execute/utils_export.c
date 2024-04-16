@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 16:57:02 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/20 01:20:51 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/31 17:09:24 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,10 @@ char	**ft_add_env2(char **env, char *str)
 	i = 0;
 	while (env[i])
 	{
-		new_env[i] = ft_strdup(env[i]);
+		new_env[i] = env[i];
 		i++;
 	}
-	new_env[i] = ft_strdup(str);
+	new_env[i] = str;
 	new_env[i + 1] = NULL;
 	return (new_env);
 }
@@ -53,24 +53,21 @@ int	check_if_exist(char *str, char **env, int flag)
 	int		len;
 	char	**split;
 
-	i = 0;
+	i = -1;
+	if (str == NULL)
+		return (-1);
 	len = ft_strlen_until_equal(str);
 	len++;
-	while (env[i] && flag == 1)
+	while (env[++i] && flag == 1)
 	{
 		if (ft_strncmp(env[i], str, len) == 0)
-		{
 			return (i);
-		}
-		i++;
 	}
 	while (env[i] && flag == 2)
 	{
 		split = ft_split(env[i], '=');
 		if (ft_strncmp(split[0], str, len) == 0)
-		{
 			return (i);
-		}
 		i++;
 	}
 	return (-1);
@@ -100,4 +97,20 @@ char	**join_2ds(char **join, char **to_join)
 	}
 	tmp[i] = NULL;
 	return (tmp);
+}
+
+int	check_if_there_is_space(char *str)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (str[i] && str[i] != '=')
+	{
+		if (str[i] == ' ')
+			return (-1);
+		i++;
+	}
+	return (i);
 }

@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 22:53:19 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/19 23:47:17 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/03/31 07:30:55 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ void	for_unset(t_cmd *cmd, t_table *table)
 	err_join = ft_strdup("unset: `");
 	while (cmd->argv[++d])
 	{
-		if (ft_strchr(cmd->argv[d], '=') != NULL)
+		if (ft_strchr(cmd->argv[d], '=') != NULL
+			|| check_if_there_is_space(cmd->argv[d]) == -1)
 		{
 			the_last[f] = ft_strdup(cmd->argv[d]);
 			flag = 1;
@@ -101,7 +102,6 @@ void	inside_loop(t_cmd *cmd, t_table *table, int i, int j)
 	}
 }
 
-// function unset
 void	ft_unset(t_cmd *cmd, t_table *table)
 {
 	int		i;

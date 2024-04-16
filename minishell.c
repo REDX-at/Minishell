@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:24:57 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/04/16 23:00:14 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/04/16 23:14:38 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "minishell.h"
 // table len
@@ -23,43 +24,89 @@ int	ft_tablen(char **tab)
 	return (i);
 }
 
-// init table
-t_table	*ft_init_table(char **envp)
+void	for_init(t_table *table)
 {
-	t_table	*table;
-	int		i;
+	table->alpha = getcwd(NULL, 0);
+	table->declare_x = NULL;
+	table->last_arg = ft_strdup("");
+	table->pwd_env = NULL;
+	table->exit_status = 0;
+	table->tmp_in = 0;
+	table->tmp_out = 0;
+	table->flag = 0;
+	table->flag_old = 0;
+	table->i = 0;
+	table->check = 0;
+	table->j = 0;
+	table->s = 0;
+	table->l = 0;
+}
 
-	i = 0;
-	table = (t_table *)malloc(sizeof(t_table));
-	if (!table)
-		return (NULL);
-	table->env = (char **)malloc(sizeof(char *) * (ft_tablen(envp) + 1));
-	if (!table->env)
-		return (NULL);
+void	loop_inside_init(t_table *table, char **envp, int i, int shlvl)
+{
+	char	*tmp;
+
 	while (envp[i])
 	{
 		if(ft_strncmp(envp[i], "_=", 2) == 0)
 			table->env[i] = ft_strdup("_=/usr/bin/env");
 		else
+		{
+			if (ft_strncmp(envp[i], "SHLVL=", 6) == 0)
+			{
+				shlvl = ft_atoi(envp[i] + 6, 0);
+				shlvl++;
+				free(envp[i]);
+				tmp = ft_itoa(shlvl);
+				envp[i] = ft_strjoin("SHLVL=", tmp);
+				free(tmp);
+			}
 			table->env[i] = ft_strdup(envp[i]);
 		// free(envp[i]);
+		}
 		i++;
 	}
-	table->env[i] = NULL;
-	table->alpha = getcwd(NULL, 0);
-	table->declare_x = NULL;
-	table->last_arg = ft_strdup("");
-	table->trash = NULL;
-	table->pwd_env = NULL;
-	table->exit_status = 0;
-	table->fd_hredoc = 0;
-	table->tmp_in = 0;
-	table->tmp_out = 0;
-	table->red = -1;
+	table->env[i] = NULL;	
+}
+
+void	if_null(t_table *table)
+{
+	table->env[0] = getcwd(NULL, 0);
+	table->env[1] = ft_strdup("SHLVL=1");
+	table->env[2] = ft_strdup("_=/usr/bin/env");
+	table->env[3] = ft_strdup("PATH=/Users/aitaouss/.brew/bin:/usr/local/bin:/usr/bin:/bin"
+		":/usr/sbin:/sbin:/usr/local/munki:/Library/Apple/usr/bin");
+	table->env[4] = ft_strdup("SHELL=/bin/msh");
+	table->env[5] = NULL;
+	table->red = 1;
+}
+
+// init table
+t_table	*ft_init_table(char **envp)
+{
+	t_table		*table;
+	int			i;
+	int			shlvl;
+	char		*tmp;
+
+	tmp = NULL;
+	shlvl = 0;
+	i = 0;
+	table = (t_table *)malloc(sizeof(t_table));
+	if (!table)
+		return (NULL);
+	table->env = (char **)malloc(sizeof(char *) * (255));
+	if (!table->env)
+		return (NULL);
+	table->red = 0;
+	if (envp[0] == NULL)
+		if_null(table);
+	else
+		loop_inside_init(table, envp, i, shlvl);
+	for_init(table);
 	return (table);
 }
 
-// For signal
 void sig_handler(int signum)
 {
 	if (signum == SIGINT)
@@ -77,7 +124,6 @@ void sig_handler(int signum)
 	}
 }
 
-// For free
 void ft_free_elem(t_elem **elem)
 {
 	t_elem	*tmp;
@@ -94,6 +140,7 @@ void ft_free_elem(t_elem **elem)
 	}
 	*elem = NULL;
 }
+
 void ft_cmd_free(t_cmd **cmd)
 {
 	t_elem	*tmp;
@@ -119,7 +166,6 @@ void ft_cmd_free(t_cmd **cmd)
 	(*cmd) = NULL;
 }
 
-// ft_builtin
 void	ft_built_in(t_cmd **cmd, t_table *table)
 {
 	t_cmd	*tmp;
@@ -137,16 +183,25 @@ void	ft_built_in(t_cmd **cmd, t_table *table)
 	} 
 }
 
-char **the_twode(char **twode)
+char	**the_twode(char **twode)
 {
-	int index = 0;
+	int		index;
+	char	**new_twode;
+
+	index = 0;
+	while (twode[index])
+		index++;
+	new_twode = (char **)malloc(sizeof(char *) * (index + 1));
+	if (!new_twode)
+		return (NULL);
+	index = 0;
 	while (twode[index])
 	{
-		twode[index] = ft_strdup(twode[index]);
+		new_twode[index] = ft_strdup(twode[index]);
 		index++;
 	}
-	twode[index] = NULL;
-	return (twode);
+	new_twode[index] = NULL;
+	return (new_twode);
 }
 
 pid_t ft_get_pid()
@@ -161,36 +216,57 @@ pid_t ft_get_pid()
 	return(pid); 
 }
 
-// alloc with protection
-char **alloc_env(char **env)
+void sort_double_pointer_2(char **array, int size)
 {
-	int i;
-	char **new_env;
-	char	*tmp;
-	char	*tmp2;
-	int j;
+    int i = 0;
+    char *temp;
+    int sorted = 0;
+
+    while (!sorted)
+	{
+        sorted = 1;
+        i = 0;
+        while (i < size - 1)
+		{
+			if (array[i] && array[i + 1])
+			{
+				if (array[i][11] > array[i + 1][11])
+				{
+					temp = array[i];
+					array[i] = array[i + 1];
+					array[i + 1] = temp;
+					sorted = 0;
+				}
+			}
+            i++;
+        }
+        size--;
+    }
+}
+
+char	**remove_old_pwd(char **env)
+{
+	int	i;
+	int	j;
+	int	len;
+	char	**new_env;
 
 	i = 0;
 	j = 0;
+	len = 0;
 	while (env[i])
+	{
+		if (ft_strncmp(env[i], "OLDPWD=", 7) == 0)
+			len++;
 		i++;
-	new_env = (char **)malloc(sizeof(char *) * (i + 1));
-	if (!new_env)
-		return (NULL);
+	}
+	new_env = (char **)malloc(sizeof(char *) * (i - len + 1));
 	i = 0;
 	while (env[i])
 	{
-		if(ft_strncmp(env[i], "_=", 2) != 0)
+		if (ft_strncmp(env[i], "OLDPWD=", 7) != 0)
 		{
-			tmp2 = ft_strdup(env[i]);
-			if (!tmp)
-				return (NULL);
-			tmp = ft_strjoin("declare -x ", tmp2);
-			if (!tmp)
-				return (free(tmp2), NULL);
-			free(tmp2);
-			new_env[j] = ft_strdup(tmp);
-			free(tmp);
+			new_env[j] = ft_strdup(env[i]);
 			j++;
 		}
 		i++;
@@ -198,19 +274,74 @@ char **alloc_env(char **env)
 	new_env[j] = NULL;
 	return (new_env);
 }
+char	**ft_strdup_2d(char **str)
+{
+	int		i;
+	char	**new_str;
+
+	i = 0;
+	while (str[i])
+		i++;
+	new_str = (char **)malloc(sizeof(char *) * (i + 1));
+	if (!new_str)
+		return (NULL);
+	i = 0;
+	while (str[i])
+	{
+		new_str[i] = ft_strdup(str[i]);
+		i++;
+	}
+	new_str[i] = NULL;
+	return (new_str);
+
+}
+
+char	**alloc_env(char **env)
+{
+    int		i;
+    char	**new_env;
+    char    *tmp;
+    char    *tmp2;
+	int		j;
+
+	j = 0;
+    i = 0;
+    while (env[i])
+        i++;
+    new_env = (char **)malloc(sizeof(char *) * 255);
+    if (!new_env)
+        return (NULL);
+    i = 0;
+    while (env[i])
+    {
+		if (ft_strncmp(env[i], "_=", 2) != 0)
+		{
+        	tmp2 = ft_strdup(env[i]);
+        	tmp = ft_strjoin("declare -x ", tmp2);
+        	if (!tmp)
+        	    return (free(tmp2), NULL);
+        	free(tmp2);
+        	new_env[j] = ft_strdup(tmp);
+        	free(tmp);
+			j++;
+		}
+		i++;
+    }
+	new_env[j] = ft_strdup("declare -x OLDPWD");
+    new_env[j + 1] = NULL;
+    return (new_env);
+}
 
 void	f()
 {
-	// check leaks
 	system("leaks minishell");
 }
+
 int main(int argc, char **argv, char **envp)
 {
 	char	*line;
 	t_cmd	*cmd;
 	t_table	*table;
-	int		rr;
-	char **allocation;
 	pid_t pid;
 
 	(void)argc;
@@ -220,8 +351,8 @@ int main(int argc, char **argv, char **envp)
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, sig_handler);
 	rl_catch_signals = 0;
-	allocation = the_twode(envp);
-	table = ft_init_table(allocation);
+	envp = remove_old_pwd(envp);
+	table = ft_init_table(envp);
 	table->var = "➜  minishell ";
 	table->declare_x = alloc_env(table->env);
 	table->pwd_env = getcwd(NULL, 0);
@@ -230,11 +361,7 @@ int main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		g_status = 0;
-		rr = rand() % 2;
-		if (rr)	
-			line = readline(GREEN"➜  "RED""BOLD"minishell "RESET);
-		else
-			line = readline(RED"➜  "RED""BOLD"minishell "RESET);
+		line = readline(RED"➜  "RED""BOLD"minishell "RESET);
 		if(line)
 		{
 			add_history(line);
