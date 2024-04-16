@@ -6,7 +6,7 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:44:32 by mkibous           #+#    #+#             */
-/*   Updated: 2024/04/16 15:05:34 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/04/16 23:02:30 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,8 @@ void env(char **str, t_table *table, t_elem **elem)
 	{
 		ft_lstadd_back(elem, ft_lstnew(ft_strdup("")));
 		ft_lstlast(*elem)->state = GENERAL;
-		printf("elem.cont : %p\n", ft_lstlast(*elem)->content);
-		printf("elem %p\n", ft_lstlast(*elem));
 	}
 	free(tmp);
-	printf("HERE\n");
 	tmp2 = ft_substr(*str, len(*str), ft_strlen(*str));
 	free(*str);
 	*str = ft_strjoin(env, tmp2);
@@ -55,7 +52,6 @@ int	ft_listing(char **str, t_elem **elem, t_table *table, t_vars *vars)
 	if ((*str)[i] == '$' && vars->Q == 0 && vars->redir == 0)
 		env(str, table, elem);
 	l = len(*str);
-	printf("l = %d\n", l);
 	content = (char *)malloc(l + 1);
 	if (content == NULL)
 		exit(1);

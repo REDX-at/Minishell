@@ -6,7 +6,7 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:25:10 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/04/16 12:07:48 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/04/16 23:00:39 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,7 +210,7 @@ char	**copy_the_env(char **env);
 // askari functions
 void 	sig_handler(int signum);
 void	ft_free(char **str);
-void	ft_parsing(char *line, t_cmd **cmd, t_table *table, pid_t pid);
+void	ft_parsing(char *line, t_cmd **cmd, t_table *table);
 t_elem	*ft_lstnew(char *content);
 void	ft_lstadd_back(t_elem **lst, t_elem *new);
 t_elem	*ft_lstlast(t_elem *lst);
@@ -240,7 +240,7 @@ void	ft_join(t_elem *elem);
 int	len(char *str);
 int	ft_count_argv(t_elem *elem, int *redirs, int rdr);
 void	get_cmd(t_elem *elem, t_vars *vars, t_cmd **cmd);
-void	ft_cmd(t_cmd **cmd, t_elem *elem, char **env, t_table *table);
+void	ft_cmd(t_cmd **cmd, t_elem *elem);
 void elem_free(t_elem *elem);
 void ft_cmd_free(t_cmd **cmd);
 void ft_free_elem(t_elem **elem);

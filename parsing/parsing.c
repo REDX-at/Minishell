@@ -6,7 +6,7 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:44:32 by mkibous           #+#    #+#             */
-/*   Updated: 2024/04/16 15:00:44 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/04/16 23:01:35 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,7 @@ void	get_cmd(t_elem *elem, t_vars *vars, t_cmd **cmd)
 	}
 }
 
-void	ft_cmd(t_cmd **cmd, t_elem *elem, char **env, t_table *table)
+void	ft_cmd(t_cmd **cmd, t_elem *elem)
 {
 	t_vars	vars;
 	t_elem	*tmp;
@@ -232,34 +232,31 @@ void	last_arg(t_cmd *cmd, t_table *table)
 	}
 }
 
-void	ft_parsing(char *line, t_cmd **cmd, t_table *table, pid_t pid)
+void	ft_parsing(char *line, t_cmd **cmd, t_table *table)
 {
 	t_elem	*elem;
-	char	**env;
 	t_vars	vars;
 	t_cmd	*tmp;
 
 	ft_memset(&vars, 0, sizeof(vars));
 	ft_memset(&elem, 0, sizeof(elem));
-	env = env_copy(table->env);
 	while (line[vars.i])
 		(1) && (ft_state(&line, &vars, &elem, table), vars.i++);
-	ft_printlist(elem, *cmd);
+	// ft_printlist(elem, *cmd);
 	if (ft_chek(elem))
 	{
-		(1) && (ft_free(env), table->exit_status = 258);
+		(1) && (table->exit_status = 258);
 		ft_free_elem(&elem);
 		printf("syntax error\n");
 		return ;
 	}
-	ft_cmd(cmd, elem, env, table);
-	ft_printlist(elem, *cmd);
+	ft_cmd(cmd, elem);
+	// ft_printlist(elem, *cmd);
 	tmp = *cmd;
 	while(tmp)
 		(1) && (tmp->table = table, tmp->elem = elem, tmp = tmp->next);
 	if(!(*cmd))
 		ft_free_elem(&elem);
 	last_arg(*cmd, table);
-	ft_free(env);
 	free(line);
 }
