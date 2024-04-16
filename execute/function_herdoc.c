@@ -6,7 +6,7 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 01:14:53 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/31 17:12:41 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/04/16 10:47:04 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void ft_put_env(char **line, t_cmd *cmd)
 			l = len((*line) + i);
 			cmd->elem->content = ft_substr((*line), i, l);
 			tmp2 = ft_substr((*line), i + l, ft_strlen((*line) + i + l));
-			value = put_env(cmd->elem, env, cmd->table);
+			value = put_env(cmd->elem->content, env, cmd->table);
 			(*line) = ft_strjoin(tmp, value);
 			i = ft_strlen(*line);
 			(*line) = ft_strjoin((*line), tmp2);

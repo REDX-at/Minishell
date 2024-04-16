@@ -6,7 +6,7 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:44:32 by mkibous           #+#    #+#             */
-/*   Updated: 2024/03/31 01:59:17 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/04/01 02:08:09 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,43 +70,49 @@ void	fill_redir_file(t_elem *elem, t_vars *vars, t_cmd **cmd)
 {
 	if (elem->type >= REDIR_IN && elem->type <= DREDIR_OUT)
 	{
-		if (vars->boolien == 0 && vars->redir == 0 && vars->rdrs == 0)
-		{
-			ft_lstadd_back_cmd(cmd, ft_lstnew_cmd(NULL));
-			vars->l_cmd = ft_lstlast_cmd(*cmd);
-		}
-		if (vars->redir == 0 && vars->rdrs == 0)
-			ft_allocate_redir(elem, vars);
+		ft_allocate_redir(elem, vars, cmd);
 		vars->l_cmd->redir[vars->i] = ft_strdup(elem->content);
-		(1) && (vars->redir = 1, vars->rdrs--);
+		vars->redir = 1;
 	}
 	else if (vars->redir == 1 && elem->type == WORD)
 	{
 		vars->l_cmd->file[vars->i] = ft_strdup(elem->content);
-		(1) && (vars->l_cmd->state = elem->state, vars->redir = 0, vars->i++);
-		vars->prev_is_redir = 1;
-		vars->l_cmd->file[vars->i] = NULL;
-		vars->l_cmd->redir[vars->i] = NULL;
+		(1) && (vars->l_cmd->state = elem->state, vars->redir = 0);
+		(1) && (vars->prev_is_redir = 1, vars->i++);
+		if (vars->rdrs == 1)
+		{
+			vars->l_cmd->file[vars->i] = NULL;
+			vars->l_cmd->redir[vars->i] = NULL;
+		}
+		vars->rdrs--;
 	}
 	else if (vars->boolien == 1 && elem->type == WORD)
 	{
 		vars->l_cmd->argv[vars->j] =  ft_strdup(elem->content);
-		vars->j++;
-		vars->l_cmd->argv[vars->j] = NULL;
+		(1) && (vars->j++, vars->l_cmd->argv[vars->j] = NULL);
+		if ((vars->j != 1))
+			vars->spaces = 0;
 	}
-	if ((elem->type == WORD && vars->j != 1))
-		vars->spaces = 0;
 }
 
-void	ft_allocate_redir(t_elem *elem, t_vars *vars)
+void	ft_allocate_redir(t_elem *elem, t_vars *vars, t_cmd **cmd)
 {
-	vars->size = ft_count_argv(elem, &vars->rdrs);
-	vars->l_cmd->redir = (char **)malloc(sizeof(char *) * (vars->rdrs + 1));
-	if (vars->l_cmd->redir == NULL)
-		exit(1);
-	vars->l_cmd->file = (char **)malloc(sizeof(char *) * (vars->rdrs + 1));
-	if (vars->l_cmd->file == NULL)
-		exit(1);
-	vars->l_cmd->redir[vars->rdrs] = NULL;
-	vars->l_cmd->file[vars->rdrs] = NULL;
+	if (vars->boolien == 0 && vars->redir == 0 && vars->rdrs == 0)
+	{
+		ft_lstadd_back_cmd(cmd, ft_lstnew_cmd(NULL));
+		vars->l_cmd = ft_lstlast_cmd(*cmd);
+	}
+	if (vars->rdrs == 0)
+	if (vars->rdrs == 0)
+	{
+		vars->size = ft_count_argv(elem, &vars->rdrs, 1);
+		vars->l_cmd->redir = (char **)malloc(sizeof(char *) * (vars->rdrs + 1));
+		if (vars->l_cmd->redir == NULL)
+			exit(1);
+		vars->l_cmd->file = (char **)malloc(sizeof(char *) * (vars->rdrs + 1));
+		if (vars->l_cmd->file == NULL)
+			exit(1);
+		vars->l_cmd->redir[vars->rdrs] = NULL;
+		vars->l_cmd->file[vars->rdrs] = NULL;
+	}
 }

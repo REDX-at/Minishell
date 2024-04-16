@@ -6,7 +6,7 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:25:10 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/31 00:54:03 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/04/16 12:07:48 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ typedef struct s_table
 	int				tmp_out;
 	int				red;
 	char 			*last_arg;
+	pid_t			pid;
 } t_table;
 
 // Linked list for the token
@@ -216,12 +217,12 @@ t_elem	*ft_lstlast(t_elem *lst);
 t_cmd	*ft_lstnew_cmd(char *content);
 void	ft_lstadd_back_cmd(t_cmd **lst, t_cmd *new);
 t_cmd	*ft_lstlast_cmd(t_cmd *lst);
-void	ft_state(char *line, t_vars *vars, t_elem **elem, pid_t pid);
+void	ft_state(char **line, t_vars *vars, t_elem **elem, t_table *table);
 void	ft_token(t_elem *elem);
 int	ft_else_token(t_elem *elem);
 int	ft_chek_if_escape(char c);
-int	ft_listing(char *str, t_elem **elem);
-char	*put_env(t_elem *elem, char **env, t_table *table);
+int	ft_listing(char **str, t_elem **elem, t_table *table, t_vars *vars);
+char	*put_env(char *content, char **env, t_table *table);
 void	ft_envr(t_elem *elem, char **env, t_table *table);
 int	ft_count_env(char **env);
 int	env_len(char *str);
@@ -230,14 +231,14 @@ int	ft_comp_n(char *str, t_elem *elem);
 void	ft_count_echo_spaces(t_vars *vars, t_elem *elem);
 void	echo_spaces(t_vars *vars, t_elem *elem);
 void	fill_redir_file(t_elem *elem, t_vars *vars, t_cmd **cmd);
-void	ft_allocate_redir(t_elem *elem, t_vars *vars);
+void	ft_allocate_redir(t_elem *elem, t_vars *vars, t_cmd **cmd);
 int	ft_chek_quotes(t_elem *elem, int *b, int *Q);
 int	chek_prev(t_elem *elem);
 int	ft_chek(t_elem *elem);
 char	*ft_get_escape(char c, t_state state);
 void	ft_join(t_elem *elem);
 int	len(char *str);
-int	ft_count_argv(t_elem *elem, int *redirs);
+int	ft_count_argv(t_elem *elem, int *redirs, int rdr);
 void	get_cmd(t_elem *elem, t_vars *vars, t_cmd **cmd);
 void	ft_cmd(t_cmd **cmd, t_elem *elem, char **env, t_table *table);
 void elem_free(t_elem *elem);

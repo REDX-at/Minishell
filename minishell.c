@@ -6,7 +6,7 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:24:57 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/31 02:08:54 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/04/16 14:39:05 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_table	*ft_init_table(char **envp)
 			table->env[i] = ft_strdup("_=/usr/bin/env");
 		else
 			table->env[i] = ft_strdup(envp[i]);
-		free(envp[i]);
+		// free(envp[i]);
 		i++;
 	}
 	table->env[i] = NULL;
@@ -216,7 +216,7 @@ int main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	cmd = NULL;
-	pid =  ft_get_pid();
+	g_status = 0;
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, sig_handler);
 	rl_catch_signals = 0;
@@ -225,6 +225,8 @@ int main(int argc, char **argv, char **envp)
 	table->var = "➜  minishell ";
 	table->declare_x = alloc_env(table->env);
 	table->pwd_env = getcwd(NULL, 0);
+	table->pid =  ft_get_pid();
+	pid = table->pid;
 	while (1)
 	{
 		g_status = 0;
@@ -249,6 +251,6 @@ int main(int argc, char **argv, char **envp)
 			ft_putstr_fd("\n", 1);
 			exit(0);
 		}
-		free(line);
+		// free(line);
 	}
 }

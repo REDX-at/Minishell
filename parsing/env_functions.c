@@ -6,33 +6,33 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:44:32 by mkibous           #+#    #+#             */
-/*   Updated: 2024/03/31 01:19:07 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/04/16 10:45:55 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*put_env(t_elem *elem, char **env, t_table *table)
+char	*put_env(char *content, char **env, t_table *table)
 {
 	int	i;
 	int	len;
 
 	(1) && (i = 0, len = 0);
-	if (!ft_strncmp(elem->content, "$$", 3))
-		return (ft_itoa((int)elem->pid));
-	if (!ft_strncmp(elem->content, "$?", 3))
+	if (!ft_strncmp(content, "$$", 3))
+		return (ft_itoa((int)table->pid));
+	if (!ft_strncmp(content, "$?", 3))
 		return (ft_itoa(table->exit_status));
-	if (!ft_strncmp(elem->content, "$0", 3))
+	if (!ft_strncmp(content, "$0", 3))
 		return (strdup("minishell"));
-	if(!ft_strncmp(elem->content, "$_", 3))
+	if(!ft_strncmp(content, "$_", 3))
 		return (strdup(table->last_arg));
 	while (env[i])
 	{
-		if (ft_strlen(env[i]) > ft_strlen(elem->content))
+		if (ft_strlen(env[i]) > ft_strlen(content))
 			len = ft_strlen(env[i]);
 		else
-			len = ft_strlen(elem->content);
-		if (i % 2 == 0 && i != 1 && !strncmp(elem->content + 1, env[i], len))
+			len = ft_strlen(content);
+		if (i % 2 == 0 && i != 1 && !strncmp(content + 1, env[i], len))
 			return (i++, strdup(env[i]));
 		i++;
 	}
@@ -82,7 +82,7 @@ void	ft_envr(t_elem *elem, char **env, t_table *table)
 		if (elem->type == ENV)
 		{
 			elem->type = WORD;
-			tmp = put_env(elem, env, table);
+			tmp = put_env(elem->content, env, table);
 			free(elem->content);
 			elem->content = ft_strdup(tmp);
 			free(tmp);

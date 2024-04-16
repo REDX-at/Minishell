@@ -6,7 +6,7 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:44:32 by mkibous           #+#    #+#             */
-/*   Updated: 2024/03/31 02:22:44 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/04/16 15:00:44 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,8 @@ int	len(char *str)
 		(str[i] == '$') && (env = 1, i++);
 		while (str[i])
 		{
-			if (env && str[i - 1] == '$' && !ft_isalpha(str[i]) && str[i] != '_'
-			&& str[i] != '\'' && str[i] != '\"' && str[i] != '_' && str[i] != ' ')
+			if (env && str[i - 1] == '$' && (str[i] == '$' || str[i] == '?'
+				|| ft_isdigit(str[i])))
 				return (2);
 			if (!ft_isalnum(str[i]) && i == 0)
 				return (1);
@@ -117,7 +117,7 @@ int	len(char *str)
 	return (i);
 }
 
-int	ft_count_argv(t_elem *elem, int *redirs)
+int	ft_count_argv(t_elem *elem, int *redirs, int rdr)
 {
 	t_vars	vars;
 
@@ -128,8 +128,8 @@ int	ft_count_argv(t_elem *elem, int *redirs)
 			(1) && (vars.spaces = 1, vars.n = 1);
 		else if (vars.echo == 0 && ft_strncmp(elem->content, "echo", 5) == 0)
 			(1) && (vars.spaces = 1, vars.size++, vars.echo = 1);
-		else if (elem->type == REDIR_IN || elem->type == REDIR_OUT
-			|| elem->type == HERE_DOC || elem->type == DREDIR_OUT)
+		else if (rdr == 1 &&(elem->type == REDIR_IN || elem->type == REDIR_OUT
+			|| elem->type == HERE_DOC || elem->type == DREDIR_OUT))
 			(1) && ((*redirs)++, vars.redir = 1, vars.n = 1);
 		else
 			ft_count_echo_spaces(&vars, elem);
@@ -148,14 +148,14 @@ void	get_cmd(t_elem *elem, t_vars *vars, t_cmd **cmd)
 			(1) && (vars->spaces = 1, vars->echo = 1);
 		else
 			(1) && (vars->echo = 0, vars->spaces = 0);
-		vars->size = ft_count_argv(elem, &vars->rdrs);
+		vars->size = ft_count_argv(elem, &vars->rdrs, 0);
 		if (vars->prev_is_redir == 0)
 		{
 			ft_lstadd_back_cmd(cmd, ft_lstnew_cmd(ft_strdup(elem->content)));
 			vars->l_cmd = ft_lstlast_cmd(*cmd);
 		}
 		else
-			vars->l_cmd->cmd = elem->content;
+			vars->l_cmd->cmd = ft_strdup(elem->content);
 		vars->l_cmd = ft_lstlast_cmd(*cmd);
 		(*cmd)->count_cmd++;
 		vars->l_cmd->argv = (char **)malloc(sizeof(char *) * (vars->size + 1));
@@ -164,25 +164,31 @@ void	get_cmd(t_elem *elem, t_vars *vars, t_cmd **cmd)
 		vars->l_cmd->argv[vars->size] = NULL;
 		if (vars->l_cmd->prev && vars->l_cmd->prev->pipe == 1)
 			vars->l_cmd->pipe = 1;
-		(1) && (vars->boolien = 1, vars->prev_is_redir = 0, vars->rdrs = 0);
+		(1) && (vars->boolien = 1, vars->prev_is_redir = 0);
 	}
 }
 
 void	ft_cmd(t_cmd **cmd, t_elem *elem, char **env, t_table *table)
 {
 	t_vars	vars;
+	t_elem	*tmp;
 
 	ft_memset(&vars, 0, (sizeof(vars)));
-	ft_envr(elem, env, table);
+	tmp = elem;
+	// ft_envr(elem, env, table);
 	ft_join(elem);
 	while (elem)
 	{
 		if(elem->content[0] == '\0' && elem->state == GENERAL && !vars.redir)
-		{
 			elem = elem->next;
-		}
 		if(!elem)
+		{
+			if(!vars.l_cmd)
+			{
+				ft_cmd_free(cmd);
+			}
 			break;
+		}
 		if (vars.n == 0 && vars.echo == 1 && !ft_comp_n(elem->content, elem))
 			(1) && (vars.l_cmd->echo_new_line = 1, vars.spaces = 1, vars.n = 1);
 		else
@@ -191,7 +197,7 @@ void	ft_cmd(t_cmd **cmd, t_elem *elem, char **env, t_table *table)
 			echo_spaces(&vars, elem);
 			fill_redir_file(elem, &vars, cmd);
 		}
-		if (elem->type == PIPE_LINE)
+		if (elem->type == PIPE_LINE && vars.l_cmd)
 			(1) && (vars.l_cmd->pipe = 1, ft_memset(&vars, 0, (sizeof(vars))));
 		elem = elem->next;
 	}
@@ -203,13 +209,26 @@ void	last_arg(t_cmd *cmd, t_table *table)
 	char	**str;
 
 	i = 0;
-	str = cmd->argv;
-	while (str[i])
-		i++;
-	if(cmd && !cmd->next)
+	if(cmd && cmd->argv)
+	{
+		str = cmd->argv;
+		while (str[i])
+			i++;
+		if(cmd && !cmd->next)
+		{
+			free(table->last_arg);
+			table->last_arg = ft_strdup(cmd->argv[i - 1]);
+		}
+		else if (cmd && cmd->next)
+		{
+			free(table->last_arg);
+			table->last_arg = ft_strdup("");
+		}
+	}
+	else
 	{
 		free(table->last_arg);
-		table->last_arg = ft_strdup(cmd->argv[i - 1]);
+		table->last_arg = ft_strdup("");
 	}
 }
 
@@ -224,8 +243,8 @@ void	ft_parsing(char *line, t_cmd **cmd, t_table *table, pid_t pid)
 	ft_memset(&elem, 0, sizeof(elem));
 	env = env_copy(table->env);
 	while (line[vars.i])
-		(1) && (ft_state(line, &vars, &elem, pid), vars.i++);
-	ft_token(elem);
+		(1) && (ft_state(&line, &vars, &elem, table), vars.i++);
+	ft_printlist(elem, *cmd);
 	if (ft_chek(elem))
 	{
 		(1) && (ft_free(env), table->exit_status = 258);
@@ -233,11 +252,14 @@ void	ft_parsing(char *line, t_cmd **cmd, t_table *table, pid_t pid)
 		printf("syntax error\n");
 		return ;
 	}
-	ft_printlist(elem, *cmd);
 	ft_cmd(cmd, elem, env, table);
+	ft_printlist(elem, *cmd);
 	tmp = *cmd;
 	while(tmp)
 		(1) && (tmp->table = table, tmp->elem = elem, tmp = tmp->next);
+	if(!(*cmd))
+		ft_free_elem(&elem);
 	last_arg(*cmd, table);
 	ft_free(env);
+	free(line);
 }
