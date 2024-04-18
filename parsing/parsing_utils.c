@@ -6,7 +6,7 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:44:32 by mkibous           #+#    #+#             */
-/*   Updated: 2024/03/31 00:32:49 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/04/17 13:10:52 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ void	ft_join(t_elem *elem)
 
 	while (elem)
 	{
+		ft_escape(elem);
 		if (elem->next && (elem->type == WORD))
 		{
 			(1) && (tmp = elem, elem = elem->next);

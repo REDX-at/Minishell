@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:44:32 by mkibous           #+#    #+#             */
-/*   Updated: 2024/04/16 23:16:52 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/04/18 12:37:21 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,7 +229,7 @@ void	ft_parsing(char *line, t_cmd **cmd, t_table *table)
 	ft_memset(&elem, 0, sizeof(elem));
 	while (line[vars.i])
 		(1) && (ft_state(&line, &vars, &elem, table), vars.i++);
-	// ft_printlist(elem, *cmd);
+	ft_printlist(elem, *cmd);
 	if (ft_chek(elem))
 	{
 		(1) && (table->exit_status = 258);

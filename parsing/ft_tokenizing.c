@@ -6,12 +6,31 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:44:32 by mkibous           #+#    #+#             */
-/*   Updated: 2024/04/16 23:02:30 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/04/18 12:50:21 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-void env(char **str, t_table *table, t_elem **elem)
+int word_count(char *str)
+{
+	int i;
+	int count;
+
+	i = 0;
+	count = 0;
+	printf("str = %s\n", str);
+	while (str[i])
+	{
+		if (str[i] != ' ' && str[i] != '\t')
+		{
+			count++;
+		}
+		i+= len(str + i);
+	}
+	printf("count = %d\n", count);
+	return (count);
+}
+void env(char **str, t_table *table, t_elem **elem, t_vars *vars)
 {
 	char *tmp;
 	char *tmp2;
@@ -21,6 +40,8 @@ void env(char **str, t_table *table, t_elem **elem)
 	envp = env_copy(table->env);
 	tmp = ft_substr(*str, 0, len(*str));
 	env = put_env(tmp, envp, table);
+	vars->env = word_count(env);
+	printf("env = %d\n", vars->env);
 	if(env[0] == '\0')
 	{
 		ft_lstadd_back(elem, ft_lstnew(ft_strdup("")));
@@ -49,8 +70,8 @@ int	ft_listing(char **str, t_elem **elem, t_table *table, t_vars *vars)
 	free(*str);
 	*str = ft_strdup(tmp2);
 	free(tmp2);
-	if ((*str)[i] == '$' && vars->Q == 0 && vars->redir == 0)
-		env(str, table, elem);
+	if ((*str)[i] == '$' && vars->Q == 0 && vars->redir == 0 && vars->env == 0)
+		env(str, table, elem, vars);
 	l = len(*str);
 	content = (char *)malloc(l + 1);
 	if (content == NULL)
@@ -129,12 +150,13 @@ void	ft_token(t_elem *elem)
 void	ft_state(char **line, t_vars *vars, t_elem **elem, t_table *table)
 {
 	if (*line && (*line)[vars->i] == '"' && (vars->i == 0 || (*line)[vars->i - 1] != '\\')
-		&& vars->DQ == 0 && vars->Q == 0)
+		&& vars->DQ == 0 && vars->Q == 0 && vars->env == 0)
 		(1) && (vars->DQ = 1, vars->closedQ = 1);
 	else if (*line && (*line)[vars->i] == '\"' && vars->DQ == 1)
 		(1) && (vars->DQ = 0, vars->closedQ = 0);
 	else if (*line && (*line)[vars->i] == '\'' && (vars->i == 0
-			|| (*line)[vars->i - 1] != '\\') && vars->Q == 0 && vars->DQ == 0)
+			|| (*line)[vars->i - 1] != '\\') && vars->Q == 0 && vars->DQ == 0
+			&& vars->env == 0)
 		(1) && (vars->Q = 1, vars->closedQ = 2);
 	else if (*line && (*line)[vars->i] == '\'' && vars->Q == 1)
 		(1) && (vars->Q = 0, vars->closedQ = 0);
@@ -145,7 +167,7 @@ void	ft_state(char **line, t_vars *vars, t_elem **elem, t_table *table)
 		if (vars->last)
 		{
 			vars->last->pid = table->pid;
-			if (vars->closedQ == 1 && vars->last->content[0] != '"')
+			if ((vars->closedQ == 1 && vars->last->content[0] != '"'))
 				vars->last->state = 0;
 			else if (vars->closedQ == 2 && vars->last->content[0] != '\'')
 				vars->last->state = 1;
@@ -157,5 +179,7 @@ void	ft_state(char **line, t_vars *vars, t_elem **elem, t_table *table)
 			vars->redir = 1;
 		else if (vars->redir == 1 && vars->last->type == WORD)
 			vars->redir = 0;
+		if (vars->env != 0 && vars->last->type != WHITE_SPACE)
+			(1) && (vars->last->state = IN_DQUOTE, vars->env--, vars->last->type = WORD);
 	}
 }

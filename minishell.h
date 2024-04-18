@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:25:10 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/04/16 23:11:51 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/04/18 12:07:41 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,6 +180,7 @@ typedef struct s_vars
 	int l;
 	int j;
 	int rdrs;
+	int env;
 	t_cmd *l_cmd;
 	t_elem *last;
 } t_vars;
@@ -263,6 +264,7 @@ void	sort_double_pointer_2(char **array, int size);
 // askari functions
 void 	sig_handler(int signum);
 void	ft_free(char **str);
+void ft_escape(t_elem *elem);
 void	ft_parsing(char *line, t_cmd **cmd, t_table *table);
 t_elem	*ft_lstnew(char *content);
 void	ft_lstadd_back(t_elem **lst, t_elem *new);
