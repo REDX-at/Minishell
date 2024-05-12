@@ -6,26 +6,39 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:44:32 by mkibous           #+#    #+#             */
-/*   Updated: 2024/04/18 12:19:32 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/05/11 19:05:33 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*put_env(char *content, char **env, t_table *table)
+char	*manual_env(char *content, t_table *table, t_vars *vars)
 {
-	int	i;
-	int	len;
-
-	(1) && (i = 0, len = 0);
+	if (!ft_strncmp(content, "$", 2) && (!vars || (vars && vars->closedq == 0
+				&& vars->tmp[0] != '\'' && vars->tmp[0] != '"')))
+		return (strdup("$"));
 	if (!ft_strncmp(content, "$$", 3))
 		return (ft_itoa((int)table->pid));
 	if (!ft_strncmp(content, "$?", 3))
 		return (ft_itoa(table->exit_status));
 	if (!ft_strncmp(content, "$0", 3))
 		return (strdup("minishell"));
-	if(!ft_strncmp(content, "$_", 3))
+	if (!ft_strncmp(content, "$_", 3))
 		return (strdup(table->last_arg));
+	return (NULL);
+}
+
+char	*put_env(char *content, char **env, t_table *table, t_vars *vars)
+{
+	int		i;
+	int		len;
+	char	*tmp;
+
+	(1) && (i = 0, len = 0);
+	tmp = manual_env(content, table, vars);
+	if (tmp != NULL)
+		return (tmp);
+	free(tmp);
 	while (env[i])
 	{
 		if (ft_strlen(env[i]) > ft_strlen(content))
@@ -38,10 +51,11 @@ char	*put_env(char *content, char **env, t_table *table)
 	}
 	return (strdup(""));
 }
-void ft_escape(t_elem *elem)
+
+void	ft_escape(t_elem *elem)
 {
 	char	*tmp;
-	
+
 	if (elem->type == NEW_LINE)
 	{
 		elem->type = WORD;
@@ -66,50 +80,12 @@ void ft_escape(t_elem *elem)
 	}
 }
 
-void	ft_envr(t_elem *elem, char **env, t_table *table)
-{
-	int	i;
-	int redir;
-	char	*tmp;
-
-	i = 0;
-	redir = 0;
-	while (elem)
-	{
-		if (elem->type == REDIR_IN || elem->type == REDIR_OUT
-			|| elem->type == HERE_DOC || elem->type == DREDIR_OUT)
-			redir = 1;
-		if (elem->type == ENV)
-		{
-			elem->type = WORD;
-			tmp = put_env(elem->content, env, table);
-			free(elem->content);
-			elem->content = ft_strdup(tmp);
-			free(tmp);
-		}
-		ft_escape(elem);
-		if (elem->type == WORD && redir == 1)
-			redir = 0;
-		elem = elem->next;
-	}
-}
-
 int	ft_count_env(char **env)
 {
 	int	i;
 
 	i = 0;
 	while (env[i])
-		i++;
-	return (i);
-}
-
-int	env_len(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] && str[i] != '=')
 		i++;
 	return (i);
 }

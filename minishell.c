@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:24:57 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/04/16 23:14:38 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/11 15:09:29 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	for_init(t_table *table)
 {
 	table->alpha = getcwd(NULL, 0);
 	table->declare_x = NULL;
-	table->last_arg = ft_strdup("");
+	table->last_arg = ft_strdup("mini");
 	table->pwd_env = NULL;
 	table->exit_status = 0;
 	table->tmp_in = 0;
@@ -71,7 +71,11 @@ void	loop_inside_init(t_table *table, char **envp, int i, int shlvl)
 
 void	if_null(t_table *table)
 {
-	table->env[0] = getcwd(NULL, 0);
+	char *tmp;
+
+	tmp = getcwd(NULL, 0);
+	table->env[0] = ft_strjoin("PWD=", tmp);
+	free(tmp);
 	table->env[1] = ft_strdup("SHLVL=1");
 	table->env[2] = ft_strdup("_=/usr/bin/env");
 	table->env[3] = ft_strdup("PATH=/Users/aitaouss/.brew/bin:/usr/local/bin:/usr/bin:/bin"
@@ -344,6 +348,8 @@ int main(int argc, char **argv, char **envp)
 	t_table	*table;
 	pid_t pid;
 
+	if(isatty(0) == 0)
+		return (0);
 	(void)argc;
 	(void)argv;
 	cmd = NULL;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   function_herdoc.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 01:14:53 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/04/16 23:16:05 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/11 15:57:36 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	for_put_env(char **line, t_cmd *cmd, char **env, int i)
 			cmd->elem->content = ft_substr((*line), i, cmd->table->l);
 			tmp2 = ft_substr((*line), i + cmd->table->l,
 					ft_strlen((*line) + i + cmd->table->l));
-			value = put_env(cmd->elem->content, env, cmd->table);
+			value = put_env(cmd->elem->content, env, cmd->table, NULL);
 			(*line) = ft_strjoin(tmp, value);
 			i = ft_strlen(*line);
 			(*line) = ft_strjoin((*line), tmp2);

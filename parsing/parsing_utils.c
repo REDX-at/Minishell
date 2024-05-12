@@ -6,7 +6,7 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:44:32 by mkibous           #+#    #+#             */
-/*   Updated: 2024/04/17 13:10:52 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/05/11 18:51:09 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,17 +103,18 @@ char	*ft_get_escape(char c, t_state state)
 	else
 		return (ft_strdup("\\"));
 }
-void ft_newstate(t_elem **elem, t_elem **tmp)
+
+void	ft_newstate(t_elem **elem, t_elem **tmp)
 {
-	char *str;
-		
+	char	*str;
+
 	if ((*elem)->type == WORD)
 	{
 		str = ft_strjoin((*tmp)->content, (*elem)->content);
 		free((*tmp)->content);
 		(*tmp)->content = ft_strdup(str);
 		free(str);
-		if((*elem)->state == IN_QUOTE || (*tmp)->state == IN_QUOTE)
+		if ((*elem)->state == IN_QUOTE || (*tmp)->state == IN_QUOTE)
 			(*tmp)->state = IN_QUOTE;
 		if ((*elem)->state == IN_DQUOTE || (*tmp)->state == IN_DQUOTE)
 			(*tmp)->state = IN_DQUOTE;
@@ -124,23 +125,4 @@ void ft_newstate(t_elem **elem, t_elem **tmp)
 	}
 	else
 		(*elem) = (*tmp)->next;
-}
-void	ft_join(t_elem *elem)
-{
-	t_elem	*tmp;
-
-	while (elem)
-	{
-		ft_escape(elem);
-		if (elem->next && (elem->type == WORD))
-		{
-			(1) && (tmp = elem, elem = elem->next);
-			while (elem->next && (elem->type == DOUBLE_QUOTE
-					|| elem->type == QOUTE))
-				elem = elem->next;
-			ft_newstate(&elem, &tmp);
-		}
-		else
-			elem = elem->next;
-	}
 }

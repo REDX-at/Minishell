@@ -6,7 +6,7 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:25:10 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/04/18 12:07:41 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/05/11 19:10:37 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,24 +166,27 @@ typedef struct s_elem
 //mkibous variables
 typedef struct s_vars
 {
-	bool echo;
-	bool spaces;
-	bool redir;
-	bool n;
-	bool boolien;
-	bool prev_is_redir;
-	int size;
-	int Q;
-	int DQ;
-	int closedQ;
-	int i;
-	int l;
-	int j;
-	int rdrs;
-	int env;
-	t_cmd *l_cmd;
-	t_elem *last;
-} t_vars;
+	char	*tmp;
+	bool	echo;
+	bool	spaces;
+	bool	exp;
+	bool	redir;
+	bool	n;
+	bool	boolien;
+	bool	prev_is_redir;
+	int		size;
+	int		q;
+	int		dq;
+	int		closedq;
+	int		i;
+	int		l;
+	int		j;
+	int		*len;
+	int		rdrs;
+	int		env;
+	t_cmd	*l_cmd;
+	t_elem	*last;
+}	t_vars;
 
 
 // Function For Execute
@@ -227,8 +230,8 @@ void	wait_all_pid(t_table *table, pid_t pid[], int k);
 void	handle_redir(t_cmd *cmd, t_table *table, int k, int **fd);
 
 // Utils Function
-char    **ft_split(char const *s, char c);
-int	    ft_strcmp(char *str, char *str2);
+char	**ft_split(char const *s, char c);
+int		ft_strcmp(char *str, char *str2);
 size_t	ft_strlen(const char *s);
 char	*ft_strdup(const char *s1);
 char	*ft_strjoin(char const *s1, char const *s2);
@@ -262,9 +265,9 @@ int		check_if_correct(char *str);
 // sort
 void	sort_double_pointer_2(char **array, int size);
 // askari functions
-void 	sig_handler(int signum);
+void	sig_handler(int signum);
 void	ft_free(char **str);
-void ft_escape(t_elem *elem);
+void	ft_escape(t_elem *elem);
 void	ft_parsing(char *line, t_cmd **cmd, t_table *table);
 t_elem	*ft_lstnew(char *content);
 void	ft_lstadd_back(t_elem **lst, t_elem *new);
@@ -274,30 +277,32 @@ void	ft_lstadd_back_cmd(t_cmd **lst, t_cmd *new);
 t_cmd	*ft_lstlast_cmd(t_cmd *lst);
 void	ft_state(char **line, t_vars *vars, t_elem **elem, t_table *table);
 void	ft_token(t_elem *elem);
-int	ft_else_token(t_elem *elem);
-int	ft_chek_if_escape(char c);
-int	ft_listing(char **str, t_elem **elem, t_table *table, t_vars *vars);
-char	*put_env(char *content, char **env, t_table *table);
-void	ft_envr(t_elem *elem, char **env, t_table *table);
-int	ft_count_env(char **env);
-int	env_len(char *str);
+int		ft_else_token(t_elem *elem);
+int		ft_chek_if_escape(char c);
+int		ft_listing(char **str, t_elem **elem, t_table *table, t_vars *vars);
+char	*put_env(char *content, char **env, t_table *table, t_vars *vars);
+int		ft_count_env(char **env);
+int		env_len(char *str);
 char	**env_copy(char **envp);
-int	ft_comp_n(char *str, t_elem *elem);
+int		ft_comp_n(char *str);
 void	ft_count_echo_spaces(t_vars *vars, t_elem *elem);
 void	echo_spaces(t_vars *vars, t_elem *elem);
 void	fill_redir_file(t_elem *elem, t_vars *vars, t_cmd **cmd);
 void	ft_allocate_redir(t_elem *elem, t_vars *vars, t_cmd **cmd);
-int	ft_chek_quotes(t_elem *elem, int *b, int *Q);
-int	chek_prev(t_elem *elem);
-int	ft_chek(t_elem *elem);
+int		ft_chek_quotes(t_elem *elem, int *b, int *Q);
+int		chek_prev(t_elem *elem);
+int		ft_chek(t_elem *elem);
 char	*ft_get_escape(char c, t_state state);
 void	ft_join(t_elem *elem);
-int	len(char *str);
-int	ft_count_argv(t_elem *elem, int *redirs, int rdr);
+int		len(char *str);
+int		ft_count_argv(t_elem *elem, int *redirs, int rdr);
 void	get_cmd(t_elem *elem, t_vars *vars, t_cmd **cmd);
 void	ft_cmd(t_cmd **cmd, t_elem *elem);
-void elem_free(t_elem *elem);
-void ft_cmd_free(t_cmd **cmd);
-void ft_free_elem(t_elem **elem);
+void	elem_free(t_elem *elem);
+void	ft_cmd_free(t_cmd **cmd);
+void	ft_free_elem(t_elem **elem);
+char	*ft_list_content(char **str, t_elem **elem, int *i, t_vars *vars);
+void	last_arg(t_cmd *cmd, t_table *table);
+void	ft_newstate(t_elem **elem, t_elem **tmp);
 //push
 #endif

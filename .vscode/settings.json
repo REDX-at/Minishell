@@ -11,6 +11,7 @@
         "__tuple": "c",
         "array": "c",
         "termcap.h": "c",
-        "__locale": "c"
+        "__locale": "c",
+        "sstream": "c"
     }
 }

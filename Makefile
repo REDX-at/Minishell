@@ -3,7 +3,7 @@ NAME = minishell
 SRC = minishell.c ./execute/built_in_cmd.c  ./execute/Exe_file.c ./execute/execute_cmd.c\
 	./parsing/ft_tokenizing.c ./parsing/lists.c ./parsing/list_cmd.c utils.c \
 	./parsing/parsing.c ./parsing/env_functions.c ./parsing/echo_redir_functions.c\
-	./parsing/parsing_utils.c\
+	./parsing/parsing_utils.c ./parsing/count.c ./parsing/ft_tokenizing_utils.c\
 	./execute/redir_functions.c ./execute/ft_export.c \
 	./execute/utils_export.c ./execute/built_in_2.c ./execute/ft_unset.c \
 	./execute/child_functions.c ./execute/function_herdoc.c utils_2.c \
