@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:24:57 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/12 14:35:51 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/12 15:01:49 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ void sig_handler(int signum)
 			printf("\n");
 			return;
 		}
+		g_status = 1;
 		printf("\n");
         rl_on_new_line();
         rl_replace_line("", 1);
@@ -369,6 +370,8 @@ int main(int argc, char **argv, char **envp)
 	{
 		g_status = 0;
 		line = readline(RED"➜  "RED""BOLD"minishell "RESET);
+		if(g_status != 0)
+			(1) && (table->exit_status = 1, g_status = 0);
 		if(line)
 		{
 			add_history(line);
