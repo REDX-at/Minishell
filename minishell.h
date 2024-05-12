@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:25:10 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/11 19:10:37 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/05/12 14:35:58 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,7 +188,6 @@ typedef struct s_vars
 	t_elem	*last;
 }	t_vars;
 
-
 // Function For Execute
 void    execute_cmd(t_cmd *cmd, int **fd_s, int k, t_table *table);
 void	execute_for_cmd(t_cmd *cmd, t_table *table);
@@ -261,6 +260,11 @@ char	*get_env_pro(char *str, t_table *table);
 int		search_for_home(t_table *table);
 void	change_pwd(t_table *table);
 int		check_if_correct(char *str);
+int		check_if_valid(char *str);
+int		check_if_correct(char *str);
+void	free_2d(char **str);
+int		search_for_home(t_table *table);
+void	condition_flag_herdoc(t_cmd *cmd, int k, int **fd);
 
 // sort
 void	sort_double_pointer_2(char **array, int size);

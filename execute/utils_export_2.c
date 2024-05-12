@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 15:58:06 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/04/16 23:20:27 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/04/25 16:05:51 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,10 @@ void	after_export(t_cmd *cmd, t_table *table, int check)
 			if (cmd->argv[i][0] == '=' || (!ft_isalpha(cmd->argv[i][0]))
 				|| check_if_there_is_space(cmd->argv[i]) == -1 || alnum == -1)
 			{
-				if (ft_strncmp(cmd->argv[i], "_", 1) != 0)
+				if (!check_if_valid(cmd->argv[i]) || cmd->argv[i][0] == '+')
 				{
-					ft_putstr_fd("export : not a valids identifier\n", 2);
+					ft_putstr_fd("export : not a valid identifier\n", 2);
+					table->flag = 1;
 					table->exit_status = 1;
 					continue ;
 				}
@@ -94,19 +95,6 @@ void	put_declare_x(t_table *table)
 	ft_putstr2d_fd(tmp, 1);
 }
 
-int	check_if_correct(char *str)
-{
-	int		i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '+' && str[i - 1] != '=')
-			return (1);
-		i++;
-	}
-	return (0);
-}
 void	help_function(t_cmd *cmd, t_table *table, int i, int check)
 {
 	if (ft_strchr(cmd->argv[i], '+') && check_if_correct(cmd->argv[i]))
@@ -133,7 +121,6 @@ void	ft_export(t_cmd *cmd, t_table *table)
 	flag = 0;
 	check = 0;
 	i = 1;
-
 	sort_double_pointer_2(table->declare_x, ft_strlen_2d(table->declare_x));
 	if (cmd->argv[1] == NULL)
 	{
@@ -141,5 +128,6 @@ void	ft_export(t_cmd *cmd, t_table *table)
 		return ;
 	}
 	after_export(cmd, table, check);
-	export_declare_x(table, cmd);
+	if (table->flag != 1)
+		export_declare_x(table, cmd);
 }

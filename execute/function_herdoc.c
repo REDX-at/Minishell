@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   function_herdoc.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 01:14:53 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/11 15:57:36 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/05/12 14:56:23 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	for_herdoc(t_cmd *cmd, int *fd, char *line, int red)
 	while (1)
 	{
 		line = readline("> ");
-		if (!line)
+		if (!line || line[0] == '\0')
 			break ;
 		if (ft_strlen(line) == 0)
 		{
@@ -76,7 +76,9 @@ void	for_herdoc(t_cmd *cmd, int *fd, char *line, int red)
 			free(line);
 			continue ;
 		}
-		if (ft_strncmp(line, cmd->file[red], ft_strlen(line)) == 0)
+		if (ft_strncmp(line, cmd->file[red], ft_strlen(cmd->file[red])) == 0
+			&& cmd->file[red][0] != '\0'
+				&& ft_strlen(line) == ft_strlen(cmd->file[red]))
 		{
 			free(line);
 			break ;

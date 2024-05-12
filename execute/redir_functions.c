@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 19:18:43 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/31 17:08:02 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/04/27 02:12:40 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,23 +54,24 @@ void	loop_handle_redir(t_cmd *cmd, int k, int **fd, int flag)
 	i = -1;
 	while (cmd->redir[++i])
 	{
+		if (flag == 1 && i == 0)
+		{
+			if (cmd->next)
+				cmd->out = fd[k][1];
+		}
 		if (ft_strncmp(cmd->redir[i], "<", ft_strlen(cmd->redir[i])) == 0
 			|| (ft_strncmp(cmd->redir[i], "<<", ft_strlen(cmd->redir[i]))
 				== 0 && flag == 0))
 		{
 			check_if_redir_in(cmd, &cmd->in, cmd->table, i);
 			if (cmd->next)
-				cmd->out = fd[k + 1][1];
+				cmd->out = fd[k][1];
 		}
 		else if (ft_strncmp(cmd->redir[i], ">", ft_strlen(cmd->redir[i])) == 0
 			|| ft_strncmp(cmd->redir[i], ">>", ft_strlen(cmd->redir[i])) == 0)
 		{
 			check_if_redir_out(cmd, &cmd->out, cmd->table, i);
-			if (cmd->in == 0)
-			{
-				if (cmd->prev)
-					cmd->in = fd[k][0];
-			}
+			condition_flag_herdoc(cmd, k, fd);
 		}
 	}
 }

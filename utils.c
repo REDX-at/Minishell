@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:33:36 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/31 22:45:14 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/04/18 23:39:04 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,11 @@ int	check_access(char *command, t_cmd *cmd, t_table *table)
 			cmd->path = new_path2;
 			break ;
 		}
+		free(new_path);
+		free(new_path2);
 		i++;
 	}
+	free_2d(splited);
 	if (flag)
 		return (1);
 	return (0);

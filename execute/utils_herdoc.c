@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 17:05:41 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/04/12 17:06:46 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/04/27 02:12:23 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,4 +23,40 @@ void	ft_put_env(char **line, t_cmd *cmd)
 		return ;
 	env = env_copy(cmd->table->env);
 	for_put_env(line, cmd, env, i);
+}
+
+int	search_for_home(t_table *table)
+{
+	int	i;
+
+	i = 0;
+	while (table->env[i])
+	{
+		if (ft_strncmp(table->env[i], "HOME=", 5) == 0)
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
+void	free_2d(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		free(str[i]);
+		i++;
+	}
+	free(str);
+}
+
+void	condition_flag_herdoc(t_cmd *cmd, int k, int **fd)
+{
+	if (cmd->in == 0)
+	{
+		if (cmd->prev)
+			cmd->in = fd[k][0];
+	}
 }
