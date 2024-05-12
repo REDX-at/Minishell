@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 22:27:59 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/04/27 02:08:10 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/12 22:18:15 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,9 @@ void	ft_echo(t_cmd *cmd)
 		ft_putstr_fd("\n", 1);
 }
 
-void	for_change_pwd(t_table *table, char **tmp, char **tmp2, char **oldpwd)
+void	for_change_pwd(t_table *table, char **tmp2, char **oldpwd)
 {
 	int		i;
-	char	*tmp3;
 
 	i = -1;
 	if (!table->flag_old)
@@ -42,17 +41,18 @@ void	for_change_pwd(t_table *table, char **tmp, char **tmp2, char **oldpwd)
 	{
 		if (ft_strncmp(table->env[i], "PWD=", 4) == 0)
 		{
-			*tmp = ft_strdup(table->env[i]);
 			*tmp2 = getcwd(NULL, 0);
-			tmp3 = table->env[i];
+			free(table->env[i]);
 			table->env[i] = ft_strjoin("PWD=", *tmp2);
-			free(tmp3);
 			free(*tmp2);
-			free(*tmp);
 		}
 		if (ft_strncmp(table->env[i], "OLDPWD=", 7) == 0)
-			(1) && (*oldpwd = table->pwd_env,
+		{
+			free(table->env[i]);
+			(1) && (*oldpwd = ft_strdup(table->pwd_env),
 				table->env[i] = ft_strjoin("OLDPWD=", *oldpwd));
+			free(*oldpwd);
+		}
 	}
 }
 
@@ -76,6 +76,7 @@ void	loop_pwd(t_table *table, char **tmp, char **tmp2, char **tmp3)
 		if (ft_strncmp(table->declare_x[i], "declare -x OLDPWD", 17) == 0)
 		{
 			*tmp3 = table->declare_x[i];
+			printf("%p\n", *tmp3);
 			table->declare_x[i]
 				= ft_strjoin("declare -x OLDPWD=", table->pwd_env);
 			free(*tmp3);
@@ -93,7 +94,7 @@ void	change_pwd(t_table *table)
 	char	*tmp3;
 
 	i = 0;
-	for_change_pwd(table, &tmp, &tmp2, &oldpwd);
+	for_change_pwd(table, &tmp, &oldpwd);
 	loop_pwd(table, &tmp, &tmp2, &tmp3);
 	i = 0;
 	tmp3 = table->pwd_env;

@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:25:10 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/12 14:35:58 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/12 16:23:54 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,13 @@ typedef enum e_state
 	GENERAL,
 } t_state;
 
+typedef struct s_garbage
+{
+	void				*str;
+	void				**str2;
+	struct s_garbage	*next;
+} t_garbage;
+
 typedef struct s_cmd
 {
 	char			*line;
@@ -136,7 +143,9 @@ typedef struct s_table
 	int				j;
 	int				i;
 	int				check;
+	int				gar;
 	t_cmd			*cmd;
+	t_garbage		*garbage;
 } t_table;
 
 // strcut bonus
@@ -265,6 +274,12 @@ int		check_if_correct(char *str);
 void	free_2d(char **str);
 int		search_for_home(t_table *table);
 void	condition_flag_herdoc(t_cmd *cmd, int k, int **fd);
+void	*garbage_collect(void *str, t_table *table, int size);
+void	**garbage_collect_2d(void **str, t_table *table, int size);
+void    free_garbage(t_table *table);
+t_garbage	*ft_lstnews(void *content);
+t_garbage   *ft_lstnews_2d(void **content);
+void	ft_lstadds_back(t_garbage **lst, t_garbage *jdida);
 
 // sort
 void	sort_double_pointer_2(char **array, int size);

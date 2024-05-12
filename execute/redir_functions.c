@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 19:18:43 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/04/27 02:12:40 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/12 17:15:47 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,9 +96,9 @@ void	handle_redir(t_cmd *cmd, t_table *table, int k, int **fd)
 	else
 	{
 		if (k > 0)
-			cmd->in = fd[k][0];
+			cmd->in = fd[k - 1][0];
 		if (cmd->next)
-			cmd->out = fd[k + 1][1];
+			cmd->out = fd[k][1];
 	}
 	dup2(cmd->in, 0);
 	dup2(cmd->out, 1);

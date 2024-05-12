@@ -8,7 +8,8 @@ SRC = minishell.c ./execute/built_in_cmd.c  ./execute/Exe_file.c ./execute/execu
 	./execute/utils_export.c ./execute/built_in_2.c ./execute/ft_unset.c \
 	./execute/child_functions.c ./execute/function_herdoc.c utils_2.c \
 	utils_3.c utils_4.c ./execute/utils_export_2.c ./execute/utils_export_3.c\
-	./execute/utils_herdoc.c ./execute/built_in_3.c ./execute/check_export.c
+	./execute/utils_herdoc.c ./execute/built_in_3.c ./execute/check_export.c \
+	./execute/garbage_collector.c
 
 CFLAGS = -Wall -Wextra -g
 LIBFT = libft/libft.a

@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 22:42:02 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/04/25 11:12:38 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/12 22:52:03 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,12 +114,9 @@ void	the_plus(t_cmd *cmd, int i, t_table *table)
 {
 	int		check;
 	char	*tmp;
-	char	*tmp_2;
+	char	*tmp_2 = NULL;
 	char	*tmp_3;
 
-	tmp_3 = malloc(sizeof(char) * 255);
-	tmp_2 = malloc(sizeof(char) * 255);
-	tmp = malloc(sizeof(char) * 255);
 	table->j = ft_strlen_until_equal(cmd->argv[i]) + 1;
 	tmp_3 = copy_the_str(cmd->argv[i], &table->j, 1);
 	tmp = copy_the_str_without_plus(cmd->argv[i]);
@@ -127,4 +124,6 @@ void	the_plus(t_cmd *cmd, int i, t_table *table)
 	table->i = i;
 	table->check = check;
 	utils_plus(cmd, tmp, tmp_2, tmp_3);
+	free(tmp);
+	free(tmp_3);
 }

@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 14:42:02 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/12 14:34:32 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/12 16:45:15 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,14 +65,12 @@ void	alloc_and_check_failure(int ***fd, pid_t **pid, t_table **table)
 
 	i = -1;
 	*pid = (pid_t *)malloc(sizeof(pid_t) * (*table)->count_cmd);
-	printf("pid = %p\n", *pid);
 	if (!(*pid))
 	{
 		perror("malloc");
 		exit(EXIT_FAILURE);
 	}
 	*fd = (int **)malloc(sizeof(int *) * ((*table)->count_cmd + 1));
-	printf("fd = %p\n", *fd);
 	if (!(*fd))
 	{
 		perror("malloc");
@@ -81,7 +79,6 @@ void	alloc_and_check_failure(int ***fd, pid_t **pid, t_table **table)
 	while (++i < (*table)->count_cmd)
 	{
 		(*fd)[i] = (int *)malloc(sizeof(int) * 2);
-		printf("fd[%d] = %p\n", i, (*fd)[i]);
 		if (!(*fd)[i])
 		{
 			perror("malloc");
@@ -90,6 +87,7 @@ void	alloc_and_check_failure(int ***fd, pid_t **pid, t_table **table)
 	}
 	(*fd)[i] = NULL;
 }
+
 void free_fd_and_pid(int **fd, pid_t *pid)
 {
 	int	i;
@@ -103,6 +101,7 @@ void free_fd_and_pid(int **fd, pid_t *pid)
 	free(fd);
 	free(pid);
 }
+
 void	execute_for_cmd(t_cmd *cmd, t_table *table)
 {
 	int		k;
@@ -119,6 +118,7 @@ void	execute_for_cmd(t_cmd *cmd, t_table *table)
 		dup2(table->tmp_in, 0);
 		dup2(table->tmp_out, 1);
 		(1) && (close(table->tmp_in), close(table->tmp_out), table->tmp_in = 0);
+		free_fd_and_pid(fd, pid);
 		return ;
 	}
 	creat_pipe(table, fd, k);
