@@ -6,7 +6,7 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:24:57 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/12 15:01:49 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/05/12 16:25:51 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -368,10 +368,10 @@ int main(int argc, char **argv, char **envp)
 	pid = table->pid;
 	while (1)
 	{
-		g_status = 0;
 		line = readline(RED"➜  "RED""BOLD"minishell "RESET);
-		if(g_status != 0)
-			(1) && (table->exit_status = 1, g_status = 0);
+		if(g_status == 1)
+			table->exit_status = 1;
+		g_status = 0;
 		if(line)
 		{
 			add_history(line);

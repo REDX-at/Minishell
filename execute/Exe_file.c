@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Exe_file.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 14:42:02 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/12 14:34:32 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/12 18:43:22 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ void	execute_for_cmd(t_cmd *cmd, t_table *table)
 		dup2(table->tmp_in, 0);
 		dup2(table->tmp_out, 1);
 		(1) && (close(table->tmp_in), close(table->tmp_out), table->tmp_in = 0);
+		free_fd_and_pid(fd, pid);
 		return ;
 	}
 	creat_pipe(table, fd, k);

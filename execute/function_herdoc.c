@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   function_herdoc.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 01:14:53 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/12 14:56:23 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/12 16:23:35 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,13 @@ void	search_for_herdoc(t_cmd *cmd, int *flag, t_table *table)
 
 void	sig_hand(int signum)
 {
+	extern int	g_status;
+
 	if (signum == SIGINT)
+	{
+		g_status = 1;
 		exit(1);
+	}
 }
 
 void	for_put_env(char **line, t_cmd *cmd, char **env, int i)
