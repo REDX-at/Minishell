@@ -6,7 +6,7 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:24:57 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/12 16:25:51 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/05/13 19:23:25 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ int	ft_tablen(char **tab)
 
 void	for_init(t_table *table)
 {
+	table->gar = 0;
+	table->garbage = malloc(sizeof(char *) * 255);
 	table->alpha = getcwd(NULL, 0);
 	table->declare_x = NULL;
 	table->last_arg = ft_strdup("mini");
@@ -388,6 +390,6 @@ int main(int argc, char **argv, char **envp)
 			ft_putstr_fd("\n", 1);
 			exit(0);
 		}
-		// free(line);
+		// printf("%p\n", line);
 	}
 }

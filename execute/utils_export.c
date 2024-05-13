@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 16:57:02 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/04/25 16:22:29 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/12 19:53:55 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,13 @@ char	**ft_add_env2(char **env, char *str)
 	i = 0;
 	while (env[i])
 	{
-		new_env[i] = env[i];
+		new_env[i] = ft_strdup(env[i]);
+		free(env[i]);
 		i++;
 	}
-	new_env[i] = str;
+	new_env[i] = ft_strdup(str);
 	new_env[i + 1] = NULL;
+	free(env);
 	return (new_env);
 }
 

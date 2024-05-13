@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 14:50:10 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/04/25 16:36:28 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/12 22:52:01 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	utils_plus(t_cmd *cmd, char *tmp, char *tmp_2, char *tmp_3)
 {
 	int		j;
+	char	*leak;
 
 	j = 0;
 	while (cmd->argv[++j])
@@ -23,10 +24,21 @@ void	utils_plus(t_cmd *cmd, char *tmp, char *tmp_2, char *tmp_3)
 		{
 			cmd->table->s = 0;
 			tmp_2 = copy_the_str(cmd->table->env[cmd->table->check], &cmd->table->s, 0);
-			tmp_2 = ft_strjoin(tmp_2, tmp_3);
-			tmp = get_the_argv_before_equal(tmp);
-			tmp = ft_strjoin(tmp, tmp_2);
-			cmd->table->env[cmd->table->check] = tmp;
+			leak = ft_strdup(tmp_2);
+			free(tmp_2);
+			tmp_2 = ft_strjoin(leak, tmp_3);
+			free(leak);
+			leak = ft_strdup(tmp);
+			free(tmp);
+			tmp = get_the_argv_before_equal(leak);
+			free(leak);
+			leak = ft_strdup(tmp);
+			free(tmp);
+			tmp = ft_strjoin(leak, tmp_2);
+			free(leak);
+			free(tmp_2);
+			free(cmd->table->env[cmd->table->check]);
+			cmd->table->env[cmd->table->check] = ft_strdup(tmp);
 		}
 		else
 			cmd->table->env = ft_add_env2(cmd->table->env, tmp);

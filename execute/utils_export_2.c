@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 15:58:06 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/04/25 16:05:51 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/12 22:26:37 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ char	*add_quotes_to_string(char *str)
 		tmp[j] = str[i];
 		j++;
 	}
+	free(str);
 	tmp[j] = '"';
 	j++;
 	tmp[j] = '\0';
@@ -93,10 +94,13 @@ void	put_declare_x(t_table *table)
 	}
 	tmp[i] = NULL;
 	ft_putstr2d_fd(tmp, 1);
+	free_2d(tmp);
 }
 
 void	help_function(t_cmd *cmd, t_table *table, int i, int check)
 {
+	char	*tmp;
+
 	if (ft_strchr(cmd->argv[i], '+') && check_if_correct(cmd->argv[i]))
 		the_plus(cmd, i, table);
 	else
@@ -104,11 +108,16 @@ void	help_function(t_cmd *cmd, t_table *table, int i, int check)
 		check = check_if_exist(cmd->argv[i], table->env, 1);
 		if (check != -1)
 		{
+			free(table->env[check]);
 			table->env[check] = ft_strdup(cmd->argv[i]);
 			check = 0;
 		}
 		else
-			table->env = ft_add_env2(table->env, ft_strdup(cmd->argv[i]));
+		{
+			tmp = ft_strdup(cmd->argv[i]);
+			table->env = ft_add_env2(table->env, tmp);
+			free(tmp);
+		}
 	}
 }
 
@@ -128,6 +137,7 @@ void	ft_export(t_cmd *cmd, t_table *table)
 		return ;
 	}
 	after_export(cmd, table, check);
+	return ;
 	if (table->flag != 1)
 		export_declare_x(table, cmd);
 }
