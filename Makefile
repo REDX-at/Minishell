@@ -44,7 +44,7 @@ push:
 	git add .; \
 	git commit -m "$$commit_message"; \
 	git push;
- 
+
 pull:
 	@git stash
 	@git pull
