@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Exe_file.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 14:42:02 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/13 19:22:16 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/05/14 12:57:15 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	execute_built_in(t_cmd *cmd, int **fd, t_table *table, int k)
 {
+	if (table->exit_status == 1)
+		return ;
 	if (cmd->next)
 		close(fd[k][1]);
 	if (ft_strcmp(cmd->cmd, "cd"))
@@ -88,7 +90,7 @@ void	alloc_and_check_failure(int ***fd, pid_t **pid, t_table **table)
 	(*fd)[i] = NULL;
 }
 
-void free_fd_and_pid(int **fd, pid_t *pid)
+void	free_fd_and_pid(int **fd, pid_t *pid)
 {
 	int	i;
 

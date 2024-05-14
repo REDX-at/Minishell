@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 15:58:06 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/12 22:26:37 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/13 15:39:33 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,6 @@ void	ft_export(t_cmd *cmd, t_table *table)
 		return ;
 	}
 	after_export(cmd, table, check);
-	return ;
 	if (table->flag != 1)
 		export_declare_x(table, cmd);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 22:42:02 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/13 19:22:51 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/05/14 12:57:51 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,27 @@ char	**utils_declare_x(t_cmd *cmd, t_table *table, int i)
 	char	**split;
 
 	split = ft_split(cmd->argv[i], '=');
-	split[0] = ft_strjoin("declare -x ", split[0]);
+	tmp_argv = ft_strdup(split[0]);
+	free(split[0]);
+	split[0] = ft_strjoin("declare -x ", tmp_argv);
 	check = check_if_exist(split[0], table->declare_x, 2);
+	free(tmp_argv);
+	free_2d(split);
 	if (check != -1)
 	{
 		if (ft_strchr(cmd->argv[i], '=') != 0)
 		{
 			tmp_argv = ft_strjoin("declare -x ", cmd->argv[i]);
+			free(table->declare_x[check]);
 			table->declare_x[check] = ft_strdup(tmp_argv);
+			free(tmp_argv);
 		}
 	}
 	else
 	{
 		tmp_argv = ft_strjoin("declare -x ", cmd->argv[i]);
 		new_env = ft_add_env2(table->declare_x, tmp_argv);
+		free(tmp_argv);
 		sort_double_pointer_2(new_env, ft_strlen_2d(new_env));
 		table->declare_x = new_env;
 	}
@@ -96,15 +103,17 @@ void	the_plus_for_declare_x(t_cmd *cmd, int i, t_table *table)
 	char	*tmp_3;
 	char	**split;
 
-	tmp_3 = malloc(sizeof(char) * 255);
-	tmp_2 = malloc(sizeof(char) * 255);
-	tmp = malloc(sizeof(char) * 255);
-	cmd->argv[i] = ft_strjoin("declare -x ", cmd->argv[i]);
+	tmp_2 = NULL;
+	tmp = ft_strdup(cmd->argv[i]);
+	free(cmd->argv[i]);
+	cmd->argv[i] = ft_strjoin("declare -x ", tmp);
+	free(tmp);
 	table->j = ft_strlen_until_equal(cmd->argv[i]) + 1;
 	tmp_3 = copy_the_str(cmd->argv[i], &table->j, 1);
 	tmp = copy_the_str_without_plus(cmd->argv[i]);
 	split = ft_split(tmp, '=');
 	check = check_if_exist(split[0], table->declare_x, 2);
+	free_2d(split);
 	table->i = i;
 	table->check = check;
 	utils_plus_declare_x(cmd, tmp, tmp_2, tmp_3);
@@ -114,9 +123,10 @@ void	the_plus(t_cmd *cmd, int i, t_table *table)
 {
 	int		check;
 	char	*tmp;
-	char	*tmp_2 = NULL;
+	char	*tmp_2;
 	char	*tmp_3;
 
+	tmp_2 = NULL;
 	table->j = ft_strlen_until_equal(cmd->argv[i]) + 1;
 	tmp_3 = copy_the_str(cmd->argv[i], &table->j, 1);
 	tmp = copy_the_str_without_plus(cmd->argv[i]);
@@ -124,6 +134,4 @@ void	the_plus(t_cmd *cmd, int i, t_table *table)
 	table->i = i;
 	table->check = check;
 	utils_plus(cmd, tmp, tmp_2, tmp_3);
-	free(tmp);
-	free(tmp_3);
 }

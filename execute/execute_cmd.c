@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 21:51:03 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/12 18:21:08 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/14 11:59:16 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,19 @@ int	ft_strlen_2d(char **str)
 void	ft_pwd(t_table *table)
 {
 	char	cwd[1024];
+	int		i;
 
+	i = -1;
+	while (table->env[++i] && table->gar == 1)
+	{
+		if (ft_strncmp(table->env[i], "PWD=", 4) == 0)
+		{
+			ft_putstr_fd(table->env[i] + 4, 1);
+			ft_putstr_fd("..", 1);
+			ft_putstr_fd("\n", 1);
+			return ;
+		}
+	}
 	if (!getcwd(cwd, sizeof(cwd)))
 	{
 		table->exit_status = 1;
@@ -79,6 +91,8 @@ void	execute_cmd(t_cmd *cmd, int **fd_s, int k, t_table *table)
 {
 	int		i;
 
+	if (table->exit_status == 1)
+		return ;
 	execve(cmd->cmd, cmd->argv, table->env);
 	i = 0;
 	if (cmd->cmd)

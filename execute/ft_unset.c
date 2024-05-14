@@ -6,19 +6,11 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 22:53:19 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/03/31 07:30:55 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:10:57 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	put_err(t_table *table, char **the_last, char *err_join, int f)
-{
-	ft_putstr_fd(err_join, 2);
-	ft_putstr_fd(the_last[f - 1], 2);
-	ft_putstr_fd("': not a valid identifier\n", 2);
-	table->exit_status = 1;
-}
 
 void	for_unset(t_cmd *cmd, t_table *table)
 {
@@ -46,31 +38,43 @@ void	for_unset(t_cmd *cmd, t_table *table)
 	the_last[f] = NULL;
 	if (flag == 1)
 		put_err(table, the_last, err_join, f);
+	free(err_join);
+	free_2d(the_last);
 }
 
+void	for_unset_3(char **new_declare_x, t_table *table, int j)
+{
+	new_declare_x[j] = NULL;
+	free_2d(table->declare_x);
+	table->declare_x = copy_the_env(new_declare_x);
+	free_2d(new_declare_x);
+}
 void	for_unset_2(t_cmd *cmd, t_table *table, int i, int j)
 {
 	char	**new_declare_x;
 	int		len;
+	char	*tmp;
+	int		lena;
 
-	len = ft_strlen_2d(table->declare_x) + 1;
-	new_declare_x = (char **)malloc(sizeof(char *) * len);
+	lena = ft_strlen_2d(table->declare_x) + 1;
 	len = 0;
 	while (cmd->argv[++len])
 	{
-		i = -1;
-		j = 0;
+		new_declare_x = (char **)malloc(sizeof(char *) * lena);
+		(1) && (i = -1, j = 0);
 		if (ft_strchr(cmd->argv[len], '=') != NULL)
 			continue ;
-		cmd->argv[len] = ft_strjoin("declare -x ", cmd->argv[len]);
+		tmp = ft_strdup(cmd->argv[len]);
+		free(cmd->argv[len]);
+		cmd->argv[len] = ft_strjoin("declare -x ", tmp);
+		free(tmp);
 		while (table->declare_x[++i])
 		{
 			if (ft_strncmp(table->declare_x[i], cmd->argv[len],
 					ft_strlen(cmd->argv[len])) != 0)
 				new_declare_x[j++] = ft_strdup(table->declare_x[i]);
 		}
-		new_declare_x[j] = NULL;
-		table->declare_x = copy_the_env(new_declare_x);
+		for_unset_3(new_declare_x, table, j);
 	}
 }
 
@@ -79,10 +83,10 @@ void	inside_loop(t_cmd *cmd, t_table *table, int i, int j)
 	char	**new_env;
 	int		len;
 
-	new_env = (char **)malloc(sizeof(char *) * (ft_strlen_2d(table->env) + 1));
 	len = 0;
 	while (cmd->argv[++len])
 	{
+		new_env = (char **)malloc(sizeof(char *) * (ft_strlen_2d(table->env) + 1));
 		i = 0;
 		j = 0;
 		if (ft_strchr(cmd->argv[len], '=') != NULL)
@@ -98,7 +102,9 @@ void	inside_loop(t_cmd *cmd, t_table *table, int i, int j)
 			i++;
 		}
 		new_env[j] = NULL;
+		free_2d(table->env);
 		table->env = copy_the_env(new_env);
+		free_2d(new_env);
 	}
 }
 
@@ -106,11 +112,9 @@ void	ft_unset(t_cmd *cmd, t_table *table)
 {
 	int		i;
 	int		j;
-	char	**new_env;
 
 	i = 0;
 	j = 0;
-	new_env = (char **)malloc(sizeof(char *) * (ft_strlen_2d(table->env) + 1));
 	for_unset(cmd, table);
 	inside_loop(cmd, table, i, j);
 	for_unset_2(cmd, table, i, j);

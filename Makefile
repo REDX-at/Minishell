@@ -9,9 +9,9 @@ SRC = minishell.c ./execute/built_in_cmd.c  ./execute/Exe_file.c ./execute/execu
 	./execute/child_functions.c ./execute/function_herdoc.c utils_2.c \
 	utils_3.c utils_4.c ./execute/utils_export_2.c ./execute/utils_export_3.c\
 	./execute/utils_herdoc.c ./execute/built_in_3.c ./execute/check_export.c \
-	./execute/garbage_collector.c
+	./execute/print_utils.c
 
-CFLAGS = -Wall -Wextra -g
+CFLAGS = -Wall -Wextra -g 
 LIBFT = libft/libft.a
 OBJ = $(SRC:.c=.o)
 READLINE_LIB = $(shell brew --prefix readline)/lib

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:24:57 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/14 12:04:17 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/05/14 15:14:36 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -366,14 +366,12 @@ int main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	cmd = NULL;
-	// atexit(f);
 	g_status = 0;
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, sig_handler);
 	rl_catch_signals = 0;
 	envp = remove_old_pwd(envp);
 	table = ft_init_table(envp);
-	table->var = "➜  minishell ";
 	table->declare_x = alloc_env(table->env);
 	table->pwd_env = getcwd(NULL, 0);
 	table->pid =  ft_get_pid();
@@ -394,8 +392,11 @@ int main(int argc, char **argv, char **envp)
 			if (line[0] != '\0')
 				ft_parsing(line, &cmd, table);
 			ft_built_in(&cmd, table);
+			if (table->exit_status == 1)
+				table->exit_status = 0;
 			if (cmd)
 				execute_for_cmd(cmd, table);
+			g_status = 0;
 			ft_cmd_free(&cmd);
 		}
 		if (!line)
@@ -404,6 +405,6 @@ int main(int argc, char **argv, char **envp)
 			ft_putstr_fd("\n", 1);
 			exit(0);
 		}
-		// printf("%p\n", line);
+		free(line);
 	}
 }

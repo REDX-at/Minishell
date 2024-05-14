@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 15:51:46 by mkibous           #+#    #+#             */
-/*   Updated: 2024/03/23 00:52:20 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/14 12:54:11 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ static int	ft_outoflimit(long long n, int s, int count, int *flag)
 	if (n > 2147483647 || n < -2147483648 || count > 19)
 	{
 		*flag = 1;
-		// exit(1);
 	}
 	return (n);
 }

@@ -6,50 +6,72 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 17:09:13 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/04/27 02:08:37 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:27:03 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	print_with_fd(char *str, int fd)
+void	condition_1(t_table *table, t_cmd *cmd, char **path)
 {
-	ft_putstr_fd(str, fd);
-	ft_putstr_fd("\n", fd);
-}
-
-void	putstr_pro(char *str, char *path)
-{
-	ft_putstr_fd(str, 1);
-	print_with_fd(path, 2);
-}
-
-void	ft_cd(t_cmd *cmd, t_table *table)
-{
-	char	*path;
-
+	if (cmd->table->exit_status == 1)
+	{
+		table->condition = 1;
+		return ;
+	}
 	if (search_for_home(table) == -1)
 	{
 		ft_putstr_fd("cd: HOME not set\n", 2);
+		table->condition = 1;
 		return ;
 	}
 	if (cmd->argv[1] == NULL)
 	{
 		ft_putstr_fd("cd: have to give path\n", 2);
+		table->condition = 1;
 		return ;
 	}
 	if (ft_strcmp(cmd->argv[1], "~") == 1)
-		path = get_env_pro("HOME", table);
+		*path = get_env_pro("HOME", table);
 	else
-		path = cmd->argv[1];
-	if (access(path, F_OK) == -1)
-		putstr_pro("cd: no such file or directory: ", path);
-	else
+		*path = cmd->argv[1];
+}
+
+void	ft_cd(t_cmd *cmd, t_table *table)
+{
+	char	*path;
+	char	*tmp;
+
+	path = NULL;
+	tmp = NULL;
+	condition_1(table, cmd, &path);
+	if (!table->condition)
 	{
-		if (chdir(path) == -1)
-			putstr_pro("cd: permission denied: ", path);
+		if (access(path, F_OK) == -1)
+		{
+			putstr_pro("cd: no such file or directory: ", path);
+			return ;
+		}
+		else
+		{
+			if (chdir(path) == -1)
+			{
+				putstr_pro("cd: permission denied: ", path);
+				return ;
+			}
+		}
+		tmp = getcwd(NULL, 0);
+		if (tmp == NULL)
+		{
+			putstr_pro("cd: no such file or directory: ", path);
+			table->gar = 1;
+			free(tmp);
+			return ;
+		}
+		free(tmp);
+		table->gar = 0;
+		change_pwd(table);
 	}
-	change_pwd(table);
 }
 
 void	for_env(t_table *table, int *signe)

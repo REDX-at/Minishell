@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 22:27:59 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/12 22:18:15 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/14 11:46:11 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	ft_echo(t_cmd *cmd)
 	int	i;
 
 	i = 1;
+	if (cmd->table->exit_status == 1)
+		return ;
 	while (cmd->argv[i])
 	{
 		ft_putstr_fd(cmd->argv[i], 1);
@@ -76,7 +78,6 @@ void	loop_pwd(t_table *table, char **tmp, char **tmp2, char **tmp3)
 		if (ft_strncmp(table->declare_x[i], "declare -x OLDPWD", 17) == 0)
 		{
 			*tmp3 = table->declare_x[i];
-			printf("%p\n", *tmp3);
 			table->declare_x[i]
 				= ft_strjoin("declare -x OLDPWD=", table->pwd_env);
 			free(*tmp3);

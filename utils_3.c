@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 02:21:29 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/12 19:59:14 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/14 12:55:09 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ char	**copy_the_env(char **env)
 	while (env[i])
 		i++;
 	new_env = (char **)malloc(sizeof(char *) * (i + 1));
+	if (new_env == NULL)
+		return (NULL);
 	i = 0;
 	while (env[i])
 	{
@@ -48,6 +50,8 @@ char	*copy_the_str(char *str, int *s, int flag)
 	char	*tmp_2;
 
 	tmp_2 = (char *)malloc(sizeof(char) * (ft_strlen(str) + 1));
+	if (tmp_2 == NULL)
+		return (NULL);
 	*s = 0;
 	k = 0;
 	while (str[*s] != '=')

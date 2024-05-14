@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 19:18:43 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/12 17:15:47 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/14 12:54:09 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	check_if_redir_in(t_cmd *cmd, int *fd_in, t_table *table, int i)
 	{
 		perror("open");
 		table->exit_status = 1;
-		exit(1);
 	}
 }
 
@@ -43,7 +42,6 @@ void	check_if_redir_out(t_cmd *cmd, int *fd_out, t_table *table, int i)
 	{
 		perror("open");
 		table->exit_status = 1;
-		exit(1);
 	}
 }
 

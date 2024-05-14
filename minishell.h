@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:25:10 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/13 21:47:55 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/05/14 15:09:05 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ typedef struct s_elem t_elem;
 // def cmd
 typedef struct s_cmd t_cmd;
 
+typedef struct s_utils t_utils;
+
 // State
 typedef enum e_state
 {
@@ -145,7 +147,9 @@ typedef struct s_table
 	int				check;
 	int				gar;
 	int 			shllvl;
+	int				condition;
 	t_cmd			*cmd;
+	t_utils			*utils;
 	t_garbage		*garbage;
 } t_table;
 
@@ -275,12 +279,9 @@ int		check_if_correct(char *str);
 void	free_2d(char **str);
 int		search_for_home(t_table *table);
 void	condition_flag_herdoc(t_cmd *cmd, int k, int **fd);
-void	*garbage_collect(void *str, t_table *table, int size);
-void	**garbage_collect_2d(void **str, t_table *table, int size);
-void    free_garbage(t_table *table);
-t_garbage	*ft_lstnews(void *content);
-t_garbage   *ft_lstnews_2d(void **content);
-void	ft_lstadds_back(t_garbage **lst, t_garbage *jdida);
+void	print_with_fd(char *str, int fd);
+void	putstr_pro(char *str, char *path);
+void	put_err(t_table *table, char **the_last, char *err_join, int f);
 
 // sort
 void	sort_double_pointer_2(char **array, int size);

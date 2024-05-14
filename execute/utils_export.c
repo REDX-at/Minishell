@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 16:57:02 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/12 19:53:55 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/13 16:46:14 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,11 @@ int	check_if_exist(char *str, char **env, int flag)
 	{
 		split = ft_split(env[i], '=');
 		if (ft_strncmp(split[0], str, len) == 0)
+		{
+			free_2d(split);
 			return (i);
+		}
+		free_2d(split);
 		i++;
 	}
 	return (-1);
