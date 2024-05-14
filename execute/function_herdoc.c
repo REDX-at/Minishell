@@ -6,7 +6,7 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 01:14:53 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/12 16:23:35 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/05/14 11:53:17 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,8 @@ void	sig_hand(int signum)
 {
 	extern int	g_status;
 
-	if (signum == SIGINT)
+	if (signum == SIGINT || signum == SIGQUIT)
 	{
-		g_status = 1;
 		exit(1);
 	}
 }
@@ -68,11 +67,12 @@ void	for_put_env(char **line, t_cmd *cmd, char **env, int i)
 void	for_herdoc(t_cmd *cmd, int *fd, char *line, int red)
 {
 	signal(SIGINT, sig_hand);
+	signal(SIGQUIT, sig_hand);
 	rl_catch_signals = 1;
 	while (1)
 	{
 		line = readline("> ");
-		if (!line || line[0] == '\0')
+		if (!line)
 			break ;
 		if (ft_strlen(line) == 0)
 		{

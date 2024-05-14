@@ -6,14 +6,14 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:24:57 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/13 19:23:25 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/05/14 12:04:17 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "minishell.h"
 // table len
-int g_status = 0;
+int g_status;
 int	ft_tablen(char **tab)
 {
 	int	i;
@@ -58,6 +58,7 @@ void	loop_inside_init(t_table *table, char **envp, int i, int shlvl)
 			{
 				shlvl = ft_atoi(envp[i] + 6, 0);
 				shlvl++;
+				table->shllvl = shlvl;
 				free(envp[i]);
 				tmp = ft_itoa(shlvl);
 				envp[i] = ft_strjoin("SHLVL=", tmp);
@@ -117,17 +118,26 @@ void sig_handler(int signum)
 {
 	if (signum == SIGINT)
 	{
-		if (g_status == 2)
+		if(!g_status || g_status == 5)
+		{
+			g_status = 5;
+			printf("\n");
+        	rl_on_new_line();
+        	rl_replace_line("", 0);
+        	rl_redisplay();
+		}
+		else if (g_status == 2 || g_status == 4)
 		{
 			g_status = 1;
 			printf("\n");
-			return;
 		}
-		g_status = 1;
-		printf("\n");
-        rl_on_new_line();
-        rl_replace_line("", 1);
-        rl_redisplay();
+	}
+	if(signum == SIGQUIT)
+	{
+		if(g_status == 2)
+		{
+			printf("Quit: 3\n");
+		}
 	}
 }
 
@@ -356,8 +366,8 @@ int main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	cmd = NULL;
-	g_status = 0;
 	// atexit(f);
+	g_status = 0;
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, sig_handler);
 	rl_catch_signals = 0;
@@ -370,10 +380,14 @@ int main(int argc, char **argv, char **envp)
 	pid = table->pid;
 	while (1)
 	{
-		line = readline(RED"➜  "RED""BOLD"minishell "RESET);
-		if(g_status == 1)
+		if(g_status != 0)
 			table->exit_status = 1;
 		g_status = 0;
+		line = readline(RED"➜  "RED""BOLD"minishell "RESET);
+		if(g_status != 0)
+			table->exit_status = 1;
+		if(g_status == 5)
+			g_status = 0;
 		if(line)
 		{
 			add_history(line);
