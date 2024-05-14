@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 23:52:29 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/04/27 02:06:45 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/14 19:25:59 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,16 @@ int	check_if_valid(char *str)
 {
 	int	i;
 
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '$')
+		{
+			if (str[i + 1] && str[i + 1] == '+')
+				return (0);
+		}
+		i++;
+	}
 	i = 0;
 	while (str[i] && str[i] != '=' && str[i] != '+')
 		i++;

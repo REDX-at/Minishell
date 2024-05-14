@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 14:50:10 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/13 16:45:26 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/14 23:06:42 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 void	utils_plus(t_cmd *cmd, char *tmp, char *tmp_2, char *tmp_3)
 {
-	int		j;
+	// int		j;
 	char	*leak;
 
-	j = 0;
-	while (cmd->argv[++j])
-	{
+	// j = 0;
+	// while (cmd->argv[++j])
+	// {
 		if (cmd->table->check != -1)
 		{
 			cmd->table->s = 0;
@@ -48,21 +48,21 @@ void	utils_plus(t_cmd *cmd, char *tmp, char *tmp_2, char *tmp_3)
 			free(tmp);
 			free(tmp_3);
 		}
-	}
+	// }
 }
 
 void	utils_plus_declare_x(t_cmd *cmd, char *tmp, char *tmp_2, char *tmp_3)
 {
-	int		j;
+	// int		j;
 	char	*leak;
 
-	j = 0;
-	while (cmd->argv[++j])
-	{
+	// j = 0;
+	// while (cmd->argv[++j])
+	// {
 		if (cmd->table->check != -1)
 		{
 			cmd->table->s = 0;
-			tmp_2 = copy_the_str(cmd->table->declare_x[cmd->table->check], &cmd->table->s, 0);
+			tmp_2 = copy_the_str_after_equal(cmd->table->declare_x[cmd->table->check]);
 			leak = ft_strdup(tmp_2);
 			free(tmp_2);
 			tmp_2 = ft_strjoin(leak, tmp_3);
@@ -88,7 +88,7 @@ void	utils_plus_declare_x(t_cmd *cmd, char *tmp, char *tmp_2, char *tmp_3)
 			free(tmp);
 			free(tmp_3);
 		}
-	}
+	// }
 }
 
 char	*copy_the_str_without_plus(char *str)
@@ -101,7 +101,7 @@ char	*copy_the_str_without_plus(char *str)
 	flag = 0;
 	s = 0;
 	i = -1;
-	tmp = malloc(sizeof(char) * 255);
+	tmp = (char *)malloc(sizeof(char) * 255);
 	if (!tmp)
 		return (NULL);
 	while (str[++i])

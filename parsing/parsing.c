@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:44:32 by mkibous           #+#    #+#             */
-/*   Updated: 2024/05/14 12:51:51 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/14 21:09:22 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,6 +203,7 @@ void	ft_parsing(char *line, t_cmd **cmd, t_table *table)
 		(1) && (table->exit_status = 258);
 		ft_free_elem(&elem);
 		printf("syntax error\n");
+		free(str);
 		return ;
 	}
 	ft_cmd(cmd, elem);

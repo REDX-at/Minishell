@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 22:42:02 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/14 12:57:51 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/14 21:52:04 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,11 @@ char	**utils_declare_x(t_cmd *cmd, t_table *table, int i)
 void	export_declare_x(t_table *table, t_cmd *cmd)
 {
 	int		i;
-	char	**new_env;
 	int		test;
 	int		valid;
 
 	valid = 0;
 	test = 0;
-	if (ft_strlen_2d(cmd->argv) > 2)
-		new_env = (char **)malloc(sizeof(char *)
-				* (ft_strlen_2d(table->env) + ft_strlen_2d(cmd->argv)));
 	i = 0;
 	while (cmd->argv[++i])
 	{

@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 02:21:29 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/14 12:55:09 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/14 23:08:46 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,34 @@ char	*copy_the_str(char *str, int *s, int flag)
 	while (str[*s] != '=')
 		(*s)++;
 	return (tmp_2);
+}
+
+char	*copy_the_str_after_equal(char *str)
+{
+	int		i;
+	char	*tmp;
+	int		s;
+
+	s = 0;
+	tmp = malloc(sizeof(char) * 255);
+	i = 0;
+	while (str[i] && str[i] != '=')
+		i++;
+	if (str[i] == '\0')
+	{
+		tmp[s] = '=';
+		s++;
+	    while (i >= 0 && str[i] != ' ')
+	        tmp[s++] = str[i--];
+	    tmp[s] = '\0';
+	}
+	else
+	{
+	while (str[i])
+	    tmp[s++] = str[i++];
+		tmp[s] = '\0';
+	}
+	return (tmp);
 }
 
 void	malloc_pro(char **str, char **str2, char **str3, char *argv)

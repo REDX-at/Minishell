@@ -11,7 +11,7 @@ SRC = minishell.c ./execute/built_in_cmd.c  ./execute/Exe_file.c ./execute/execu
 	./execute/utils_herdoc.c ./execute/built_in_3.c ./execute/check_export.c \
 	./execute/print_utils.c
 
-CFLAGS = -Wall -Wextra -g 
+CFLAGS = -Wall -Wextra -g
 LIBFT = libft/libft.a
 OBJ = $(SRC:.c=.o)
 READLINE_LIB = $(shell brew --prefix readline)/lib

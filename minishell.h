@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:25:10 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/14 15:09:05 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/14 22:48:28 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -282,6 +282,7 @@ void	condition_flag_herdoc(t_cmd *cmd, int k, int **fd);
 void	print_with_fd(char *str, int fd);
 void	putstr_pro(char *str, char *path);
 void	put_err(t_table *table, char **the_last, char *err_join, int f);
+char	*copy_the_str_after_equal(char *str);
 
 // sort
 void	sort_double_pointer_2(char **array, int size);
