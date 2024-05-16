@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 19:18:43 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/14 12:54:09 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/16 15:10:09 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	check_if_redir_in(t_cmd *cmd, int *fd_in, t_table *table, int i)
 	if (*fd_in == -1)
 	{
 		perror("open");
-		table->exit_status = 1;
+		table->exit_s = 1;
 	}
 }
 
@@ -41,7 +41,7 @@ void	check_if_redir_out(t_cmd *cmd, int *fd_out, t_table *table, int i)
 	if (*fd_out == -1)
 	{
 		perror("open");
-		table->exit_status = 1;
+		table->exit_s = 1;
 	}
 }
 
@@ -81,7 +81,6 @@ void	for_handle_redir(t_cmd *cmd, t_table *table, int k, int **fd)
 
 	flag = 0;
 	i = -1;
-	search_for_herdoc(cmd, &flag, table);
 	loop_handle_redir(cmd, k, fd, flag);
 }
 

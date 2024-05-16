@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:44:32 by mkibous           #+#    #+#             */
-/*   Updated: 2024/05/13 19:41:02 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/16 10:39:30 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*manual_env(char *content, t_table *table, t_vars *vars)
 	if (!ft_strncmp(content, "$$", 3))
 		return (ft_itoa((int)table->pid));
 	if (!ft_strncmp(content, "$?", 3))
-		return (ft_itoa(table->exit_status));
+		return (ft_itoa(table->exit_s));
 	if (!ft_strncmp(content, "$0", 3))
 		return (strdup("minishell"));
 	if (!ft_strncmp(content, "$_", 3))

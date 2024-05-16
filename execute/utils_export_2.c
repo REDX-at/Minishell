@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 15:58:06 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/14 21:51:28 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/16 14:16:59 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ char	*add_quotes_to_string(char *str)
 	int		i;
 	int		j;
 
-	i = -1;
-	j = 0;
+	(1) && (i = -1, j = 0);
 	len = ft_strlen(str);
 	tmp = (char *)malloc(sizeof(char) * (len + 3));
 	while (str[++i] && str[i] != '=')
@@ -61,7 +60,7 @@ void	after_export(t_cmd *cmd, t_table *table, int check)
 				{
 					ft_putstr_fd("export : not a valid identifier\n", 2);
 					table->flag = 1;
-					table->exit_status = 1;
+					table->exit_s = 1;
 					continue ;
 				}
 			}
@@ -137,6 +136,5 @@ void	ft_export(t_cmd *cmd, t_table *table)
 		return ;
 	}
 	after_export(cmd, table, check);
-	if (table->flag != 1)
-		export_declare_x(table, cmd);
+	export_declare_x(table, cmd);
 }

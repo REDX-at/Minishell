@@ -6,17 +6,13 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:25:10 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/14 22:48:28 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/16 15:45:03 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-
-// hello
 # include "libft/libft.h"
 # include <termcap.h>
 # include <stdio.h>
@@ -45,7 +41,6 @@
 # define W "\033[0;37m"
 # define BOLD "\033[1m"
 
-// useful define
 # define CLEAR "\033[2J\033[H"
 # define UP "\033[A"
 # define DOWN "\033[B"
@@ -54,7 +49,6 @@
 # define BACKSPACE 127
 # define CTRL_D 4
 
-// Token
 typedef enum e_token
 {
 	WORD = -1,
@@ -69,36 +63,33 @@ typedef enum e_token
 	REDIR_OUT = '>',
 	HERE_DOC,
 	DREDIR_OUT,
-} t_token;
+}	t_token;
 
-// def table
-typedef struct s_table t_table;
+typedef struct s_table	t_table;
 
-// def elem
-typedef struct s_elem t_elem;
+typedef struct s_elem	t_elem;
 
-// def cmd
-typedef struct s_cmd t_cmd;
+typedef struct s_cmd	t_cmd;
 
-typedef struct s_utils t_utils;
+typedef struct s_utils	t_utils;
 
-// State
 typedef enum e_state
 {
 	IN_DQUOTE,
 	IN_QUOTE,
 	GENERAL,
-} t_state;
+}	t_state;
 
 typedef struct s_garbage
 {
 	void				*str;
 	void				**str2;
 	struct s_garbage	*next;
-} t_garbage;
+}	t_garbage;
 
 typedef struct s_cmd
 {
+	int				a;
 	char			*line;
 	char			*path;
 	int				count_cmd;
@@ -110,16 +101,15 @@ typedef struct s_cmd
 	int				echo_new_line;
 	char			**argv;
 	char			**file;
-	int 			in;
-	int 			out;
+	int				in;
+	int				out;
 	t_table			*table;
 	t_state			state;
 	t_elem			*elem;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
-} t_cmd;
+}	t_cmd;
 
-// table
 typedef struct s_table
 {
 	char			*var;
@@ -131,29 +121,29 @@ typedef struct s_table
 	char			*alpha;
 	char			**declare_x;
 	char			*pwd_env;
-	int				exit_status;
+	int				exit_s;
 	int				tmp_in;
 	int				tmp_out;
 	int				red;
-	char 			*last_arg;
+	char			*last_arg;
 	pid_t			pid;
 	int				flag;
 	int				flag_old;
 	char			**tmp_env;
-	int 			s;
+	int				s;
 	int				l;
 	int				j;
 	int				i;
 	int				check;
 	int				gar;
-	int 			shllvl;
+	int				shllvl;
 	int				condition;
 	t_cmd			*cmd;
 	t_utils			*utils;
 	t_garbage		*garbage;
-} t_table;
+	int				flag_unset;
+}	t_table;
 
-// strcut bonus
 typedef struct s_utils
 {
 	int				i;
@@ -161,30 +151,26 @@ typedef struct s_utils
 	int				k;
 	int				s;
 	int				check;
-} t_utils;
+}	t_utils;
 
 typedef struct s_elem
 {
-    char            *content;
-    int                len;
-    t_token            type;
-    t_state            state;
-    pid_t            pid;
-    struct s_elem   *next;
-    struct s_elem   *prev;
-}    t_elem;
+	char			*content;
+	int				len;
+	t_token			type;
+	t_state			state;
+	pid_t			pid;
+	struct s_elem	*next;
+	struct s_elem	*prev;
+}	t_elem;
 
-//mkibous header
-
-
-//mkibous variables
 typedef struct s_vars
 {
 	char	*tmp;
 	bool	echo;
 	bool	spaces;
 	bool	exp;
-	bool	redir;
+	int		redir;
 	bool	n;
 	bool	boolien;
 	bool	prev_is_redir;
@@ -202,9 +188,8 @@ typedef struct s_vars
 	t_elem	*last;
 }	t_vars;
 
-// Function For Execute
-void    execute_cmd(t_cmd *cmd, int **fd_s, int k, t_table *table);
-void	execute_for_cmd(t_cmd *cmd, t_table *table);
+void	execute_cmd(t_cmd *cmd, int **fd_s, int k, t_table *table);
+void	exe_cmd(t_cmd *cmd, t_table *table);
 void	execute_built_in(t_cmd *cmd, int **fd, t_table *tale, int k);
 int		check_access(char *command, t_cmd *cmd, t_table *table);
 void	ft_putstr2d_fd(char **str, int fd);
@@ -214,35 +199,29 @@ char	*add_quotes_to_string(char *str);
 void	the_plus(t_cmd *cmd, int i, t_table *table);
 void	the_plus_for_declare_x(t_cmd *cmd, int i, t_table *table);
 
-// functions utils export
 void	ft_add_env(char **env, char *str, int *fd);
 char	**ft_add_env2(char **env, char *str);
 int		check_if_exist(char *str, char **env, int flag);
 char	**join_2ds(char **join, char **to_join);
 
-// heredoc
 int		heredoc(t_cmd *cmd, int red);
 void	ft_put_env(char **line, t_cmd *cmd);
 void	for_put_env(char **line, t_cmd *cmd, char **env, int i);
 
-// function built-in
 void	ft_cd(t_cmd *cmd, t_table *table);
-void    ft_pwd(t_table *table);
+void	ft_pwd(t_table *table);
 void	ft_env(t_table *table);
 void	ft_echo(t_cmd *cmd);
 void	ft_exit(t_cmd *cmd, t_table *table);
 void	ft_export(t_cmd *cmd, t_table *table);
 void	ft_unset(t_cmd *cmd, t_table *table);
 
-// functions child
 void	loop_child(t_cmd *cmd, int **fd, pid_t pid[]);
 void	close_file_descriptor(int **fd, int k);
 void	wait_all_pid(t_table *table, pid_t pid[], int k);
 
-//function redir
 void	handle_redir(t_cmd *cmd, t_table *table, int k, int **fd);
 
-// Utils Function
 char	**ft_split(char const *s, char c);
 int		ft_strcmp(char *str, char *str2);
 size_t	ft_strlen(const char *s);
@@ -282,11 +261,27 @@ void	condition_flag_herdoc(t_cmd *cmd, int k, int **fd);
 void	print_with_fd(char *str, int fd);
 void	putstr_pro(char *str, char *path);
 void	put_err(t_table *table, char **the_last, char *err_join, int f);
-char	*copy_the_str_after_equal(char *str);
+char	*copy_s_after_eq(char *str);
+void	free_fd_and_pid(int **fd, pid_t *pid);
+void	utils_util_dec(t_table *table, char **tmp_argv, int i, t_cmd *cmd);
 
-// sort
+// main functions
+int		ft_tablen(char **tab);
+void	for_init(t_table *table);
+void	loop_inside_init(t_table *table, char **envp, int i, int shlvl);
+t_table	*ft_init_table(char **envp);
+void	exit_print(void);
+int		loop_alloc_env(char **env, int i, char **new_env, int *j);
+char	**alloc_env(char **env);
+char	**remove_old_pwd(char **env);
+void	if_null(t_table *table);
+char	**ft_strdup_2d(char **str);
+void	ft_built_in(t_cmd **cmd, t_table *table);
+char	**the_twode(char **twode);
+pid_t	ft_get_pid(void);
 void	sort_double_pointer_2(char **array, int size);
-// askari functions
+
+void	sort_double_pointer_2(char **array, int size);
 void	sig_handler(int signum);
 void	ft_free(char **str);
 void	ft_escape(t_elem *elem);
@@ -326,5 +321,4 @@ void	ft_free_elem(t_elem **elem);
 char	*ft_list_content(char **str, t_elem **elem, int *i, t_vars *vars);
 void	last_arg(t_cmd *cmd, t_table *table);
 void	ft_newstate(t_elem **elem, t_elem **tmp);
-//push
 #endif

@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 22:42:02 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/14 21:52:04 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/16 14:17:57 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ char	**utils_declare_x(t_cmd *cmd, t_table *table, int i)
 {
 	int		check;
 	char	*tmp_argv;
-	char	**new_env;
 	char	**split;
 
 	split = ft_split(cmd->argv[i], '=');
@@ -37,13 +36,7 @@ char	**utils_declare_x(t_cmd *cmd, t_table *table, int i)
 		}
 	}
 	else
-	{
-		tmp_argv = ft_strjoin("declare -x ", cmd->argv[i]);
-		new_env = ft_add_env2(table->declare_x, tmp_argv);
-		free(tmp_argv);
-		sort_double_pointer_2(new_env, ft_strlen_2d(new_env));
-		table->declare_x = new_env;
-	}
+		utils_util_dec(table, &tmp_argv, i, cmd);
 	return (table->declare_x);
 }
 

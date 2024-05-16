@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:11:23 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/04/18 18:46:17 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/16 10:39:30 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,17 +58,17 @@ int	ft_is_integer(char *str)
 
 void	utils_for_exit(t_table *table, t_cmd *cmd, int flag)
 {
-	table->exit_status = ft_atoi(cmd->argv[1], &flag);
+	table->exit_s = ft_atoi(cmd->argv[1], &flag);
 	if (flag)
 	{
-		table->exit_status = 255;
+		table->exit_s = 255;
 		ft_putstr_fd("exit\nmsh: exit: ", 2);
 		ft_putstr_fd(cmd->argv[1], 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
 		exit(255);
 	}
 	ft_putstr_fd("exit\n", 2);
-	exit(table->exit_status);
+	exit(table->exit_s);
 }
 
 void	ft_exit(t_cmd *cmd, t_table *table)
@@ -79,19 +79,19 @@ void	ft_exit(t_cmd *cmd, t_table *table)
 	if (cmd->argv[1] == NULL && !cmd->pipe)
 	{
 		ft_putstr_fd("exit\n", 2);
-		exit(table->exit_status);
+		exit(table->exit_s);
 	}
 	if (!ft_is_integer(cmd->argv[1]) && !cmd->pipe)
 	{
 		ft_putstr_fd("exit\nmsh: exit: ", 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
-		table->exit_status = 255;
+		table->exit_s = 255;
 		exit(255);
 	}
 	else if (ft_strlen_2d(cmd->argv) > 2 && !cmd->pipe)
 	{
 		ft_putstr_fd("exit\nmsh: exit: too many arguments\n", 2);
-		table->exit_status = 1;
+		table->exit_s = 1;
 		if (cmd->pipe)
 			exit(1);
 	}

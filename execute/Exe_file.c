@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 14:42:02 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/14 12:57:15 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/16 11:00:37 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	execute_built_in(t_cmd *cmd, int **fd, t_table *table, int k)
 {
-	if (table->exit_status == 1)
+	if (table->exit_s == 1)
 		return ;
 	if (cmd->next)
 		close(fd[k][1]);
@@ -90,21 +90,7 @@ void	alloc_and_check_failure(int ***fd, pid_t **pid, t_table **table)
 	(*fd)[i] = NULL;
 }
 
-void	free_fd_and_pid(int **fd, pid_t *pid)
-{
-	int	i;
-
-	i = 0;
-	while (fd[i])
-	{
-		free(fd[i]);
-		i++;
-	}
-	free(fd);
-	free(pid);
-}
-
-void	execute_for_cmd(t_cmd *cmd, t_table *table)
+void	exe_cmd(t_cmd *cmd, t_table *table)
 {
 	int		k;
 	int		**fd;

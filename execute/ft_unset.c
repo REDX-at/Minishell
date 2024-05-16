@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 22:53:19 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/14 15:10:57 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/15 19:32:51 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,14 @@ void	for_unset(t_cmd *cmd, t_table *table)
 	int		f;
 	int		flag;
 
-	f = 0;
-	flag = 0;
-	d = 0;
+	(1) && (f = 0, flag = 0, d = 0);
 	the_last = (char **)malloc(sizeof(char *) * 1000);
 	err_join = ft_strdup("unset: `");
 	while (cmd->argv[++d])
 	{
 		if (ft_strchr(cmd->argv[d], '=') != NULL
-			|| check_if_there_is_space(cmd->argv[d]) == -1)
+			|| check_if_there_is_space(cmd->argv[d]) == -1
+			|| is_alpha_num(cmd->argv[d]) == -1)
 		{
 			the_last[f] = ft_strdup(cmd->argv[d]);
 			flag = 1;
@@ -49,6 +48,7 @@ void	for_unset_3(char **new_declare_x, t_table *table, int j)
 	table->declare_x = copy_the_env(new_declare_x);
 	free_2d(new_declare_x);
 }
+
 void	for_unset_2(t_cmd *cmd, t_table *table, int i, int j)
 {
 	char	**new_declare_x;
@@ -56,18 +56,18 @@ void	for_unset_2(t_cmd *cmd, t_table *table, int i, int j)
 	char	*tmp;
 	int		lena;
 
-	lena = ft_strlen_2d(table->declare_x) + 1;
-	len = 0;
+	(1) && (lena = ft_strlen_2d(table->declare_x) + 1, len = 0);
 	while (cmd->argv[++len])
 	{
 		new_declare_x = (char **)malloc(sizeof(char *) * lena);
-		(1) && (i = -1, j = 0);
 		if (ft_strchr(cmd->argv[len], '=') != NULL)
+		{
+			free(new_declare_x);
 			continue ;
-		tmp = ft_strdup(cmd->argv[len]);
-		free(cmd->argv[len]);
-		cmd->argv[len] = ft_strjoin("declare -x ", tmp);
-		free(tmp);
+		}
+		(1) && (tmp = ft_strdup(cmd->argv[len]), free(cmd->argv[len]), i = -1);
+		(1) && (cmd->argv[len] = ft_strjoin("declare -x ", tmp),
+			free(tmp), j = 0);
 		while (table->declare_x[++i])
 		{
 			if (ft_strncmp(table->declare_x[i], cmd->argv[len],
@@ -86,20 +86,19 @@ void	inside_loop(t_cmd *cmd, t_table *table, int i, int j)
 	len = 0;
 	while (cmd->argv[++len])
 	{
-		new_env = (char **)malloc(sizeof(char *) * (ft_strlen_2d(table->env) + 1));
-		i = 0;
-		j = 0;
+		new_env = (char **)malloc(sizeof(char *)
+				* (ft_strlen_2d(table->env) + 1));
+		(1) && (i = -1, j = 0);
 		if (ft_strchr(cmd->argv[len], '=') != NULL)
+		{
+			free(new_env);
 			continue ;
-		while (table->env[i])
+		}
+		while (table->env[++i])
 		{
 			if (ft_strncmp(table->env[i], cmd->argv[len],
 					ft_strlen(cmd->argv[len])) != 0)
-			{
-				new_env[j] = ft_strdup(table->env[i]);
-				j++;
-			}
-			i++;
+				(1) && (new_env[j] = ft_strdup(table->env[i]), j++);
 		}
 		new_env[j] = NULL;
 		free_2d(table->env);

@@ -6,88 +6,12 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:44:32 by mkibous           #+#    #+#             */
-/*   Updated: 2024/05/14 21:09:22 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/16 10:39:30 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-// void ft_printlist(t_elem *elem, t_cmd *cmd)
-// {
-//     char *str;
-//     char *token;
-//     printf("✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥\n");
-//     printf("✥  content     ✥    len       ✥   state      ✥    token  ✥\n");
-//     printf("✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥\n");
-//     while (elem)
-//     {
-//         if (elem->state == 0)
-//             str = "IN_DQUOTE";
-//         else if (elem->state == 1)
-//             str = "IN_QUOTE";
-//         else
-//             str = "GENERAL";
-//         if (elem->type == WHITE_SPACE)
-//             token = "WHITE_SPACE";
-//         else if (elem->type == NEW_LINE)
-//             token = "NEW_LINE";
-//         else if (elem->type == QOUTE)
-//             token = "QOUTE";
-//         else if (elem->type == DOUBLE_QUOTE)
-//             token = "DOUBLE_QUOTE";
-//         else if (elem->type == ESCAPE)
-//             token = "ESCAPE";
-//         else if (elem->type == ENV)
-//             token = "ENV";
-//         else if (elem->type == PIPE_LINE)
-//             token = "PIPE_LINE";
-//         else if (elem->type == REDIR_IN)
-//             token = "REDIR_IN";
-//         else if (elem->type == REDIR_OUT)
-//             token = "REDIR_OUT";
-//         else if (elem->type == DREDIR_OUT)
-//             token = "DREDIR_OUT";
-//         else if (elem->type == HERE_DOC)
-//             token = "HERE_DOC";
-//         else if (elem->type == WORD)
-//             token = "WORD";
-//         printf("✥              ✥        ✥           ✥        ✥\n");
-//         printf("✥  '%s'", elem->content);
-//         int j = elem->len - 2;
-//         while (j < 8)
-//         {
-//             printf(" ");
-//             j++;
-//         }
 
-//         printf("✥    %d         ✥   %s    ✥ %s  ✥\n", elem->len, str, token);
-//         printf("✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥✥\n");
-//         elem = elem->next;
-//     }
-//     while (cmd)
-//     {
-//         printf("%s| p%d e-n%d \n", cmd->cmd, cmd->pipe, cmd->echo_new_line);
-//         int j = 0;
-//         if (cmd->argv)
-//         {
-//             while (cmd->argv[j] != NULL)
-//             {
-//                 printf("<%s>\n", cmd->argv[j]);
-//                 j++;
-//             }
-//         }
-//         j = 0;
-//         if (cmd->redir)
-//         {
-//             while (cmd->redir[j])
-//             {
-//                 printf("redir : %s\n", cmd->redir[j]);
-//                 printf("file : %s\n", cmd->file[j]);
-//                 j++;
-//             }
-//         }
-//         cmd = cmd->next;
-//     }
-// }
 int	len(char *str)
 {
 	int	i;
@@ -191,7 +115,7 @@ void	ft_parsing(char *line, t_cmd **cmd, t_table *table)
 	t_elem	*elem;
 	t_vars	vars;
 	t_cmd	*tmp;
-	char *str;
+	char	*str;
 
 	str = ft_strdup(line);
 	ft_memset(&vars, 0, sizeof(vars));
@@ -200,10 +124,9 @@ void	ft_parsing(char *line, t_cmd **cmd, t_table *table)
 		ft_state(&str, &vars, &elem, table);
 	if (ft_chek(elem))
 	{
-		(1) && (table->exit_status = 258);
+		(1) && (table->exit_s = 258);
 		ft_free_elem(&elem);
-		printf("syntax error\n");
-		free(str);
+		(1) && (free(str), printf("syntax error\n"));
 		return ;
 	}
 	ft_cmd(cmd, elem);

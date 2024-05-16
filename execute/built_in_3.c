@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 17:09:13 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/14 15:27:03 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/16 10:39:30 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	condition_1(t_table *table, t_cmd *cmd, char **path)
 {
-	if (cmd->table->exit_status == 1)
+	if (cmd->table->exit_s == 1)
 	{
 		table->condition = 1;
 		return ;
@@ -35,6 +35,20 @@ void	condition_1(t_table *table, t_cmd *cmd, char **path)
 		*path = get_env_pro("HOME", table);
 	else
 		*path = cmd->argv[1];
+}
+
+void	condtion_inside(char **tmp, t_table *table, char *path)
+{
+	if (*tmp == NULL)
+	{
+		putstr_pro("cd: no such file or directory: ", path);
+		table->gar = 1;
+		free(*tmp);
+		return ;
+	}
+	free(*tmp);
+	table->gar = 0;
+	change_pwd(table);
 }
 
 void	ft_cd(t_cmd *cmd, t_table *table)
@@ -61,16 +75,7 @@ void	ft_cd(t_cmd *cmd, t_table *table)
 			}
 		}
 		tmp = getcwd(NULL, 0);
-		if (tmp == NULL)
-		{
-			putstr_pro("cd: no such file or directory: ", path);
-			table->gar = 1;
-			free(tmp);
-			return ;
-		}
-		free(tmp);
-		table->gar = 0;
-		change_pwd(table);
+		condtion_inside(&tmp, table, path);
 	}
 }
 
@@ -114,7 +119,7 @@ void	ft_env(t_table *table)
 	if ((search_for_path(table) == -1 || fd == 0))
 	{
 		ft_putstr_fd("msh: env: No such file or directory\n", 2);
-		table->exit_status = 127;
+		table->exit_s = 127;
 		return ;
 	}
 	free_2d(splited);

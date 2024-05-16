@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 22:27:59 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/14 11:46:11 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/16 10:39:30 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ void	ft_echo(t_cmd *cmd)
 	int	i;
 
 	i = 1;
-	if (cmd->table->exit_status == 1)
+	if (cmd->table->exit_s == 1)
 		return ;
 	while (cmd->argv[i])
 	{
 		ft_putstr_fd(cmd->argv[i], 1);
 		i++;
-		cmd->table->exit_status = 0;
+		cmd->table->exit_s = 0;
 	}
 	if (cmd->echo_new_line == 0)
 		ft_putstr_fd("\n", 1);

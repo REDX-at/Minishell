@@ -6,13 +6,12 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 02:21:29 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/14 23:08:46 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/16 09:53:58 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// copy env function
 char	**copy_the_env(char **env)
 {
 	int		i;
@@ -71,7 +70,7 @@ char	*copy_the_str(char *str, int *s, int flag)
 	return (tmp_2);
 }
 
-char	*copy_the_str_after_equal(char *str)
+char	*copy_s_after_eq(char *str)
 {
 	int		i;
 	char	*tmp;
@@ -86,14 +85,14 @@ char	*copy_the_str_after_equal(char *str)
 	{
 		tmp[s] = '=';
 		s++;
-	    while (i >= 0 && str[i] != ' ')
-	        tmp[s++] = str[i--];
-	    tmp[s] = '\0';
+		while (i >= 0 && str[i] != ' ')
+			tmp[s++] = str[i--];
+		tmp[s] = '\0';
 	}
 	else
 	{
-	while (str[i])
-	    tmp[s++] = str[i++];
+		while (str[i])
+			tmp[s++] = str[i++];
 		tmp[s] = '\0';
 	}
 	return (tmp);

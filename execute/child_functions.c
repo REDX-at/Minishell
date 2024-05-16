@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child_functions.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 23:59:17 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/14 10:53:03 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/05/16 11:01:14 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	wait_all_pid(t_table *table, pid_t pid[], int k)
 		waitpid(pid[k], &status, 0);
 		k++;
 	}
-	table->exit_status = (WEXITSTATUS(status));
+	table->exit_s = (WEXITSTATUS(status));
 }
 
 void	into_child(t_cmd *cmd, int **fd, t_table *table, int k)
@@ -33,7 +33,7 @@ void	into_child(t_cmd *cmd, int **fd, t_table *table, int k)
 		execute_built_in(cmd, fd, table, k);
 	else
 		execute_cmd(cmd, fd, k, table);
-	table->exit_status = 0;
+	table->exit_s = 0;
 	exit(EXIT_SUCCESS);
 }
 
@@ -63,7 +63,7 @@ void	inside_loop_2(int k, t_cmd *cmd, int **fd, pid_t pid[])
 	if (pid[k] == -1)
 	{
 		perror("fork");
-		cmd->table->exit_status = 1;
+		cmd->table->exit_s = 1;
 		exit(1);
 	}
 	if (pid[k] == 0)

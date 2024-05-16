@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_tokenizing_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 18:45:52 by mkibous           #+#    #+#             */
-/*   Updated: 2024/05/11 19:09:45 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/05/16 09:49:42 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,11 @@ void	ft_state(char **line, t_vars *vars, t_elem **elem, t_table *table)
 		ft_token(vars->last);
 		if (vars->last->type == HERE_DOC)
 			vars->redir = 1;
-		else if (vars->redir == 1 && vars->last->type == WORD
-			&& vars->closedq == 0)
+		else if (vars->redir == 1 && (vars->last->type == WHITE_SPACE
+				|| vars->last->type == WORD))
+			vars->redir = 2;
+		else if (vars->redir == 2 && vars->last->type != WORD
+			&& vars->last->type != QOUTE && vars->last->type != DOUBLE_QUOTE)
 			vars->redir = 0;
 		if (vars->env != 0 && vars->last->type != WHITE_SPACE)
 		{

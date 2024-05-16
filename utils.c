@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:33:36 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/14 09:51:30 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/16 15:34:30 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	*freee(char **string, int index)
 	return (NULL);
 }
 
-// ft_strcmp function
 int	ft_strcmp(char *str, char *str2)
 {
 	int	i;
@@ -77,17 +76,16 @@ void	for_acces(t_table *table, t_cmd *cmd, char ***splited)
 		env = ft_strdup(env + 5);
 		*splited = ft_split(env, ':');
 	}
-	if (search_for_path(table) == -1 && table->red == -1)
+	if (search_for_path(table) == -1)
 	{
 		ft_putstr_fd("msh: ", 2);
 		ft_putstr_fd(cmd->cmd, 2);
 		ft_putstr_fd(": No such files or directory for acces\n", 2);
-		table->exit_status = 127;
+		table->exit_s = 127;
 		exit(127);
 	}
 }
 
-// a function to check the access of the path
 int	check_access(char *command, t_cmd *cmd, t_table *table)
 {
 	char	**splited;
@@ -96,11 +94,9 @@ int	check_access(char *command, t_cmd *cmd, t_table *table)
 	char	*new_path;
 	char	*new_path2;
 
-	splited = NULL;
-	flag = 0;
-	i = 0;
+	(1) && (splited = NULL, flag = 0, i = -1);
 	for_acces(table, cmd, &splited);
-	while (splited[i])
+	while (splited[++i])
 	{
 		new_path = ft_strjoin(splited[i], "/");
 		new_path2 = ft_strjoin(new_path, command);
@@ -112,7 +108,6 @@ int	check_access(char *command, t_cmd *cmd, t_table *table)
 		}
 		free(new_path);
 		free(new_path2);
-		i++;
 	}
 	free_2d(splited);
 	if (flag)

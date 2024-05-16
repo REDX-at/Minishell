@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 01:14:53 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/14 12:23:11 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/16 15:06:04 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,7 @@ void	for_herdoc(t_cmd *cmd, int *fd, char *line, int red)
 			break ;
 		if (ft_strlen(line) == 0)
 		{
-			ft_putstr_fd(line, fd[1]);
-			ft_putstr_fd("\n", fd[1]);
+			print_with_fd(line, fd[1]);
 			free(line);
 			continue ;
 		}
@@ -89,8 +88,7 @@ void	for_herdoc(t_cmd *cmd, int *fd, char *line, int red)
 			break ;
 		}
 		ft_put_env(&line, cmd);
-		ft_putstr_fd(line, fd[1]);
-		ft_putstr_fd("\n", fd[1]);
+		print_with_fd(line, fd[1]);
 		free(line);
 	}
 }
