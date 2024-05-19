@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 18:16:28 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/15 20:04:27 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/16 18:28:21 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,11 @@ int	is_alpha_num(char *str)
 	int	i;
 
 	i = -1;
+	if (ft_isdigit(str[0]))
+		return (-1);
 	while (str[++i] && str[i] != '=')
 	{
-		if (!ft_isalnum(str[i]) && str[i] != '=')
+		if (!ft_isalnum(str[i]) && str[i] != '=' && str[i] != '_')
 			return (-1);
 	}
 	return (0);

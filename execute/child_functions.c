@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 23:59:17 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/16 11:01:14 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/16 15:47:53 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	wait_all_pid(t_table *table, pid_t pid[], int k)
 
 void	into_child(t_cmd *cmd, int **fd, t_table *table, int k)
 {
-	handle_redir(cmd, table, k, fd);
+	handle_redir(cmd, k, fd);
 	close_file_descriptor(fd, k);
 	if (cmd->is_builtin)
 		execute_built_in(cmd, fd, table, k);

@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 15:58:06 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/16 14:16:59 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/16 18:30:30 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,11 @@ void	after_export(t_cmd *cmd, t_table *table, int check)
 			if (cmd->argv[i][0] == '=' || (!ft_isalpha(cmd->argv[i][0]))
 				|| check_if_there_is_space(cmd->argv[i]) == -1 || alnum == -1)
 			{
-				if (!check_if_valid(cmd->argv[i]) || cmd->argv[i][0] == '+')
+				if ((!check_if_valid(cmd->argv[i]) || cmd->argv[i][0] == '+')
+					&& (alnum != 0))
 				{
 					ft_putstr_fd("export : not a valid identifier\n", 2);
-					table->flag = 1;
-					table->exit_s = 1;
+					(1) && (table->flag = 1, table->exit_s = 1);
 					continue ;
 				}
 			}

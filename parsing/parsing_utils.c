@@ -6,7 +6,7 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:44:32 by mkibous           #+#    #+#             */
-/*   Updated: 2024/05/11 18:51:09 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/05/16 20:24:54 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,28 +80,6 @@ int	ft_chek(t_elem *elem)
 	if (b != 0 || q != 0)
 		return (1);
 	return (0);
-}
-
-char	*ft_get_escape(char c, t_state state)
-{
-	if (c == 't')
-		return (ft_strdup("\\t"));
-	else if (c == 'b')
-		return (ft_strdup("\\b"));
-	else if (c == 'r')
-		return (ft_strdup("\\r"));
-	else if (c == '\"' && state != IN_QUOTE)
-		return (ft_strdup("\""));
-	else if (c == '\"' && state == IN_QUOTE)
-		return (ft_strdup("\""));
-	else if (c == '\'')
-		return (ft_strdup("\'"));
-	else if (c == '$' && state == IN_QUOTE)
-		return (ft_strdup("\\$"));
-	else if (c == '$' && state != IN_QUOTE)
-		return (ft_strdup("$"));
-	else
-		return (ft_strdup("\\"));
 }
 
 void	ft_newstate(t_elem **elem, t_elem **tmp)

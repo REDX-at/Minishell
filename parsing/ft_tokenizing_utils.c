@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_tokenizing_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 18:45:52 by mkibous           #+#    #+#             */
-/*   Updated: 2024/05/16 09:49:42 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/16 21:49:47 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,6 @@ int	ft_else_token(t_elem *elem)
 	if ((elem->content[0] == ' ' || elem->content[0] == '\t')
 		&& elem->state == GENERAL)
 		return (elem->type = WHITE_SPACE, 1);
-	else if (elem->state != GENERAL && elem->content[0] == '\\'
-		&& elem->content[1] == 'n')
-		return (elem->type = NEW_LINE, 1);
 	else if (elem->content[0] == '\'' && elem->state == GENERAL
 		&& (!elem->prev || (elem->prev
 				&& ft_strncmp(elem->prev->content, "\\", 2) != 0)
@@ -28,9 +25,6 @@ int	ft_else_token(t_elem *elem)
 		return (elem->type = QOUTE, 1);
 	else if (elem->content[0] == '"' && elem->state == GENERAL)
 		return (elem->type = DOUBLE_QUOTE, 1);
-	else if (elem->state == IN_DQUOTE && elem->content[0] == '\\'
-		&& ft_chek_if_escape(elem->content[1]))
-		return (elem->type = ESCAPE, 1);
 	return (0);
 }
 
@@ -112,9 +106,9 @@ void	ft_join(t_elem *elem)
 {
 	t_elem	*tmp;
 
+	ft_escape(elem);
 	while (elem)
 	{
-		ft_escape(elem);
 		if (elem->next && (elem->type == WORD))
 		{
 			(1) && (tmp = elem, elem = elem->next);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_tokenizing.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:44:32 by mkibous           #+#    #+#             */
-/*   Updated: 2024/05/12 14:35:06 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/16 20:24:43 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,12 +111,4 @@ int	ft_listing(char **str, t_elem **elem, t_table *table, t_vars *vars)
 	free(tmp2);
 	free(tmp);
 	return (l);
-}
-
-int	ft_chek_if_escape(char c)
-{
-	if (c == 't' || c == 'b' || c == 'r' || c == '\\' || c == '\"' || c == '\''
-		|| c == '$')
-		return (1);
-	return (0);
 }

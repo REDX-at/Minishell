@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:25:10 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/16 15:45:03 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/19 14:28:33 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,7 @@ typedef struct s_table
 	int				gar;
 	int				shllvl;
 	int				condition;
+	int				get_out;
 	t_cmd			*cmd;
 	t_utils			*utils;
 	t_garbage		*garbage;
@@ -220,7 +221,7 @@ void	loop_child(t_cmd *cmd, int **fd, pid_t pid[]);
 void	close_file_descriptor(int **fd, int k);
 void	wait_all_pid(t_table *table, pid_t pid[], int k);
 
-void	handle_redir(t_cmd *cmd, t_table *table, int k, int **fd);
+void	handle_redir(t_cmd *cmd, int k, int **fd);
 
 char	**ft_split(char const *s, char c);
 int		ft_strcmp(char *str, char *str2);

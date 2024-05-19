@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:44:32 by mkibous           #+#    #+#             */
-/*   Updated: 2024/05/16 10:39:30 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/18 11:03:22 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,27 +56,17 @@ void	ft_escape(t_elem *elem)
 {
 	char	*tmp;
 
-	if (elem->type == NEW_LINE)
+	while (elem)
 	{
-		elem->type = WORD;
-		free(elem->content);
-		elem->content = strdup("\\n");
-	}
-	if (elem->content[0] == '\\' && elem->type == WORD
-		&& elem->state == GENERAL)
-	{
-		tmp = ft_strdup(&elem->content[1]);
-		free(elem->content);
-		elem->content = ft_strdup(tmp);
-		free(tmp);
-	}
-	else if (elem->type == ESCAPE)
-	{
-		elem->type = WORD;
-		tmp = ft_get_escape(elem->content[1], elem->state);
-		free(elem->content);
-		elem->content = strdup(tmp);
-		free(tmp);
+		if (elem->content[0] == '\\' && elem->type == WORD
+			&& elem->state == GENERAL)
+		{
+			tmp = ft_strdup(&elem->content[1]);
+			free(elem->content);
+			elem->content = ft_strdup(tmp);
+			free(tmp);
+		}
+		elem = elem->next;
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 19:18:43 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/16 15:10:09 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/19 14:27:03 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	check_if_redir_in(t_cmd *cmd, int *fd_in, t_table *table, int i)
 		*fd_in = heredoc(cmd, i);
 	if (*fd_in == -1)
 	{
+		table->get_out = 1;
 		perror("open");
 		table->exit_s = 1;
 	}
@@ -40,6 +41,7 @@ void	check_if_redir_out(t_cmd *cmd, int *fd_out, t_table *table, int i)
 		*fd_out = open(cmd->file[i], O_CREAT | O_RDWR | O_APPEND, 0644);
 	if (*fd_out == -1)
 	{
+		table->get_out = 1;
 		perror("open");
 		table->exit_s = 1;
 	}
@@ -50,7 +52,7 @@ void	loop_handle_redir(t_cmd *cmd, int k, int **fd, int flag)
 	int	i;
 
 	i = -1;
-	while (cmd->redir[++i])
+	while (cmd->redir[++i] && cmd->table->get_out == 0)
 	{
 		if (flag == 1 && i == 0)
 		{
@@ -74,7 +76,7 @@ void	loop_handle_redir(t_cmd *cmd, int k, int **fd, int flag)
 	}
 }
 
-void	for_handle_redir(t_cmd *cmd, t_table *table, int k, int **fd)
+void	for_handle_redir(t_cmd *cmd, int k, int **fd)
 {
 	int	i;
 	int	flag;
@@ -84,12 +86,12 @@ void	for_handle_redir(t_cmd *cmd, t_table *table, int k, int **fd)
 	loop_handle_redir(cmd, k, fd, flag);
 }
 
-void	handle_redir(t_cmd *cmd, t_table *table, int k, int **fd)
+void	handle_redir(t_cmd *cmd, int k, int **fd)
 {
 	cmd->in = 0;
 	cmd->out = 1;
 	if (cmd->redir)
-		for_handle_redir(cmd, table, k, fd);
+		for_handle_redir(cmd, k, fd);
 	else
 	{
 		if (k > 0)

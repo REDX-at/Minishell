@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 17:09:13 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/16 10:39:30 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/16 17:10:42 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	condition_1(t_table *table, t_cmd *cmd, char **path)
 	if (ft_strcmp(cmd->argv[1], "~") == 1)
 		*path = get_env_pro("HOME", table);
 	else
-		*path = cmd->argv[1];
+		*path = ft_strdup(cmd->argv[1]);
 }
 
 void	condtion_inside(char **tmp, t_table *table, char *path)
@@ -56,27 +56,27 @@ void	ft_cd(t_cmd *cmd, t_table *table)
 	char	*path;
 	char	*tmp;
 
-	path = NULL;
-	tmp = NULL;
+	(1) && (path = NULL, tmp = NULL);
 	condition_1(table, cmd, &path);
 	if (!table->condition)
 	{
 		if (access(path, F_OK) == -1)
 		{
 			putstr_pro("cd: no such file or directory: ", path);
-			return ;
+			return (free(path));
 		}
 		else
 		{
 			if (chdir(path) == -1)
 			{
 				putstr_pro("cd: permission denied: ", path);
-				return ;
+				return (free(path));
 			}
 		}
 		tmp = getcwd(NULL, 0);
 		condtion_inside(&tmp, table, path);
 	}
+	free(path);
 }
 
 void	for_env(t_table *table, int *signe)

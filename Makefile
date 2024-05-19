@@ -11,22 +11,24 @@ SRC = minishell.c ./execute/built_in_cmd.c  ./execute/Exe_file.c ./execute/execu
 	./execute/utils_herdoc.c ./execute/built_in_3.c ./execute/check_export.c \
 	./execute/print_utils.c double_p.c env_utils.c init_table.c
 
-CFLAGS = -Wall -Wextra -g
+CFLAGS = -Wall -Wextra -Werror -g
 LIBFT = libft/libft.a
+HEADER = minishell.h
 OBJ = $(SRC:.c=.o)
 READLINE_LIB = $(shell brew --prefix readline)/lib
 READLINE_INCLUDES = $(shell brew --prefix readline)/include
 
-all: $(NAME) clean
+all: make_libft $(NAME)
 
-$(NAME): $(OBJ) $(LIBFT)
+make_libft:
+	@cd libft && make
+
+$(NAME): $(OBJ) 
 	@echo "\033[92m√\033[0m \033[97m" $<
 	@$(CC) -lreadline $(CFLAGS) -L $(READLINE_LIB) -o $(NAME) $(OBJ) $(LIBFT)
 
-%.o : %.c
+%.o : %.c  $(HEADER) $(LIBFT)
 	@$(CC) $(CFLAGS) -I $(READLINE_INCLUDES) -c $< -o $@
-$(LIBFT): 
-	@cd libft && make
 
 clean:
 	@cd libft && make clean

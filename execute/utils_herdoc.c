@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 17:05:41 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/04/27 02:12:23 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/18 16:01:52 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,6 @@ void	condition_flag_herdoc(t_cmd *cmd, int k, int **fd)
 	if (cmd->in == 0)
 	{
 		if (cmd->prev)
-			cmd->in = fd[k][0];
+			cmd->in = fd[k - 1][0];
 	}
 }

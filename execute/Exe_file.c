@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 14:42:02 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/16 11:00:37 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/16 15:48:03 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	exe_cmd(t_cmd *cmd, t_table *table)
 	if (cmd->is_builtin && !cmd->pipe)
 	{
 		(1) && (table->tmp_in = dup(0), table->tmp_out = dup(1));
-		handle_redir(cmd, table, k, fd);
+		handle_redir(cmd, k, fd);
 		execute_built_in(cmd, fd, table, k);
 		dup2(table->tmp_in, 0);
 		dup2(table->tmp_out, 1);
