@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 17:05:41 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/18 16:01:52 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/21 12:55:27 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,29 @@ void	condition_flag_herdoc(t_cmd *cmd, int k, int **fd)
 		if (cmd->prev)
 			cmd->in = fd[k - 1][0];
 	}
+}
+
+long	ft_atol(char *str)
+{
+	int		i;
+	long	nbr;
+	int		s;
+
+	i = 0;
+	nbr = 0;
+	s = 1;
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	if (str[i] == '-' || str[i] == '+')
+	{
+		if (str[i] == '-')
+			s = -1;
+		i++;
+	}
+	while (str[i] && ft_isdigit(str[i]))
+	{
+		nbr = (nbr * 10) + (str[i] - 48);
+		i++;
+	}
+	return (nbr * s);
 }

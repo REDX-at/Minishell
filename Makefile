@@ -41,14 +41,4 @@ fclean: clean
 
 re: fclean all
 
-push:
-	@read -p "Enter commit message: " commit_message; \
-	git add .; \
-	git commit -m "$$commit_message"; \
-	git push;
-
-pull:
-	@git stash
-	@git pull
-	@git stash pop
 .PHONY: clean fclean re all push

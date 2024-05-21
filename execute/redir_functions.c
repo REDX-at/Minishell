@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 19:18:43 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/19 14:27:03 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/21 11:47:08 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ void	check_if_redir_in(t_cmd *cmd, int *fd_in, t_table *table, int i)
 		table->get_out = 1;
 		perror("open");
 		table->exit_s = 1;
+		if (cmd->pipe || !cmd->is_builtin)
+			exit(1);
 	}
 }
 
@@ -44,6 +46,8 @@ void	check_if_redir_out(t_cmd *cmd, int *fd_out, t_table *table, int i)
 		table->get_out = 1;
 		perror("open");
 		table->exit_s = 1;
+		if (cmd->pipe || !cmd->is_builtin)
+			exit(1);
 	}
 }
 
@@ -51,7 +55,7 @@ void	loop_handle_redir(t_cmd *cmd, int k, int **fd, int flag)
 {
 	int	i;
 
-	i = -1;
+	(1) && (i = -1, cmd->table->get_out = 0);
 	while (cmd->redir[++i] && cmd->table->get_out == 0)
 	{
 		if (flag == 1 && i == 0)

@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:11:23 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/16 10:39:30 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/21 12:55:21 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,18 @@ void	utils_for_exit(t_table *table, t_cmd *cmd, int flag)
 	if (flag)
 	{
 		table->exit_s = 255;
-		ft_putstr_fd("exit\nmsh: exit: ", 2);
-		ft_putstr_fd(cmd->argv[1], 2);
-		ft_putstr_fd(": numeric argument required\n", 2);
+		if (!cmd->pipe)
+			ft_putstr_fd("exit\n", 2);
+		if (ft_atol(cmd->argv[1]) < 9223372036854775807)
+		{
+			ft_putstr_fd("msh: exit: ", 2);
+			ft_putstr_fd(cmd->argv[1], 2);
+			ft_putstr_fd(": numeric argument required\n", 2);
+		}
 		exit(255);
 	}
-	ft_putstr_fd("exit\n", 2);
+	if (!cmd->pipe)
+		ft_putstr_fd("exit\n", 2);
 	exit(table->exit_s);
 }
 

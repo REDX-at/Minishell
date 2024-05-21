@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 18:16:28 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/16 18:28:21 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/21 11:45:22 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	is_alpha_num(char *str)
 	int	i;
 
 	i = -1;
+	if (str[0] == '\0' || str[0] == '=')
+		return (-1);
 	if (ft_isdigit(str[0]))
 		return (-1);
 	while (str[++i] && str[i] != '=')
@@ -50,4 +52,14 @@ void	utils_util_dec(t_table *table, char **tmp_argv, int i, t_cmd *cmd)
 	free(*tmp_argv);
 	sort_double_pointer_2(new_env, ft_strlen_2d(new_env));
 	table->declare_x = new_env;
+}
+
+void	if_in_herdoc(t_cmd *cmd)
+{
+	if (cmd->pipe || !cmd->is_builtin)
+	{
+		signal(SIGINT, sig_hand);
+		signal(SIGQUIT, sig_hand);
+		rl_catch_signals = 1;
+	}
 }

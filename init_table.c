@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:25:37 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/19 14:26:40 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/20 18:57:37 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	for_init(t_table *table)
 	table->s = 0;
 	table->l = 0;
 	table->get_out = 0;
+	table->v = 0;
 }
 
 void	loop_inside_init(t_table *table, char **envp, int i, int shlvl)

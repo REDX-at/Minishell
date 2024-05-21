@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 01:14:53 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/18 18:59:14 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/21 11:48:11 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,7 @@ void	for_put_env(char **line, t_cmd *cmd, char **env, int i)
 
 void	for_herdoc(t_cmd *cmd, int *fd, char *line, int red)
 {
-	signal(SIGINT, sig_hand);
-	signal(SIGQUIT, sig_hand);
-	rl_catch_signals = 1;
+	if_in_herdoc(cmd);
 	while (1)
 	{
 		line = readline("> ");
@@ -96,11 +94,9 @@ void	for_herdoc(t_cmd *cmd, int *fd, char *line, int red)
 int	heredoc(t_cmd *cmd, int red)
 {
 	int		fd[2];
-	int		i;
 	char	*line;
 
 	line = NULL;
-	i = 0;
 	pipe(fd);
 	for_herdoc(cmd, fd, line, red);
 	close(fd[1]);

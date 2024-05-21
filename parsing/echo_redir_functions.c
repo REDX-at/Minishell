@@ -6,7 +6,7 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:44:32 by mkibous           #+#    #+#             */
-/*   Updated: 2024/05/11 18:33:15 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/05/20 16:37:01 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	ft_count_echo_spaces(t_vars *vars, t_elem *elem)
 	{
 		vars->size++;
 		if (elem->type == WORD)
-			(1) && (vars->size++);
+			(1) && (vars->size++, vars->j = 2);
 		vars->spaces = 0;
 	}
 	else if (elem->type != DOUBLE_QUOTE && elem->type != QOUTE
@@ -44,7 +44,7 @@ void	ft_count_echo_spaces(t_vars *vars, t_elem *elem)
 		if (vars->redir == 1)
 			vars->redir = 0;
 		else
-			vars->size++;
+			(1) && (vars->size++, vars->j = 2);
 		(1) && (vars->spaces = 0);
 	}
 }

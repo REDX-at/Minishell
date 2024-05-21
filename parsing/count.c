@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   count.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 18:57:59 by mkibous           #+#    #+#             */
-/*   Updated: 2024/05/11 18:58:08 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/05/20 18:55:37 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ int	ft_count_argv(t_elem *elem, int *redirs, int rdr)
 	ft_memset(&vars, 0, sizeof(vars));
 	while (elem && elem->type != PIPE_LINE)
 	{
-		if (vars.n == 0 && vars.echo == 1 && !ft_comp_n(elem->content))
+		if (vars.nn == 0 && vars.echo == 1 && !ft_comp_n(elem->content))
 			(1) && (vars.spaces = 1, vars.n = 1);
 		else if (vars.echo == 0 && ft_strncmp(elem->content, "echo", 5) == 0)
-			(1) && (vars.spaces = 1, vars.size++, vars.echo = 1);
+			(1) && (vars.spaces = 1, vars.size++, vars.echo = 1, vars.j = 1);
 		else if (rdr == 1 && (elem->type == REDIR_IN || elem->type == REDIR_OUT
 				|| elem->type == HERE_DOC || elem->type == DREDIR_OUT))
 			(1) && ((*redirs)++, vars.redir = 1, vars.n = 1);
@@ -30,7 +30,16 @@ int	ft_count_argv(t_elem *elem, int *redirs, int rdr)
 			ft_count_echo_spaces(&vars, elem);
 		if (elem->type == DOUBLE_QUOTE || elem->type == QOUTE)
 			vars.spaces = 0;
+		if (vars.echo && !vars.nn && ft_comp_n(elem->content)
+			&& elem->type != WHITE_SPACE && vars.j != 1)
+			(1) && (vars.nn = 1);
 		elem = elem->next;
 	}
 	return (vars.size);
+}
+
+void	exit_status(t_table *table, int status)
+{
+	if (status == 5)
+		table->exit_s = 1;
 }

@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:24:57 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/18 18:59:10 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/20 18:57:19 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	sig_handler(int signum)
 	{
 		if (g_status == 2)
 		{
+			g_status = 4;
 			printf("Quit: 3\n");
 		}
 	}
@@ -87,14 +88,10 @@ void	while_true(t_table *table, t_cmd *cmd, char *line)
 {
 	while (1)
 	{
-		if (g_status != 0)
-			table->exit_s = 1;
+		exit_status(table, g_status);
 		g_status = 0;
 		line = readline(RED"➜  "RED""BOLD"minishell "RESET);
-		if (g_status != 0)
-			table->exit_s = 1;
-		if (g_status == 5)
-			g_status = 0;
+		exit_status(table, g_status);
 		if (line)
 		{
 			add_history(line);
@@ -102,7 +99,11 @@ void	while_true(t_table *table, t_cmd *cmd, char *line)
 				ft_parsing(line, &cmd, table);
 			ft_built_in(&cmd, table);
 			if (cmd)
-				(1) && (table->exit_s = 0, exe_cmd(cmd, table), g_status = 0);
+				(1) && (table->exit_s = 0, exe_cmd(cmd, table), table->v = 0);
+			if (g_status == 1)
+				table->exit_s = 130;
+			if (g_status == 4)
+				table->exit_s = 131;
 			g_status = 0;
 			ft_cmd_free(&cmd);
 		}

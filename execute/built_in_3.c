@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 17:09:13 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/16 17:10:42 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/20 17:49:02 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	condition_1(t_table *table, t_cmd *cmd, char **path)
 		table->condition = 1;
 		return ;
 	}
-	if (cmd->argv[1] == NULL)
+	if (cmd->argv[1] == NULL || cmd->argv[1][0] == '\0')
 	{
 		ft_putstr_fd("cd: have to give path\n", 2);
 		table->condition = 1;

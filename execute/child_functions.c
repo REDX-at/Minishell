@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 23:59:17 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/16 15:47:53 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/20 15:51:22 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,12 @@
 
 void	wait_all_pid(t_table *table, pid_t pid[], int k)
 {
-	int	status;
-
-	status = 0;
 	while (k < table->count_cmd)
 	{
-		waitpid(pid[k], &status, 0);
+		waitpid(pid[k], &table->exit_s, 0);
 		k++;
 	}
-	table->exit_s = (WEXITSTATUS(status));
+	table->exit_s = (WEXITSTATUS(table->exit_s));
 }
 
 void	into_child(t_cmd *cmd, int **fd, t_table *table, int k)

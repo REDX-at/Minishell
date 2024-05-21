@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:25:10 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/19 14:28:33 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/21 12:56:06 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ typedef struct s_table
 	int				shllvl;
 	int				condition;
 	int				get_out;
+	int				v;
 	t_cmd			*cmd;
 	t_utils			*utils;
 	t_garbage		*garbage;
@@ -172,6 +173,7 @@ typedef struct s_vars
 	bool	spaces;
 	bool	exp;
 	int		redir;
+	int		nn;
 	bool	n;
 	bool	boolien;
 	bool	prev_is_redir;
@@ -265,6 +267,9 @@ void	put_err(t_table *table, char **the_last, char *err_join, int f);
 char	*copy_s_after_eq(char *str);
 void	free_fd_and_pid(int **fd, pid_t *pid);
 void	utils_util_dec(t_table *table, char **tmp_argv, int i, t_cmd *cmd);
+void	if_in_herdoc(t_cmd *cmd);
+void	sig_hand(int signum);
+long	ft_atol(char *str);
 
 // main functions
 int		ft_tablen(char **tab);
@@ -322,4 +327,5 @@ void	ft_free_elem(t_elem **elem);
 char	*ft_list_content(char **str, t_elem **elem, int *i, t_vars *vars);
 void	last_arg(t_cmd *cmd, t_table *table);
 void	ft_newstate(t_elem **elem, t_elem **tmp);
+void	exit_status(t_table *table, int status);
 #endif
