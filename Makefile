@@ -11,7 +11,7 @@ SRC = minishell.c ./execute/built_in_cmd.c  ./execute/Exe_file.c ./execute/execu
 	./execute/utils_herdoc.c ./execute/built_in_3.c ./execute/check_export.c \
 	./execute/print_utils.c double_p.c env_utils.c init_table.c
 
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror
 LIBFT = libft/libft.a
 HEADER = minishell.h
 OBJ = $(SRC:.c=.o)

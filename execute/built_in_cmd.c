@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:11:23 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/21 12:55:21 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/24 18:50:55 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,19 +87,20 @@ void	ft_exit(t_cmd *cmd, t_table *table)
 		ft_putstr_fd("exit\n", 2);
 		exit(table->exit_s);
 	}
-	if (!ft_is_integer(cmd->argv[1]) && !cmd->pipe)
+	if (!ft_is_integer(cmd->argv[1]))
 	{
 		ft_putstr_fd("exit\nmsh: exit: ", 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
 		table->exit_s = 255;
 		exit(255);
 	}
-	else if (ft_strlen_2d(cmd->argv) > 2 && !cmd->pipe)
+	else if (ft_strlen_2d(cmd->argv) > 2)
 	{
-		ft_putstr_fd("exit\nmsh: exit: too many arguments\n", 2);
+		if (!cmd->pipe)
+			ft_putstr_fd("exit\n", 2);
+		ft_putstr_fd("msh: exit: too many arguments\n", 2);
 		table->exit_s = 1;
-		if (cmd->pipe)
-			exit(1);
+		exit_help(cmd);
 	}
 	else if (ft_is_integer(cmd->argv[1]))
 		utils_for_exit(table, cmd, flag);

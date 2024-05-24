@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 18:57:59 by mkibous           #+#    #+#             */
-/*   Updated: 2024/05/20 18:55:37 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/24 18:57:32 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,24 @@ void	exit_status(t_table *table, int status)
 {
 	if (status == 5)
 		table->exit_s = 1;
+}
+
+void	exit_help(t_cmd *cmd)
+{
+	if (cmd->pipe)
+		exit(1);
+}
+
+void	put_and_exit(t_table *table, t_cmd *cmd, char *path, int flag)
+{
+	if (flag)
+	{
+		putstr_pro("cd: no such file or directory: ", path);
+		exit_state_in_child(cmd, table, 1);
+	}
+	else
+	{
+		putstr_pro("cd: permission denied: ", path);
+		exit_state_in_child(cmd, table, 1);
+	}
 }

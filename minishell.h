@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:25:10 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/21 12:56:06 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/24 18:55:54 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,7 +213,7 @@ void	for_put_env(char **line, t_cmd *cmd, char **env, int i);
 
 void	ft_cd(t_cmd *cmd, t_table *table);
 void	ft_pwd(t_table *table);
-void	ft_env(t_table *table);
+void	ft_env(t_table *table, t_cmd *cmd);
 void	ft_echo(t_cmd *cmd);
 void	ft_exit(t_cmd *cmd, t_table *table);
 void	ft_export(t_cmd *cmd, t_table *table);
@@ -270,6 +270,8 @@ void	utils_util_dec(t_table *table, char **tmp_argv, int i, t_cmd *cmd);
 void	if_in_herdoc(t_cmd *cmd);
 void	sig_hand(int signum);
 long	ft_atol(char *str);
+void	exit_state_in_child(t_cmd *cmd, t_table *table, int number);
+void	exit_help(t_cmd *cmd);
 
 // main functions
 int		ft_tablen(char **tab);
@@ -286,6 +288,7 @@ void	ft_built_in(t_cmd **cmd, t_table *table);
 char	**the_twode(char **twode);
 pid_t	ft_get_pid(void);
 void	sort_double_pointer_2(char **array, int size);
+void	put_and_exit(t_table *table, t_cmd *cmd, char *path, int flag);
 
 void	sort_double_pointer_2(char **array, int size);
 void	sig_handler(int signum);
@@ -301,7 +304,6 @@ t_cmd	*ft_lstlast_cmd(t_cmd *lst);
 void	ft_state(char **line, t_vars *vars, t_elem **elem, t_table *table);
 void	ft_token(t_elem *elem);
 int		ft_else_token(t_elem *elem);
-int		ft_chek_if_escape(char c);
 int		ft_listing(char **str, t_elem **elem, t_table *table, t_vars *vars);
 char	*put_env(char *content, char **env, t_table *table, t_vars *vars);
 int		ft_count_env(char **env);
@@ -315,7 +317,6 @@ void	ft_allocate_redir(t_elem *elem, t_vars *vars, t_cmd **cmd);
 int		ft_chek_quotes(t_elem *elem, int *b, int *Q);
 int		chek_prev(t_elem *elem);
 int		ft_chek(t_elem *elem);
-char	*ft_get_escape(char c, t_state state);
 void	ft_join(t_elem *elem);
 int		len(char *str);
 int		ft_count_argv(t_elem *elem, int *redirs, int rdr);

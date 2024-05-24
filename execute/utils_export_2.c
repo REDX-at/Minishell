@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 15:58:06 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/20 14:37:01 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/24 17:10:30 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,7 @@ void	after_export(t_cmd *cmd, t_table *table, int check)
 	int		i;
 	int		alnum;
 
-	alnum = 0;
-	i = 0;
+	(1) && (i = 0, alnum = 0);
 	while (cmd->argv[++i])
 	{
 		alnum = is_alpha_num(cmd->argv[i]);
@@ -61,6 +60,7 @@ void	after_export(t_cmd *cmd, t_table *table, int check)
 				{
 					ft_putstr_fd("export : not a valid identifier\n", 2);
 					(1) && (table->flag = 1, table->exit_s = 1);
+					exit_help(cmd);
 					continue ;
 				}
 			}

@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 14:42:02 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/20 18:58:08 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/24 17:01:35 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	execute_built_in(t_cmd *cmd, int **fd, t_table *table, int k)
 	else if (ft_strcmp(cmd->cmd, "echo"))
 		ft_echo(cmd);
 	else if (ft_strcmp(cmd->cmd, "env"))
-		ft_env(table);
+		ft_env(table, cmd);
 	else if (ft_strcmp(cmd->cmd, "export"))
 		ft_export(cmd, table);
 	else if (ft_strcmp(cmd->cmd, "unset"))
@@ -96,6 +96,7 @@ void	exe_cmd(t_cmd *cmd, t_table *table)
 	int		**fd;
 	pid_t	*pid;
 
+	table->cmd = cmd;
 	alloc_and_check_failure(&fd, &pid, &table);
 	k = 0;
 	if (cmd->is_builtin && !cmd->pipe)

@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 18:16:28 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/21 11:45:22 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/24 18:25:50 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,11 @@ void	if_in_herdoc(t_cmd *cmd)
 		signal(SIGQUIT, sig_hand);
 		rl_catch_signals = 1;
 	}
+}
+
+void	exit_state_in_child(t_cmd *cmd, t_table *table, int number)
+{
+	table->exit_s = number;
+	if (cmd->pipe)
+		exit(number);
 }

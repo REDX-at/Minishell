@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 22:42:02 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/21 12:55:12 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/24 16:08:06 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,25 @@
 
 char	**utils_declare_x(t_cmd *cmd, t_table *table, int i)
 {
-	int		check;
+	int		c;
 	char	*tmp_argv;
 	char	**split;
 
 	split = ft_split(cmd->argv[i], '=');
-	tmp_argv = ft_strdup(split[0]);
-	free(split[0]);
+	if (split[0] == NULL)
+		return (table->declare_x);
+	(1) && (tmp_argv = ft_strdup(split[0]), free(split[0]), c = 0);
 	split[0] = ft_strjoin("declare -x ", tmp_argv);
-	check = check_if_exist(split[0], table->declare_x, 2);
+	c = check_if_exist(split[0], table->declare_x, 2);
 	free(tmp_argv);
 	free_2d(split);
-	if (check != -1)
+	if (c != -1)
 	{
 		if (ft_strchr(cmd->argv[i], '=') != 0)
 		{
 			tmp_argv = ft_strjoin("declare -x ", cmd->argv[i]);
-			free(table->declare_x[check]);
-			table->declare_x[check] = ft_strdup(tmp_argv);
+			free(table->declare_x[c]);
+			table->declare_x[c] = ft_strdup(tmp_argv);
 			free(tmp_argv);
 		}
 	}
