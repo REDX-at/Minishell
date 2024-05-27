@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 17:05:41 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/21 12:55:27 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/27 23:00:15 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_put_env(char **line, t_cmd *cmd)
 
 	i = 0;
 	cmd->table->l = 0;
-	if (cmd->state == IN_QUOTE || ft_strchr(*line, '$') == NULL)
+	if (cmd->state != GENERAL || ft_strchr(*line, '$') == NULL)
 		return ;
 	env = env_copy(cmd->table->env);
 	for_put_env(line, cmd, env, i);
