@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:44:32 by mkibous           #+#    #+#             */
-/*   Updated: 2024/05/16 20:24:54 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/05/28 13:23:26 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ int	chek_prev(t_elem *elem)
 {
 	if (elem->prev)
 		elem = elem->prev;
+	else
+		return (1);
 	while (elem)
 	{
 		if (elem->type != WHITE_SPACE)

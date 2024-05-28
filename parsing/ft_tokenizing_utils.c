@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 18:45:52 by mkibous           #+#    #+#             */
-/*   Updated: 2024/05/27 22:58:38 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/28 14:31:54 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	ft_state(char **line, t_vars *vars, t_elem **elem, t_table *table)
 		if (vars->env != 0 && vars->last->type != WHITE_SPACE)
 		{
 			(1) && (vars->last->state = IN_DQUOTE, vars->env--);
-			if(ft_strncmp(vars->last->content, "\"", 2) == 0)
+			if (ft_strncmp(vars->last->content, "\"", 2) == 0)
 				vars->closedq = 0;
 			vars->last->type = WORD;
 		}

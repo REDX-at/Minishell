@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:44:32 by mkibous           #+#    #+#             */
-/*   Updated: 2024/05/20 18:48:05 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/28 14:32:01 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	ft_fill_cmd(t_cmd **cmd, t_elem *elem, t_vars *vars)
 		(1) && (vars->nn = 1);
 }
 
-void	ft_cmd(t_cmd **cmd, t_elem *elem)
+void	ft_cmd(t_cmd **cmd, t_elem *elem, t_table *table)
 {
 	t_vars	vars;
 	t_elem	*tmp;
@@ -99,7 +99,7 @@ void	ft_cmd(t_cmd **cmd, t_elem *elem)
 		if (!elem)
 		{
 			if (!vars.l_cmd)
-				ft_cmd_free(cmd);
+				table->set_flag = 1;
 			break ;
 		}
 		ft_fill_cmd(cmd, elem, &vars);
@@ -132,7 +132,7 @@ void	ft_parsing(char *line, t_cmd **cmd, t_table *table)
 		(1) && (free(str), printf("syntax error\n"));
 		return ;
 	}
-	ft_cmd(cmd, elem);
+	ft_cmd(cmd, elem, table);
 	tmp = *cmd;
 	while (tmp)
 		(1) && (tmp->table = table, tmp->elem = elem, tmp = tmp->next);

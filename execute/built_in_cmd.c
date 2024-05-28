@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:11:23 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/24 18:50:55 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/28 14:35:56 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	ft_putstr2d_fd(char **str, int fd)
 		ft_putstr_fd("\n", fd);
 }
 
-int	ft_strlen_until_equal(char *str)
+int	len_a_eq(char *str)
 {
 	int	i;
 

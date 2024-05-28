@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 14:50:10 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/16 15:45:15 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/28 14:48:35 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,4 +112,23 @@ char	*copy_the_str_without_plus(char *str)
 	}
 	tmp[s] = '\0';
 	return (tmp);
+}
+
+char	**loop_unset(t_table *table, char **new_env, int len, int j)
+{
+	int	i;
+
+	i = -1;
+	while (table->env[++i])
+	{
+		if (ft_strncmp(table->env[i], table->cmd->argv[len],
+				ft_strlen(table->cmd->argv[len])) == 0
+			&& (len_a_eq(table->env[i])
+				== (int)ft_strlen(table->cmd->argv[len])))
+			continue ;
+		else
+			(1) && (new_env[j] = ft_strdup(table->env[i]), j++);
+	}
+	new_env[j] = NULL;
+	return (new_env);
 }

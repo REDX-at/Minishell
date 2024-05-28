@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 16:57:02 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/15 18:46:05 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/28 14:35:56 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	check_if_exist(char *str, char **env, int flag)
 
 	if (str == NULL)
 		return (-1);
-	(1) && (i = -1, len = ft_strlen_until_equal(str));
+	(1) && (i = -1, len = len_a_eq(str));
 	len++;
 	while (env[++i] && flag == 1)
 	{

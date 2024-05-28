@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 22:42:02 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/24 16:08:06 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/28 14:35:56 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	the_plus_for_declare_x(t_cmd *cmd, int i, t_table *table)
 	free(cmd->argv[i]);
 	cmd->argv[i] = ft_strjoin("declare -x ", tmp);
 	free(tmp);
-	table->j = ft_strlen_until_equal(cmd->argv[i]) + 1;
+	table->j = len_a_eq(cmd->argv[i]) + 1;
 	tmp_3 = copy_the_str(cmd->argv[i], &table->j, 1);
 	tmp = copy_the_str_without_plus(cmd->argv[i]);
 	split = ft_split(tmp, '=');
@@ -117,7 +117,7 @@ void	the_plus(t_cmd *cmd, int i, t_table *table)
 	char	*tmp_3;
 
 	tmp_2 = NULL;
-	table->j = ft_strlen_until_equal(cmd->argv[i]) + 1;
+	table->j = len_a_eq(cmd->argv[i]) + 1;
 	tmp_3 = copy_the_str(cmd->argv[i], &table->j, 1);
 	tmp = copy_the_str_without_plus(cmd->argv[i]);
 	check = check_if_exist(tmp, table->env, 1);

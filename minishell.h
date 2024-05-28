@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:25:10 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/24 18:55:54 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/28 14:47:19 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ typedef struct s_table
 	int				condition;
 	int				get_out;
 	int				v;
+	int				set_flag;
 	t_cmd			*cmd;
 	t_utils			*utils;
 	t_garbage		*garbage;
@@ -196,7 +197,7 @@ void	exe_cmd(t_cmd *cmd, t_table *table);
 void	execute_built_in(t_cmd *cmd, int **fd, t_table *tale, int k);
 int		check_access(char *command, t_cmd *cmd, t_table *table);
 void	ft_putstr2d_fd(char **str, int fd);
-int		ft_strlen_until_equal(char *str);
+int		len_a_eq(char *str);
 int		heredoc(t_cmd *cmd, int red);
 char	*add_quotes_to_string(char *str);
 void	the_plus(t_cmd *cmd, int i, t_table *table);
@@ -233,7 +234,7 @@ char	*ft_strjoin(char const *s1, char const *s2);
 int		ft_strcmp(char *str, char *str2);
 void	ft_putstr2d_fd(char **str, int fd);
 int		ft_strlen_2d(char **str);
-int		ft_strlen_until_equal(char *str);
+int		len_a_eq(char *str);
 void	ft_putstr2d_fd(char **str, int fd);
 int		ft_strlen_2d(char **str);
 int		search_for_path(t_table *table);
@@ -272,6 +273,7 @@ void	sig_hand(int signum);
 long	ft_atol(char *str);
 void	exit_state_in_child(t_cmd *cmd, t_table *table, int number);
 void	exit_help(t_cmd *cmd);
+char	**loop_unset(t_table *table, char **new_env, int len, int j);
 
 // main functions
 int		ft_tablen(char **tab);
@@ -321,7 +323,7 @@ void	ft_join(t_elem *elem);
 int		len(char *str);
 int		ft_count_argv(t_elem *elem, int *redirs, int rdr);
 void	get_cmd(t_elem *elem, t_vars *vars, t_cmd **cmd);
-void	ft_cmd(t_cmd **cmd, t_elem *elem);
+void	ft_cmd(t_cmd **cmd, t_elem *elem, t_table *table);
 void	elem_free(t_elem *elem);
 void	ft_cmd_free(t_cmd **cmd);
 void	ft_free_elem(t_elem **elem);

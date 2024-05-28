@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 22:53:19 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/18 16:05:10 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/28 14:48:00 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,13 +95,8 @@ void	inside_loop(t_cmd *cmd, t_table *table, int i, int j)
 			free(new_env);
 			continue ;
 		}
-		while (table->env[++i])
-		{
-			if (ft_strncmp(table->env[i], cmd->argv[len],
-					ft_strlen(cmd->argv[len])) != 0)
-				(1) && (new_env[j] = ft_strdup(table->env[i]), j++);
-		}
-		(1) && (new_env[j] = NULL, free_2d(table->env), j = 0);
+		new_env = loop_unset(table, new_env, len, j);
+		(1) && (free_2d(table->env), j = 0);
 		table->env = copy_the_env(new_env);
 		free_2d(new_env);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_tokenizing.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:44:32 by mkibous           #+#    #+#             */
-/*   Updated: 2024/05/16 20:24:43 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/05/28 14:37:43 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	word_count(char *str)
 	return (count);
 }
 
-void	env(char **str, t_table *table, t_elem **elem, t_vars *vars)
+void	env(char **str, t_table *table, t_vars *vars)
 {
 	char	*tmp;
 	char	*tmp2;
@@ -45,12 +45,6 @@ void	env(char **str, t_table *table, t_elem **elem, t_vars *vars)
 	if (ft_strncmp(env, "$", 1) == 0)
 		vars->exp = 1;
 	vars->env = word_count(env);
-	if (env[0] == '\0')
-	{
-		ft_lstadd_back(elem, ft_lstnew(ft_strdup("")));
-		ft_lstlast(*elem)->state = GENERAL;
-		ft_lstlast(*elem)->type = WORD;
-	}
 	free(tmp);
 	free(*str);
 	*str = ft_strjoin(env, tmp2);
@@ -102,7 +96,7 @@ int	ft_listing(char **str, t_elem **elem, t_table *table, t_vars *vars)
 	free(tmp2);
 	while ((*str)[i] == '$' && vars->q == 0 && vars->redir == 0
 			&& vars->env == 0)
-		env(str, table, elem, vars);
+		env(str, table, vars);
 	content = ft_list_content(str, elem, &i, vars);
 	ft_lstadd_back(elem, ft_lstnew(content));
 	tmp2 = ft_strjoin(tmp, *str);
