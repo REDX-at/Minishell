@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:30:49 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/23 19:41:34 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/28 15:41:44 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,4 +90,14 @@ void	sort_double_pointer_2(char **array, int size)
 		}
 		size--;
 	}
+}
+
+int	check_access_if(char *command, char **splited)
+{
+	if (command[0] == '/')
+	{
+		free_2d(splited);
+		return (0);
+	}
+	return (1);
 }

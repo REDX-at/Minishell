@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 09:25:10 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/28 14:47:19 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/28 15:38:25 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,6 +207,7 @@ void	ft_add_env(char **env, char *str, int *fd);
 char	**ft_add_env2(char **env, char *str);
 int		check_if_exist(char *str, char **env, int flag);
 char	**join_2ds(char **join, char **to_join);
+int		check_access_if(char *command, char **splited);
 
 int		heredoc(t_cmd *cmd, int red);
 void	ft_put_env(char **line, t_cmd *cmd);

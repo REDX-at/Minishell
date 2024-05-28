@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 21:51:03 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/21 19:08:24 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/28 15:16:54 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	execute_cmd(t_cmd *cmd, int **fd_s, int k, t_table *table)
 
 	if (table->exit_s == 1)
 		return ;
-	execve(cmd->cmd, cmd->argv, table->env);
+	i = execve(cmd->cmd, cmd->argv, table->env);
 	i = 0;
 	if (cmd->cmd)
 		for_execute(cmd, table, fd_s, k);

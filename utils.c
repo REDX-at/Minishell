@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 10:33:36 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/05/16 15:34:30 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/05/28 15:40:52 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,16 +98,16 @@ int	check_access(char *command, t_cmd *cmd, t_table *table)
 	for_acces(table, cmd, &splited);
 	while (splited[++i])
 	{
+		if (!check_access_if(command, splited))
+			return (0);
 		new_path = ft_strjoin(splited[i], "/");
 		new_path2 = ft_strjoin(new_path, command);
 		if (access(new_path2, F_OK) == 0 && access(new_path2, X_OK) == 0)
 		{
-			flag = 1;
-			cmd->path = new_path2;
+			(1) && (flag = 1, cmd->path = new_path2);
 			break ;
 		}
-		free(new_path);
-		free(new_path2);
+		(1) && (free(new_path), free(new_path2), new_path = NULL);
 	}
 	free_2d(splited);
 	if (flag)
